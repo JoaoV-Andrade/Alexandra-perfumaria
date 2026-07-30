@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { ProductGallery } from "@/components/product-gallery";
 import { SiteHeader } from "@/components/site-header";
 import { formatPriceInCents } from "@/lib/format";
@@ -60,13 +61,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                disabled={isOutOfStock}
-                className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-alt disabled:text-muted-foreground"
-              >
-                {isOutOfStock ? "Esgotado" : "Adicionar ao carrinho"}
-              </button>
+              <AddToCartButton product={product} />
 
               <button
                 type="button"

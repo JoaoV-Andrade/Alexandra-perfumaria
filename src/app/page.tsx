@@ -1,25 +1,35 @@
-export default function Home() {
+import { EmptyState } from "@/components/empty-state";
+import { ProductGrid } from "@/components/product-grid";
+import { SiteHeader } from "@/components/site-header";
+import { createClient } from "@/lib/supabase/server";
+import type { Product } from "@/types/product";
+
+export default async function Home() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name, brand, price, images, stock")
+    .eq("active", true)
+    .order("created_at", { ascending: false });
+
   return (
-    <main className="flex flex-1 flex-col items-center justify-center bg-surface px-6 py-16 text-center">
-      <span className="mb-4 inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
-        Em breve
-      </span>
-
-      <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-        Alexandra Perfumaria
-      </h1>
-
-      <p className="mt-4 max-w-md text-base text-muted-foreground">
-        Uma seleção especial de perfumes está a caminho. Volte em breve para
-        conferir o catálogo.
-      </p>
-
-      <button
-        type="button"
-        className="mt-8 inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        Avise-me quando abrir
-      </button>
-    </main>
+    <>
+      <SiteHeader />
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+        {error ? (
+          <EmptyState
+            title="Não foi possível carregar os produtos"
+            description="Algo deu errado ao buscar o catálogo. Tente novamente em instantes."
+          />
+        ) : data.length === 0 ? (
+          <EmptyState
+            title="Nenhum produto disponível"
+            description="Estamos preparando o catálogo. Volte em breve!"
+          />
+        ) : (
+          <ProductGrid products={data as Product[]} />
+        )}
+      </main>
+    </>
   );
 }

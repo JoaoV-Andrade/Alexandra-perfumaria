@@ -6,3 +6,8 @@ export type Product = {
   images: string[];
   stock: number;
 };
+
+export type ProductDetail = Product & {
+  description: string | null;
+  volume_ml: number;
+};

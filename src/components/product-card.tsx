@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { formatPriceInCents } from "@/lib/format";
 import type { Product } from "@/types/product";
@@ -8,7 +9,10 @@ export function ProductCard({ product }: { product: Product }) {
   const imageUrl = product.images[0];
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-surface-alt bg-background transition-shadow hover:shadow-lg hover:shadow-accent/10">
+    <Link
+      href={`/produto/${product.id}`}
+      className="group block overflow-hidden rounded-2xl border border-surface-alt bg-background transition-shadow hover:shadow-lg hover:shadow-accent/10"
+    >
       <div className="relative aspect-square w-full overflow-hidden bg-surface">
         {imageUrl ? (
           <Image
@@ -42,6 +46,6 @@ export function ProductCard({ product }: { product: Product }) {
           {formatPriceInCents(product.price)}
         </p>
       </div>
-    </article>
+    </Link>
   );
 }

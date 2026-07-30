@@ -21,7 +21,8 @@ type CartAction =
   | { type: "LOAD"; items: CartItem[] }
   | { type: "ADD_ITEM"; item: Omit<CartItem, "quantity">; quantity: number }
   | { type: "REMOVE_ITEM"; productId: string }
-  | { type: "SET_QUANTITY"; productId: string; quantity: number };
+  | { type: "SET_QUANTITY"; productId: string; quantity: number }
+  | { type: "CLEAR" };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -64,6 +65,9 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ),
       };
 
+    case "CLEAR":
+      return { items: [] };
+
     default:
       return state;
   }
@@ -76,6 +80,7 @@ type CartContextValue = {
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeItem: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -125,6 +130,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeItem: (productId) => dispatch({ type: "REMOVE_ITEM", productId }),
       setQuantity: (productId, quantity) =>
         dispatch({ type: "SET_QUANTITY", productId, quantity }),
+      clearCart: () => dispatch({ type: "CLEAR" }),
     };
   }, [state.items]);
 

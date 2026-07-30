@@ -1,0 +1,142 @@
+"use client";
+
+import { useState, type FormEvent } from "react";
+
+import { useCart } from "@/lib/cart/cart-context";
+import { formatPriceInCents } from "@/lib/format";
+
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+
+type OrderItem = {
+  name: string;
+  brand: string;
+  price: number;
+  quantity: number;
+};
+
+export function WhatsAppCheckout() {
+  const { items, clearCart } = useCart();
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/pedidos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          items: items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setStatus("error");
+        setErrorMessage(data.error ?? "Não foi possível finalizar o pedido.");
+        return;
+      }
+
+      const message = buildWhatsAppMessage(
+        customerName,
+        data.items as OrderItem[],
+        data.total as number,
+      );
+
+      window.open(
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+        "_blank",
+      );
+
+      clearCart();
+      setCustomerName("");
+      setCustomerPhone("");
+      setStatus("idle");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Não foi possível finalizar o pedido. Tente novamente.");
+    }
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 border-t border-surface-alt pt-6"
+    >
+      <p className="text-sm font-medium text-foreground">
+        Finalizar pelo WhatsApp
+      </p>
+
+      {status === "error" && (
+        <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
+          {errorMessage}
+        </p>
+      )}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-foreground">Seu nome</span>
+          <input
+            type="text"
+            value={customerName}
+            onChange={(event) => setCustomerName(event.target.value)}
+            required
+            className="min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5 text-sm">
+          <span className="font-medium text-foreground">Seu WhatsApp</span>
+          <input
+            type="tel"
+            value={customerPhone}
+            onChange={(event) => setCustomerPhone(event.target.value)}
+            placeholder="(61) 99999-9999"
+            required
+            className="min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+          />
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {status === "loading" ? "Enviando..." : "Finalizar pelo WhatsApp"}
+      </button>
+    </form>
+  );
+}
+
+function buildWhatsAppMessage(
+  customerName: string,
+  items: OrderItem[],
+  total: number,
+): string {
+  const lines = items.map(
+    (item) =>
+      `${item.quantity}x ${item.name} (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
+  );
+
+  return [
+    "Olá! Gostaria de fazer o seguinte pedido:",
+    "",
+    ...lines,
+    "",
+    `Total: ${formatPriceInCents(total)}`,
+    "",
+    `Nome: ${customerName}`,
+  ].join("\n");
+}

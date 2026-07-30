@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EmptyState } from "@/components/empty-state";
+import { WhatsAppCheckout } from "@/components/whatsapp-checkout";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
 
@@ -108,6 +109,8 @@ export function CartSummary() {
           {formatPriceInCents(totalPrice)}
         </span>
       </div>
+
+      <WhatsAppCheckout />
     </div>
   );
 }

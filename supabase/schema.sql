@@ -42,8 +42,8 @@ create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   customer_name text not null,
   customer_phone text not null,
-  customer_email text not null,
-  address jsonb not null,
+  customer_email text, -- pedidos via WhatsApp podem não ter e-mail ainda
+  address jsonb, -- idem: endereço combinado depois, na conversa do WhatsApp
   items jsonb not null, -- snapshot dos itens com preço no momento da compra
   subtotal integer not null check (subtotal >= 0),
   shipping_cost integer not null check (shipping_cost >= 0),

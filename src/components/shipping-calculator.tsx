@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type KeyboardEvent } from "react";
 
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
@@ -16,11 +16,13 @@ export type ShippingOption = {
 type ShippingCalculatorProps = {
   selectedOption: ShippingOption | null;
   onSelect: (option: ShippingOption | null) => void;
+  onPostalCodeCalculated?: (postalCode: string) => void;
 };
 
 export function ShippingCalculator({
   selectedOption,
   onSelect,
+  onPostalCodeCalculated,
 }: ShippingCalculatorProps) {
   const { items } = useCart();
   const [postalCode, setPostalCode] = useState("");
@@ -28,8 +30,7 @@ export function ShippingCalculator({
   const [errorMessage, setErrorMessage] = useState("");
   const [options, setOptions] = useState<ShippingOption[]>([]);
 
-  async function handleCalculate(event: FormEvent) {
-    event.preventDefault();
+  async function handleCalculate() {
     onSelect(null);
     setOptions([]);
 
@@ -72,6 +73,7 @@ export function ShippingCalculator({
 
       setOptions(data.options as ShippingOption[]);
       setStatus("idle");
+      onPostalCodeCalculated?.(sanitized);
     } catch {
       setStatus("error");
       setErrorMessage(
@@ -84,24 +86,33 @@ export function ShippingCalculator({
     <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
       <p className="text-sm font-medium text-foreground">Calcular frete</p>
 
-      <form onSubmit={handleCalculate} className="flex gap-3">
+      {/* Não é um <form>: este componente pode ser usado dentro do formulário
+          de checkout, e HTML não permite <form> dentro de <form>. */}
+      <div className="flex gap-3">
         <input
           type="text"
           inputMode="numeric"
           value={postalCode}
           onChange={(event) => setPostalCode(event.target.value)}
+          onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              handleCalculate();
+            }
+          }}
           placeholder="00000-000"
           maxLength={9}
           className="min-h-11 flex-1 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
         />
         <button
-          type="submit"
+          type="button"
+          onClick={handleCalculate}
           disabled={status === "loading"}
           className="inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-5 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "loading" ? "Calculando..." : "Calcular"}
         </button>
-      </form>
+      </div>
 
       {status === "error" && (
         <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">

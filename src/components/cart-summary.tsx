@@ -139,6 +139,13 @@ export function CartSummary() {
         </div>
       </div>
 
+      <Link
+        href="/checkout"
+        className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        Pagar com cartão
+      </Link>
+
       <WhatsAppCheckout shipping={selectedShipping} />
     </div>
   );

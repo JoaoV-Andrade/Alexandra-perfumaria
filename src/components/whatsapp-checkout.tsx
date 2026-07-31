@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
+import type { ShippingOption } from "@/components/shipping-calculator";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
 
@@ -14,7 +15,11 @@ type OrderItem = {
   quantity: number;
 };
 
-export function WhatsAppCheckout() {
+type WhatsAppCheckoutProps = {
+  shipping: ShippingOption | null;
+};
+
+export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
   const { items, clearCart } = useCart();
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -37,6 +42,10 @@ export function WhatsAppCheckout() {
             productId: item.productId,
             quantity: item.quantity,
           })),
+          shipping_cost: shipping?.price ?? 0,
+          shipping_service: shipping
+            ? `${shipping.company} - ${shipping.name}`
+            : undefined,
         }),
       });
 
@@ -48,11 +57,14 @@ export function WhatsAppCheckout() {
         return;
       }
 
-      const message = buildWhatsAppMessage(
+      const message = buildWhatsAppMessage({
         customerName,
-        data.items as OrderItem[],
-        data.total as number,
-      );
+        items: data.items as OrderItem[],
+        subtotal: data.subtotal as number,
+        shippingCost: data.shippingCost as number,
+        shippingService: data.shippingService as string | null,
+        total: data.total as number,
+      });
 
       window.open(
         `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
@@ -120,22 +132,41 @@ export function WhatsAppCheckout() {
   );
 }
 
-function buildWhatsAppMessage(
-  customerName: string,
-  items: OrderItem[],
-  total: number,
-): string {
+function buildWhatsAppMessage({
+  customerName,
+  items,
+  subtotal,
+  shippingCost,
+  shippingService,
+  total,
+}: {
+  customerName: string;
+  items: OrderItem[];
+  subtotal: number;
+  shippingCost: number;
+  shippingService: string | null;
+  total: number;
+}): string {
   const lines = items.map(
     (item) =>
       `${item.quantity}x ${item.name} (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
   );
+
+  const totalsLines =
+    shippingCost > 0
+      ? [
+          `Subtotal: ${formatPriceInCents(subtotal)}`,
+          `Frete${shippingService ? ` (${shippingService})` : ""}: ${formatPriceInCents(shippingCost)}`,
+          `Total: ${formatPriceInCents(total)}`,
+        ]
+      : [`Total: ${formatPriceInCents(total)}`];
 
   return [
     "Olá! Gostaria de fazer o seguinte pedido:",
     "",
     ...lines,
     "",
-    `Total: ${formatPriceInCents(total)}`,
+    ...totalsLines,
     "",
     `Nome: ${customerName}`,
   ].join("\n");

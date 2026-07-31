@@ -17,6 +17,9 @@ create table if not exists public.products (
   images text[] not null default '{}',
   active boolean not null default true,
   weight_g integer not null check (weight_g > 0),
+  length_cm integer not null check (length_cm > 0),
+  width_cm integer not null check (width_cm > 0),
+  height_cm integer not null check (height_cm > 0),
   created_at timestamptz not null default now()
 );
 

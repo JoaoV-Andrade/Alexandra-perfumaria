@@ -11,6 +11,8 @@ type RequestBody = {
   customer_name?: string;
   customer_phone?: string;
   items?: RequestItem[];
+  shipping_cost?: number;
+  shipping_service?: string;
 };
 
 export async function POST(request: Request) {
@@ -87,6 +89,13 @@ export async function POST(request: Request) {
     0,
   );
 
+  const shippingCost =
+    Number.isInteger(body?.shipping_cost) && (body?.shipping_cost ?? 0) >= 0
+      ? (body?.shipping_cost as number)
+      : 0;
+  const shippingService = body?.shipping_service?.toString().trim() || null;
+  const total = subtotal + shippingCost;
+
   const { data: order, error: insertError } = await supabase
     .from("orders")
     .insert({
@@ -94,8 +103,9 @@ export async function POST(request: Request) {
       customer_phone: customerPhone,
       items: orderItems,
       subtotal,
-      shipping_cost: 0,
-      total: subtotal,
+      shipping_cost: shippingCost,
+      shipping_service: shippingService,
+      total,
       status: "aguardando_whatsapp",
     })
     .select("id")
@@ -111,6 +121,9 @@ export async function POST(request: Request) {
   return NextResponse.json({
     orderId: order.id,
     items: orderItems,
-    total: subtotal,
+    subtotal,
+    shippingCost,
+    shippingService,
+    total,
   });
 }

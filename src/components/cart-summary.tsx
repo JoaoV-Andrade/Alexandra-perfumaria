@@ -2,14 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { EmptyState } from "@/components/empty-state";
+import {
+  ShippingCalculator,
+  type ShippingOption,
+} from "@/components/shipping-calculator";
 import { WhatsAppCheckout } from "@/components/whatsapp-checkout";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
 
 export function CartSummary() {
   const { items, totalPrice, removeItem, setQuantity } = useCart();
+  const [selectedShipping, setSelectedShipping] =
+    useState<ShippingOption | null>(null);
+  const total = totalPrice + (selectedShipping?.price ?? 0);
 
   if (items.length === 0) {
     return (
@@ -103,14 +111,35 @@ export function CartSummary() {
         ))}
       </ul>
 
-      <div className="flex items-center justify-between border-t border-surface-alt pt-4">
-        <span className="text-base font-medium text-foreground">Total</span>
-        <span className="text-xl font-semibold text-foreground">
-          {formatPriceInCents(totalPrice)}
-        </span>
+      <ShippingCalculator
+        selectedOption={selectedShipping}
+        onSelect={setSelectedShipping}
+      />
+
+      <div className="flex flex-col gap-2 border-t border-surface-alt pt-4">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>Subtotal</span>
+          <span>{formatPriceInCents(totalPrice)}</span>
+        </div>
+
+        {selectedShipping && (
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <span>
+              Frete ({selectedShipping.company} · {selectedShipping.name})
+            </span>
+            <span>{formatPriceInCents(selectedShipping.price)}</span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between">
+          <span className="text-base font-medium text-foreground">Total</span>
+          <span className="text-xl font-semibold text-foreground">
+            {formatPriceInCents(total)}
+          </span>
+        </div>
       </div>
 
-      <WhatsAppCheckout />
+      <WhatsAppCheckout shipping={selectedShipping} />
     </div>
   );
 }

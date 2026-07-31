@@ -20,6 +20,9 @@ export async function createProduct(
   const priceReais = Number(formData.get("price"));
   const stock = Number(formData.get("stock"));
   const weightG = Number(formData.get("weight_g"));
+  const lengthCm = Number(formData.get("length_cm"));
+  const widthCm = Number(formData.get("width_cm"));
+  const heightCm = Number(formData.get("height_cm"));
   const active = formData.get("active") === "on";
   const images = formData
     .getAll("images")
@@ -39,6 +42,15 @@ export async function createProduct(
   }
   if (!Number.isFinite(weightG) || weightG <= 0) {
     return { status: "error", message: "Peso (g) inválido." };
+  }
+  if (!Number.isFinite(lengthCm) || lengthCm <= 0) {
+    return { status: "error", message: "Comprimento (cm) inválido." };
+  }
+  if (!Number.isFinite(widthCm) || widthCm <= 0) {
+    return { status: "error", message: "Largura (cm) inválida." };
+  }
+  if (!Number.isFinite(heightCm) || heightCm <= 0) {
+    return { status: "error", message: "Altura (cm) inválida." };
   }
 
   const supabase = createAdminClient();
@@ -72,6 +84,9 @@ export async function createProduct(
     price: Math.round(priceReais * 100),
     stock,
     weight_g: weightG,
+    length_cm: lengthCm,
+    width_cm: widthCm,
+    height_cm: heightCm,
     active,
     images: imageUrls,
   });

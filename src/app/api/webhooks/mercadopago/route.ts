@@ -69,14 +69,6 @@ export async function POST(request: Request) {
     !xRequestId ||
     !isValidSignature({ xSignature, xRequestId, dataId, secret })
   ) {
-    // DEBUG temporario — remover depois de descobrir o problema de assinatura.
-    console.error("Webhook MP: assinatura invalida", {
-      dataId,
-      xSignature,
-      xRequestId,
-      hasSecret: Boolean(secret),
-      secretLength: secret?.length ?? 0,
-    });
     return NextResponse.json({ error: "Assinatura inválida." }, { status: 401 });
   }
 

@@ -1,49 +1,92 @@
-import Link from "next/link";
-
+import { PaymentError } from "@/components/payment-error";
+import { PaymentPending } from "@/components/payment-pending";
+import { PaymentSuccess } from "@/components/payment-success";
 import { SiteHeader } from "@/components/site-header";
+import { getPayment } from "@/lib/mercado-pago";
+import { createAdminClient } from "@/lib/supabase/admin";
+import type { OrderItemSnapshot } from "@/types/order";
 
 type CheckoutRetornoPageProps = {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    pedido?: string;
+    payment_id?: string;
+    collection_id?: string;
+  }>;
 };
 
-const MESSAGES: Record<string, { title: string; description: string }> = {
-  sucesso: {
-    title: "Pagamento aprovado!",
-    description: "Recebemos seu pedido e já vamos começar a preparar tudo.",
-  },
-  pendente: {
-    title: "Pagamento em análise",
-    description:
-      "Assim que o Mercado Pago confirmar o pagamento, seu pedido será processado.",
-  },
-  erro: {
-    title: "Não foi possível concluir o pagamento",
-    description: "Você pode voltar ao carrinho e tentar novamente.",
-  },
-};
+type Outcome = "sucesso" | "pendente" | "erro";
+
+// O status na URL é só uma dica de para onde o Mercado Pago quis nos mandar
+// no momento do redirecionamento; a verdade é sempre a consulta ao pagamento.
+function resolveOutcome(
+  paymentStatus: string | undefined,
+  fallback: string | undefined,
+): Outcome {
+  if (paymentStatus === "approved") return "sucesso";
+  if (
+    paymentStatus === "pending" ||
+    paymentStatus === "in_process" ||
+    paymentStatus === "authorized"
+  ) {
+    return "pendente";
+  }
+  if (paymentStatus) return "erro";
+
+  if (fallback === "sucesso" || fallback === "pendente") return fallback;
+  return "erro";
+}
+
+async function fetchOrderSummary(orderId: string) {
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("orders")
+    .select("items, total")
+    .eq("id", orderId)
+    .maybeSingle<{ items: OrderItemSnapshot[]; total: number }>();
+  return data;
+}
 
 export default async function CheckoutRetornoPage({
   searchParams,
 }: CheckoutRetornoPageProps) {
-  const { status } = await searchParams;
-  const message = MESSAGES[status ?? ""] ?? MESSAGES.erro;
+  const params = await searchParams;
+  const paymentId = params.payment_id ?? params.collection_id;
+
+  const [order, payment] = await Promise.all([
+    params.pedido ? fetchOrderSummary(params.pedido) : Promise.resolve(null),
+    paymentId ? getPayment(paymentId) : Promise.resolve(null),
+  ]);
+
+  const outcome = resolveOutcome(payment?.status, params.status);
+  const items = order?.items ?? null;
+  const total = order?.total ?? null;
 
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-        <h1 className="text-2xl font-semibold text-foreground">
-          {message.title}
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {message.description}
-        </p>
-        <Link
-          href="/"
-          className="mt-8 inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          Voltar para a loja
-        </Link>
+      <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 py-12">
+        {outcome === "sucesso" && <PaymentSuccess items={items} total={total} />}
+
+        {outcome === "pendente" && (
+          <PaymentPending
+            items={items}
+            total={total}
+            paymentTypeId={payment?.payment_type_id ?? null}
+            qrCode={payment?.point_of_interaction?.transaction_data?.qr_code ?? null}
+            qrCodeBase64={
+              payment?.point_of_interaction?.transaction_data?.qr_code_base64 ?? null
+            }
+            ticketUrl={
+              payment?.point_of_interaction?.transaction_data?.ticket_url ??
+              payment?.transaction_details?.external_resource_url ??
+              null
+            }
+            expirationDate={payment?.date_of_expiration ?? null}
+          />
+        )}
+
+        {outcome === "erro" && <PaymentError />}
       </main>
     </>
   );

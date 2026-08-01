@@ -17,6 +17,51 @@ export type CreatePreferenceResult =
   | { ok: true; preferenceId: string; initPoint: string }
   | { ok: false; error: string };
 
+export type MercadoPagoPayment = {
+  id: number;
+  status: string;
+  status_detail: string;
+  payment_method_id: string;
+  payment_type_id: string;
+  date_of_expiration: string | null;
+  point_of_interaction?: {
+    transaction_data?: {
+      qr_code?: string;
+      qr_code_base64?: string;
+      ticket_url?: string;
+    };
+  };
+  transaction_details?: {
+    external_resource_url?: string | null;
+  };
+};
+
+// Busca o pagamento na API do Mercado Pago pelo id — usado na tela de
+// retorno pra mostrar o status real (nunca confiamos no status que vem só
+// pela URL de redirecionamento).
+export async function getPayment(
+  paymentId: string,
+): Promise<MercadoPagoPayment | null> {
+  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
+  if (!accessToken) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.mercadopago.com/v1/payments/${paymentId}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) return null;
+
+    return (await response.json()) as MercadoPagoPayment;
+  } catch {
+    return null;
+  }
+}
+
 function splitName(fullName: string) {
   const trimmed = fullName.trim();
   const firstSpace = trimmed.indexOf(" ");

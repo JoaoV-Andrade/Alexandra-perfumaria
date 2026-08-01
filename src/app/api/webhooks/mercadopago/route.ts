@@ -41,6 +41,16 @@ function isValidSignature({
     .update(manifest)
     .digest("hex");
 
+  // DEBUG temporario — remover depois de descobrir o problema de assinatura.
+  console.error("Webhook MP: debug assinatura", {
+    manifest,
+    computedHash,
+    receivedHash,
+    match: computedHash === receivedHash,
+    rawXSignature: xSignature,
+    secretPreview: secret.slice(0, 6) + "..." + secret.slice(-6),
+  });
+
   const computedBuffer = Buffer.from(computedHash, "hex");
   const receivedBuffer = Buffer.from(receivedHash, "hex");
   if (computedBuffer.length !== receivedBuffer.length) return false;

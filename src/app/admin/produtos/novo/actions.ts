@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
 export type CreateProductState = {
   status: "idle" | "success" | "error";
@@ -13,6 +14,16 @@ export async function createProduct(
   _prevState: CreateProductState,
   formData: FormData,
 ): Promise<CreateProductState> {
+  // O middleware já bloqueia quem não está logada; esta checagem é só uma
+  // segunda trava, direto na ação que grava no banco.
+  const supabaseAuth = await createClient();
+  const {
+    data: { user },
+  } = await supabaseAuth.auth.getUser();
+  if (!user) {
+    return { status: "error", message: "Sessão expirada. Faça login novamente." };
+  }
+
   const name = formData.get("name")?.toString().trim();
   const brand = formData.get("brand")?.toString().trim();
   const description = formData.get("description")?.toString().trim() || null;

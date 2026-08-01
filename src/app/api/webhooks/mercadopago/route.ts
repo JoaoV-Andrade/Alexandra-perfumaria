@@ -18,11 +18,13 @@ function isValidSignature({
   xRequestId,
   dataId,
   secret,
+  rawBody,
 }: {
   xSignature: string;
   xRequestId: string;
   dataId: string;
   secret: string;
+  rawBody: string;
 }): boolean {
   const parts = new Map(
     xSignature.split(",").map((part) => {
@@ -35,21 +37,49 @@ function isValidSignature({
   const receivedHash = parts.get("v1");
   if (!ts || !receivedHash) return false;
 
-  const manifest = `id:${dataId.toLowerCase()};request-id:${xRequestId};ts:${ts};`;
+  let bodyTopLevelId: string | null = null;
+  try {
+    bodyTopLevelId = String(JSON.parse(rawBody)?.id ?? "");
+  } catch {
+    // corpo vazio ou invalido, ignora
+  }
+
+  // DEBUG temporario — testa varias hipoteses de formula contra o hash
+  // recebido, pra descobrir qual bate. Remover depois.
+  const candidates: Record<string, string> = {
+    padrao: `id:${dataId.toLowerCase()};request-id:${xRequestId};ts:${ts};`,
+    semPontoFinal: `id:${dataId.toLowerCase()};request-id:${xRequestId};ts:${ts}`,
+    comIdDoCorpo: bodyTopLevelId
+      ? `id:${bodyTopLevelId};request-id:${xRequestId};ts:${ts};`
+      : "N/A",
+    ordemTsPrimeiro: `ts:${ts};id:${dataId.toLowerCase()};request-id:${xRequestId};`,
+  };
+
+  const results: Record<string, string> = {};
+  let matchedLabel: string | null = null;
+  for (const [label, manifest] of Object.entries(candidates)) {
+    if (manifest === "N/A") continue;
+    const hash = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
+    results[label] = hash;
+    if (hash === receivedHash) matchedLabel = label;
+  }
+
+  console.error("Webhook MP: debug assinatura v2", {
+    dataId,
+    xRequestId,
+    ts,
+    receivedHash,
+    results,
+    matchedLabel,
+    rawBody,
+    secretPreview: secret.slice(0, 6) + "..." + secret.slice(-6),
+  });
+
+  const manifest = candidates.padrao;
   const computedHash = crypto
     .createHmac("sha256", secret)
     .update(manifest)
     .digest("hex");
-
-  // DEBUG temporario — remover depois de descobrir o problema de assinatura.
-  console.error("Webhook MP: debug assinatura", {
-    manifest,
-    computedHash,
-    receivedHash,
-    match: computedHash === receivedHash,
-    rawXSignature: xSignature,
-    secretPreview: secret.slice(0, 6) + "..." + secret.slice(-6),
-  });
 
   const computedBuffer = Buffer.from(computedHash, "hex");
   const receivedBuffer = Buffer.from(receivedHash, "hex");
@@ -72,12 +102,13 @@ export async function POST(request: Request) {
   const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET;
   const xSignature = request.headers.get("x-signature");
   const xRequestId = request.headers.get("x-request-id");
+  const rawBody = await request.text();
 
   if (
     !secret ||
     !xSignature ||
     !xRequestId ||
-    !isValidSignature({ xSignature, xRequestId, dataId, secret })
+    !isValidSignature({ xSignature, xRequestId, dataId, secret, rawBody })
   ) {
     return NextResponse.json({ error: "Assinatura inválida." }, { status: 401 });
   }

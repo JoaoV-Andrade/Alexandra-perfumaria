@@ -10,6 +10,12 @@ export default function AdminHomePage() {
 
       <div className="mt-6 flex flex-col gap-3">
         <Link
+          href="/admin/pedidos"
+          className="rounded-2xl bg-surface px-5 py-4 text-sm font-medium text-foreground transition-colors hover:bg-surface-alt"
+        >
+          Ver pedidos
+        </Link>
+        <Link
           href="/admin/produtos/novo"
           className="rounded-2xl bg-surface px-5 py-4 text-sm font-medium text-foreground transition-colors hover:bg-surface-alt"
         >

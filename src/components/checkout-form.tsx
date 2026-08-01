@@ -10,7 +10,7 @@ import {
 } from "@/components/shipping-calculator";
 import { BRAZILIAN_STATES } from "@/lib/brazilian-states";
 import { useCart } from "@/lib/cart/cart-context";
-import { formatPriceInCents } from "@/lib/format";
+import { formatPostalCode, formatPriceInCents } from "@/lib/format";
 
 const inputClass =
   "min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 disabled:cursor-not-allowed disabled:bg-surface disabled:text-muted-foreground";
@@ -186,7 +186,7 @@ export function CheckoutForm() {
               <span className="font-medium text-foreground">CEP</span>
               <input
                 type="text"
-                value={postalCode.replace(/(\d{5})(\d{3})/, "$1-$2")}
+                value={formatPostalCode(postalCode)}
                 disabled
                 className={inputClass}
               />

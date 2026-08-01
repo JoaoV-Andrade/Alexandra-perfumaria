@@ -1,0 +1,59 @@
+import { notFound } from "next/navigation";
+
+import { createClient } from "@/lib/supabase/server";
+import type { ProductAdmin } from "@/types/product";
+
+import { ProductForm } from "../../product-form";
+import { updateProduct } from "./actions";
+
+type EditProductPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function EditProductPage({ params }: EditProductPageProps) {
+  const { id } = await params;
+
+  const supabase = await createClient();
+  const { data: product } = await supabase
+    .from("products")
+    .select(
+      "id, name, brand, description, volume_ml, price, stock, images, active, weight_g, length_cm, width_cm, height_cm",
+    )
+    .eq("id", id)
+    .maybeSingle<ProductAdmin>();
+
+  if (!product) {
+    notFound();
+  }
+
+  const boundUpdateProduct = updateProduct.bind(null, product.id);
+
+  return (
+    <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
+      <h1 className="text-2xl font-semibold text-foreground">Editar produto</h1>
+      <p className="mt-1 text-sm text-muted-foreground">{product.name}</p>
+
+      <div className="mt-6">
+        <ProductForm
+          action={boundUpdateProduct}
+          submitLabel="Salvar alterações"
+          pendingLabel="Salvando..."
+          defaultValues={{
+            name: product.name,
+            brand: product.brand,
+            description: product.description,
+            volume_ml: product.volume_ml,
+            price: product.price,
+            stock: product.stock,
+            weight_g: product.weight_g,
+            length_cm: product.length_cm,
+            width_cm: product.width_cm,
+            height_cm: product.height_cm,
+            active: product.active,
+          }}
+          existingImages={product.images}
+        />
+      </div>
+    </main>
+  );
+}

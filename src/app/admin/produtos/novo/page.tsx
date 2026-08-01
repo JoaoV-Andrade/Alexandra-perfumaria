@@ -1,4 +1,5 @@
-import { NewProductForm } from "./new-product-form";
+import { ProductForm } from "../product-form";
+import { createProduct } from "./actions";
 
 export default function NewProductPage() {
   return (
@@ -12,7 +13,12 @@ export default function NewProductPage() {
       </p>
 
       <div className="mt-6">
-        <NewProductForm />
+        <ProductForm
+          action={createProduct}
+          submitLabel="Cadastrar produto"
+          pendingLabel="Salvando..."
+          resetOnSuccess
+        />
       </div>
     </main>
   );

@@ -16,10 +16,10 @@ export default function AdminHomePage() {
           Ver pedidos
         </Link>
         <Link
-          href="/admin/produtos/novo"
+          href="/admin/produtos"
           className="rounded-2xl bg-surface px-5 py-4 text-sm font-medium text-foreground transition-colors hover:bg-surface-alt"
         >
-          Cadastrar produto
+          Ver produtos
         </Link>
       </div>
     </main>

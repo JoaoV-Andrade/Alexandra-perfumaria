@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import { parseProductFormData } from "@/lib/products/parse-product-form";
+import { uploadProductImages } from "@/lib/products/upload-product-images";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -14,7 +16,7 @@ export async function createProduct(
   _prevState: CreateProductState,
   formData: FormData,
 ): Promise<CreateProductState> {
-  // O middleware já bloqueia quem não está logada; esta checagem é só uma
+  // O proxy já bloqueia quem não está logada; esta checagem é só uma
   // segunda trava, direto na ação que grava no banco.
   const supabaseAuth = await createClient();
   const {
@@ -24,82 +26,38 @@ export async function createProduct(
     return { status: "error", message: "Sessão expirada. Faça login novamente." };
   }
 
-  const name = formData.get("name")?.toString().trim();
-  const brand = formData.get("brand")?.toString().trim();
-  const description = formData.get("description")?.toString().trim() || null;
-  const volumeMl = Number(formData.get("volume_ml"));
-  const priceReais = Number(formData.get("price"));
-  const stock = Number(formData.get("stock"));
-  const weightG = Number(formData.get("weight_g"));
-  const lengthCm = Number(formData.get("length_cm"));
-  const widthCm = Number(formData.get("width_cm"));
-  const heightCm = Number(formData.get("height_cm"));
-  const active = formData.get("active") === "on";
+  const parsed = parseProductFormData(formData);
+  if (!parsed.ok) {
+    return { status: "error", message: parsed.message };
+  }
+
   const images = formData
     .getAll("images")
     .filter((file): file is File => file instanceof File && file.size > 0);
 
-  if (!name || !brand) {
-    return { status: "error", message: "Preencha nome e marca." };
-  }
-  if (!Number.isFinite(volumeMl) || volumeMl <= 0) {
-    return { status: "error", message: "Volume (ml) inválido." };
-  }
-  if (!Number.isFinite(priceReais) || priceReais < 0) {
-    return { status: "error", message: "Preço inválido." };
-  }
-  if (!Number.isFinite(stock) || stock < 0) {
-    return { status: "error", message: "Estoque inválido." };
-  }
-  if (!Number.isFinite(weightG) || weightG <= 0) {
-    return { status: "error", message: "Peso (g) inválido." };
-  }
-  if (!Number.isFinite(lengthCm) || lengthCm <= 0) {
-    return { status: "error", message: "Comprimento (cm) inválido." };
-  }
-  if (!Number.isFinite(widthCm) || widthCm <= 0) {
-    return { status: "error", message: "Largura (cm) inválida." };
-  }
-  if (!Number.isFinite(heightCm) || heightCm <= 0) {
-    return { status: "error", message: "Altura (cm) inválida." };
-  }
-
   const supabase = createAdminClient();
 
-  const imageUrls: string[] = [];
-  for (const file of images) {
-    const path = `${crypto.randomUUID()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from("product-images")
-      .upload(path, file, { contentType: file.type });
-
-    if (uploadError) {
-      return {
-        status: "error",
-        message: `Falha ao enviar a foto "${file.name}": ${uploadError.message}`,
-      };
-    }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("product-images").getPublicUrl(path);
-
-    imageUrls.push(publicUrl);
+  const upload = await uploadProductImages(supabase, images);
+  if (!upload.ok) {
+    return { status: "error", message: upload.message };
   }
+
+  const { name, brand, description, volumeMl, priceCents, stock, weightG, lengthCm, widthCm, heightCm, active } =
+    parsed.data;
 
   const { error: insertError } = await supabase.from("products").insert({
     name,
     brand,
     description,
     volume_ml: volumeMl,
-    price: Math.round(priceReais * 100),
+    price: priceCents,
     stock,
     weight_g: weightG,
     length_cm: lengthCm,
     width_cm: widthCm,
     height_cm: heightCm,
     active,
-    images: imageUrls,
+    images: upload.urls,
   });
 
   if (insertError) {
@@ -110,6 +68,7 @@ export async function createProduct(
   }
 
   revalidatePath("/");
+  revalidatePath("/admin/produtos");
 
   return {
     status: "success",

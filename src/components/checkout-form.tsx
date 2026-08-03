@@ -3,33 +3,35 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
+import { CheckoutAddressFields, type AddressFormValues } from "@/components/checkout-address-fields";
+import { CheckoutCustomerFields, type CustomerInfo } from "@/components/checkout-customer-fields";
+import { CheckoutTotals } from "@/components/checkout-totals";
 import { EmptyState } from "@/components/empty-state";
+import { FormMessage } from "@/components/form-message";
 import {
   ShippingCalculator,
   type ShippingOption,
 } from "@/components/shipping-calculator";
-import { BRAZILIAN_STATES } from "@/lib/brazilian-states";
 import { useCart } from "@/lib/cart/cart-context";
-import { formatPostalCode, formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents } from "@/lib/format";
 
-const inputClass =
-  "min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 disabled:cursor-not-allowed disabled:bg-surface disabled:text-muted-foreground";
+const EMPTY_CUSTOMER: CustomerInfo = { name: "", phone: "", email: "" };
+const EMPTY_ADDRESS: AddressFormValues = {
+  street: "",
+  number: "",
+  complement: "",
+  neighborhood: "",
+  city: "",
+  state: "",
+};
 
 export function CheckoutForm() {
   const { items, totalPrice } = useCart();
 
   const [shipping, setShipping] = useState<ShippingOption | null>(null);
   const [postalCode, setPostalCode] = useState("");
-
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [street, setStreet] = useState("");
-  const [number, setNumber] = useState("");
-  const [complement, setComplement] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [customer, setCustomer] = useState<CustomerInfo>(EMPTY_CUSTOMER);
+  const [address, setAddress] = useState<AddressFormValues>(EMPTY_ADDRESS);
 
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,6 +56,14 @@ export function CheckoutForm() {
     );
   }
 
+  function updateCustomer(field: keyof CustomerInfo, value: string) {
+    setCustomer((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function updateAddress(field: keyof AddressFormValues, value: string) {
+    setAddress((prev) => ({ ...prev, [field]: value }));
+  }
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
@@ -71,17 +81,12 @@ export function CheckoutForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer_name: customerName,
-          customer_phone: customerPhone,
-          customer_email: customerEmail,
+          customer_name: customer.name,
+          customer_phone: customer.phone,
+          customer_email: customer.email,
           address: {
             postal_code: postalCode,
-            street,
-            number,
-            complement,
-            neighborhood,
-            city,
-            state,
+            ...address,
           },
           items: items.map((item) => ({
             productId: item.productId,
@@ -131,175 +136,18 @@ export function CheckoutForm() {
         onPostalCodeCalculated={setPostalCode}
       />
 
-      <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
-        <p className="text-sm font-medium text-foreground">Seus dados</p>
+      <CheckoutCustomerFields value={customer} onChange={updateCustomer} />
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium text-foreground">Nome completo</span>
-            <input
-              type="text"
-              value={customerName}
-              onChange={(event) => setCustomerName(event.target.value)}
-              required
-              className={inputClass}
-            />
-          </label>
+      <CheckoutAddressFields
+        postalCode={postalCode}
+        addressReady={addressReady}
+        value={address}
+        onChange={updateAddress}
+      />
 
-          <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium text-foreground">WhatsApp</span>
-            <input
-              type="tel"
-              value={customerPhone}
-              onChange={(event) => setCustomerPhone(event.target.value)}
-              placeholder="(61) 99999-9999"
-              required
-              className={inputClass}
-            />
-          </label>
+      {status === "error" && <FormMessage message={errorMessage} />}
 
-          <label className="flex flex-col gap-1.5 text-sm sm:col-span-2">
-            <span className="font-medium text-foreground">E-mail</span>
-            <input
-              type="email"
-              value={customerEmail}
-              onChange={(event) => setCustomerEmail(event.target.value)}
-              required
-              className={inputClass}
-            />
-          </label>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
-        <p className="text-sm font-medium text-foreground">
-          Endereço de entrega
-        </p>
-
-        {!addressReady ? (
-          <p className="text-sm text-muted-foreground">
-            Calcule o frete acima para preencher o endereço de entrega.
-          </p>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">CEP</span>
-              <input
-                type="text"
-                value={formatPostalCode(postalCode)}
-                disabled
-                className={inputClass}
-              />
-            </label>
-
-            <div />
-
-            <label className="flex flex-col gap-1.5 text-sm sm:col-span-2">
-              <span className="font-medium text-foreground">Rua</span>
-              <input
-                type="text"
-                value={street}
-                onChange={(event) => setStreet(event.target.value)}
-                required
-                className={inputClass}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">Número</span>
-              <input
-                type="text"
-                value={number}
-                onChange={(event) => setNumber(event.target.value)}
-                required
-                className={inputClass}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">
-                Complemento (opcional)
-              </span>
-              <input
-                type="text"
-                value={complement}
-                onChange={(event) => setComplement(event.target.value)}
-                className={inputClass}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">Bairro</span>
-              <input
-                type="text"
-                value={neighborhood}
-                onChange={(event) => setNeighborhood(event.target.value)}
-                required
-                className={inputClass}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">Cidade</span>
-              <input
-                type="text"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-                required
-                className={inputClass}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="font-medium text-foreground">Estado</span>
-              <select
-                value={state}
-                onChange={(event) => setState(event.target.value)}
-                required
-                className={inputClass}
-              >
-                <option value="" disabled>
-                  Selecione
-                </option>
-                {BRAZILIAN_STATES.map((uf) => (
-                  <option key={uf} value={uf}>
-                    {uf}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        )}
-      </div>
-
-      {status === "error" && (
-        <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
-          {errorMessage}
-        </p>
-      )}
-
-      <div className="flex flex-col gap-2 border-t border-surface-alt pt-4">
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Subtotal</span>
-          <span>{formatPriceInCents(totalPrice)}</span>
-        </div>
-
-        {shipping && (
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>
-              Frete ({shipping.company} · {shipping.name})
-            </span>
-            <span>{formatPriceInCents(shipping.price)}</span>
-          </div>
-        )}
-
-        <div className="flex items-center justify-between">
-          <span className="text-base font-medium text-foreground">Total</span>
-          <span className="text-xl font-semibold text-foreground">
-            {formatPriceInCents(total)}
-          </span>
-        </div>
-      </div>
+      <CheckoutTotals subtotal={totalPrice} shipping={shipping} total={total} />
 
       <button
         type="submit"

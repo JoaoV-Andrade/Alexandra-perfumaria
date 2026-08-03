@@ -2,6 +2,7 @@
 
 import { useState, type KeyboardEvent } from "react";
 
+import { FormMessage } from "@/components/form-message";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
 
@@ -114,11 +115,7 @@ export function ShippingCalculator({
         </button>
       </div>
 
-      {status === "error" && (
-        <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
-          {errorMessage}
-        </p>
-      )}
+      {status === "error" && <FormMessage message={errorMessage} />}
 
       {options.length > 0 && (
         <div className="flex flex-col gap-2">

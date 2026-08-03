@@ -2,23 +2,19 @@
 
 import { useActionState } from "react";
 
+import { FormMessage } from "@/components/form-message";
+import { FIELD_CLASS } from "@/lib/ui";
+
 import { signIn, type LoginState } from "./actions";
 
 const initialState: LoginState = { status: "idle" };
-
-const fieldClass =
-  "min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export function LoginForm() {
   const [state, formAction, isPending] = useActionState(signIn, initialState);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      {state.status === "error" && (
-        <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
-          {state.message}
-        </p>
-      )}
+      <FormMessage message={state.message} />
 
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-foreground">E-mail</span>
@@ -27,7 +23,7 @@ export function LoginForm() {
           type="email"
           autoComplete="username"
           required
-          className={fieldClass}
+          className={FIELD_CLASS}
         />
       </label>
 
@@ -38,7 +34,7 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          className={fieldClass}
+          className={FIELD_CLASS}
         />
       </label>
 

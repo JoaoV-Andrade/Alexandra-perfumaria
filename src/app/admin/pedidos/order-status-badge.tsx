@@ -3,23 +3,23 @@ import type { OrderStatus } from "@/types/order";
 const STATUS_CONFIG: Record<OrderStatus, { label: string; className: string }> = {
   aguardando_whatsapp: {
     label: "Aguardando WhatsApp",
-    className: "bg-amber-50 text-amber-700",
+    className: "bg-status-warning text-status-warning-foreground",
   },
   pendente: {
     label: "Pendente",
-    className: "bg-amber-50 text-amber-700",
+    className: "bg-status-warning text-status-warning-foreground",
   },
   pago: {
     label: "Pago",
-    className: "bg-emerald-50 text-emerald-700",
+    className: "bg-status-success text-status-success-foreground",
   },
   enviado: {
     label: "Enviado",
-    className: "bg-sky-50 text-sky-700",
+    className: "bg-status-info text-status-info-foreground",
   },
   recusado: {
     label: "Recusado",
-    className: "bg-red-50 text-red-700",
+    className: "bg-status-danger text-status-danger-foreground",
   },
   cancelado: {
     label: "Cancelado",

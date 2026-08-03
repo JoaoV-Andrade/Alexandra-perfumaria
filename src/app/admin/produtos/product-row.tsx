@@ -82,7 +82,7 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
   }
 
   return (
-    <tr className={lowStock ? "bg-amber-50" : undefined}>
+    <tr className={lowStock ? "bg-status-warning" : undefined}>
       <td className="p-3">
         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface">
           {product.images[0] ? (
@@ -109,7 +109,9 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
           {product.name}
         </Link>
         <p className="text-xs text-muted-foreground">{product.brand}</p>
-        {message && <p className="mt-1 text-xs text-red-600">{message}</p>}
+        {message && (
+          <p className="mt-1 text-xs text-status-danger-foreground">{message}</p>
+        )}
       </td>
 
       <td className="p-3">
@@ -135,12 +137,12 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
             disabled={isPending}
             className={`${cellInputClass} w-20 ${
               lowStock
-                ? "border-red-300 font-semibold text-red-700"
+                ? "border-status-danger-foreground/30 font-semibold text-status-danger-foreground"
                 : "border-muted-foreground/30 text-foreground focus:border-accent"
             }`}
           />
           {lowStock && (
-            <span className="whitespace-nowrap text-xs font-medium text-red-600">
+            <span className="whitespace-nowrap text-xs font-medium text-status-danger-foreground">
               estoque baixo
             </span>
           )}
@@ -155,13 +157,13 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
           aria-label={active ? "Desativar produto" : "Ativar produto"}
           onClick={handleToggleActive}
           disabled={isPending}
-          className={`inline-flex h-7 w-12 items-center rounded-full transition-colors ${
+          className={`inline-flex h-11 w-16 items-center rounded-full transition-colors ${
             active ? "bg-accent" : "bg-surface-alt"
           }`}
         >
           <span
-            className={`h-5 w-5 rounded-full bg-background shadow transition-transform ${
-              active ? "translate-x-6" : "translate-x-1"
+            className={`h-8 w-8 rounded-full bg-background shadow transition-transform ${
+              active ? "translate-x-7" : "translate-x-1"
             }`}
           />
         </button>

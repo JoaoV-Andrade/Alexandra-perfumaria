@@ -38,8 +38,7 @@ function getMelhorEnvioBaseUrl() {
 // Consulta o Melhor Envio para um CEP e itens. Usada tanto pela cotação
 // exibida no carrinho quanto para revalidar o frete no fechamento do pedido.
 export async function quoteShipping(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: SupabaseClient<any, any, any>,
+  supabase: SupabaseClient,
   { postalCode, items }: { postalCode: string; items: ShippingQuoteItem[] },
 ): Promise<ShippingQuoteResult> {
   const token = process.env.MELHOR_ENVIO_TOKEN;

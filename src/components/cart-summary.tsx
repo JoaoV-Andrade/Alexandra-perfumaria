@@ -75,7 +75,7 @@ export function CartSummary() {
                     }
                     disabled={item.quantity <= 1}
                     aria-label={`Diminuir quantidade de ${item.name}`}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-muted-foreground/30 text-foreground transition-colors hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-muted-foreground/30 text-foreground transition-colors hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     −
                   </button>
@@ -88,7 +88,7 @@ export function CartSummary() {
                       setQuantity(item.productId, item.quantity + 1)
                     }
                     aria-label={`Aumentar quantidade de ${item.name}`}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-muted-foreground/30 text-foreground transition-colors hover:bg-surface-alt"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-muted-foreground/30 text-foreground transition-colors hover:bg-surface-alt"
                   >
                     +
                   </button>

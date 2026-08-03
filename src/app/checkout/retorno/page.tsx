@@ -65,7 +65,7 @@ export default async function CheckoutRetornoPage({
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 py-12">
+      <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 py-8">
         {outcome === "sucesso" && <PaymentSuccess items={items} total={total} />}
 
         {outcome === "pendente" && (

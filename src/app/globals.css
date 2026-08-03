@@ -13,6 +13,16 @@
   /* Destaque (usar só para ênfase: CTAs, badges, links em hover, foco) */
   --accent: #44e2d9;
   --accent-foreground: #0f172a;
+
+  /* Status (só pro painel administrativo: badge de pedido, estoque baixo) */
+  --status-success: #ecfdf5;
+  --status-success-foreground: #047857;
+  --status-warning: #fffbeb;
+  --status-warning-foreground: #b45309;
+  --status-danger: #fef2f2;
+  --status-danger-foreground: #b91c1c;
+  --status-info: #f0f9ff;
+  --status-info-foreground: #0369a1;
 }
 
 @theme inline {
@@ -23,6 +33,14 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-status-success: var(--status-success);
+  --color-status-success-foreground: var(--status-success-foreground);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-foreground: var(--status-warning-foreground);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-foreground: var(--status-danger-foreground);
+  --color-status-info: var(--status-info);
+  --color-status-info-foreground: var(--status-info-foreground);
   --font-sans: var(--font-inter);
 }
 

@@ -2,9 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 
+import { FormMessage } from "@/components/form-message";
 import type { ShippingOption } from "@/components/shipping-calculator";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
+import { FIELD_CLASS } from "@/lib/ui";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
@@ -90,11 +92,7 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
         Finalizar pelo WhatsApp
       </p>
 
-      {status === "error" && (
-        <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
-          {errorMessage}
-        </p>
-      )}
+      {status === "error" && <FormMessage message={errorMessage} />}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1.5 text-sm">
@@ -104,7 +102,7 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
             value={customerName}
             onChange={(event) => setCustomerName(event.target.value)}
             required
-            className="min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className={FIELD_CLASS}
           />
         </label>
 
@@ -116,7 +114,7 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
             onChange={(event) => setCustomerPhone(event.target.value)}
             placeholder="(61) 99999-9999"
             required
-            className="min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            className={FIELD_CLASS}
           />
         </label>
       </div>

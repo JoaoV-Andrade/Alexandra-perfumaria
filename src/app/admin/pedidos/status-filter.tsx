@@ -27,7 +27,7 @@ export function StatusFilter({ current }: { current: OrderStatus | null }) {
           <Link
             key={option.label}
             href={href}
-            className={`inline-flex h-9 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors ${
+            className={`inline-flex h-11 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors ${
               isActive
                 ? "bg-accent text-accent-foreground"
                 : "bg-surface text-foreground hover:bg-surface-alt"

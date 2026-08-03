@@ -6,8 +6,7 @@ export type UploadImagesResult =
 
 // Envia fotos novas pro Storage e devolve as URLs públicas, na ordem enviada.
 export async function uploadProductImages(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: SupabaseClient<any, any, any>,
+  supabase: SupabaseClient,
   files: File[],
 ): Promise<UploadImagesResult> {
   const urls: string[] = [];
@@ -45,8 +44,7 @@ function pathFromPublicUrl(url: string): string | null {
 // Remove fotos do Storage. Falha aqui não deve travar a edição do produto —
 // só registra no log, já que o produto em si já foi salvo certinho.
 export async function deleteProductImages(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: SupabaseClient<any, any, any>,
+  supabase: SupabaseClient,
   urls: string[],
 ): Promise<void> {
   const paths = urls.map(pathFromPublicUrl).filter((path): path is string => Boolean(path));

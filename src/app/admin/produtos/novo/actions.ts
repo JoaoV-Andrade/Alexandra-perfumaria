@@ -35,9 +35,9 @@ export async function createProduct(
     .getAll("images")
     .filter((file): file is File => file instanceof File && file.size > 0);
 
-  const supabase = createAdminClient();
+  const adminClient = createAdminClient();
 
-  const upload = await uploadProductImages(supabase, images);
+  const upload = await uploadProductImages(adminClient, images);
   if (!upload.ok) {
     return { status: "error", message: upload.message };
   }
@@ -45,7 +45,7 @@ export async function createProduct(
   const { name, brand, description, volumeMl, priceCents, stock, weightG, lengthCm, widthCm, heightCm, active } =
     parsed.data;
 
-  const { error: insertError } = await supabase.from("products").insert({
+  const { error: insertError } = await adminClient.from("products").insert({
     name,
     brand,
     description,

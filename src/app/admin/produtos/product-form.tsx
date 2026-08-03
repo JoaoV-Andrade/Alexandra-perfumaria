@@ -1,7 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useActionState, useEffect, useRef } from "react";
+
+import { FormField } from "@/components/form-field";
+import { FormMessage } from "@/components/form-message";
+import { FIELD_CLASS } from "@/lib/ui";
+
+import { DimensionsFields } from "./dimensions-fields";
+import { ExistingImagesField } from "./existing-images-field";
 
 export type ProductFormState = {
   status: "idle" | "success" | "error";
@@ -33,9 +39,6 @@ type ProductFormProps = {
 
 const initialState: ProductFormState = { status: "idle" };
 
-const fieldClass =
-  "min-h-11 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
-
 export function ProductForm({
   action,
   submitLabel,
@@ -55,112 +58,67 @@ export function ProductForm({
 
   return (
     <form ref={formRef} action={formAction} className="flex flex-col gap-5">
-      {state.status !== "idle" && (
-        <p
-          className={`border-l-4 bg-surface px-4 py-3 text-sm text-foreground ${
-            state.status === "success" ? "border-accent" : "border-foreground"
-          }`}
-        >
-          {state.message}
-        </p>
-      )}
+      <FormMessage
+        message={state.message}
+        variant={state.status === "success" ? "success" : "error"}
+      />
 
-      <Field label="Nome do produto">
+      <FormField label="Nome do produto">
         <input
           name="name"
           type="text"
           defaultValue={defaultValues?.name}
           required
-          className={fieldClass}
+          className={FIELD_CLASS}
         />
-      </Field>
+      </FormField>
 
-      <Field label="Marca">
+      <FormField label="Marca">
         <input
           name="brand"
           type="text"
           defaultValue={defaultValues?.brand}
           required
-          className={fieldClass}
+          className={FIELD_CLASS}
         />
-      </Field>
+      </FormField>
 
-      <Field label="Descrição">
+      <FormField label="Descrição">
         <textarea
           name="description"
           rows={3}
           defaultValue={defaultValues?.description ?? undefined}
-          className={fieldClass}
+          className={FIELD_CLASS}
         />
-      </Field>
+      </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Volume (ml)">
+        <FormField label="Volume (ml)">
           <input
             name="volume_ml"
             type="number"
             min="1"
             defaultValue={defaultValues?.volume_ml}
             required
-            className={fieldClass}
+            className={FIELD_CLASS}
           />
-        </Field>
-        <Field label="Peso (g)">
+        </FormField>
+        <FormField label="Peso (g)">
           <input
             name="weight_g"
             type="number"
             min="1"
             defaultValue={defaultValues?.weight_g}
             required
-            className={fieldClass}
+            className={FIELD_CLASS}
           />
-        </Field>
+        </FormField>
       </div>
 
-      <div>
-        <span className="text-sm font-medium text-foreground">
-          Dimensões da caixa (cm)
-        </span>
-        <p className="mt-0.5 text-xs text-muted-foreground">
-          Necessário para calcular o frete. Meça a caixinha/embalagem em que o
-          produto é enviado.
-        </p>
-        <div className="mt-2 grid grid-cols-3 gap-4">
-          <Field label="Comprimento">
-            <input
-              name="length_cm"
-              type="number"
-              min="1"
-              defaultValue={defaultValues?.length_cm}
-              required
-              className={fieldClass}
-            />
-          </Field>
-          <Field label="Largura">
-            <input
-              name="width_cm"
-              type="number"
-              min="1"
-              defaultValue={defaultValues?.width_cm}
-              required
-              className={fieldClass}
-            />
-          </Field>
-          <Field label="Altura">
-            <input
-              name="height_cm"
-              type="number"
-              min="1"
-              defaultValue={defaultValues?.height_cm}
-              required
-              className={fieldClass}
-            />
-          </Field>
-        </div>
-      </div>
+      <DimensionsFields defaultValues={defaultValues} />
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Preço (R$)">
+        <FormField label="Preço (R$)">
           <input
             name="price"
             type="number"
@@ -171,19 +129,19 @@ export function ProductForm({
               defaultValues ? (defaultValues.price / 100).toFixed(2) : undefined
             }
             required
-            className={fieldClass}
+            className={FIELD_CLASS}
           />
-        </Field>
-        <Field label="Estoque">
+        </FormField>
+        <FormField label="Estoque">
           <input
             name="stock"
             type="number"
             min="0"
             defaultValue={defaultValues?.stock}
             required
-            className={fieldClass}
+            className={FIELD_CLASS}
           />
-        </Field>
+        </FormField>
       </div>
 
       <label className="flex items-center gap-2 text-sm text-foreground">
@@ -196,31 +154,9 @@ export function ProductForm({
         Produto ativo (visível na loja)
       </label>
 
-      {existingImages && existingImages.length > 0 && (
-        <div>
-          <span className="text-sm font-medium text-foreground">Fotos atuais</span>
-          <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-4">
-            {existingImages.map((url) => (
-              <label key={url} className="flex flex-col items-center gap-1.5 text-xs">
-                <div className="relative h-20 w-20 overflow-hidden rounded-lg bg-surface">
-                  <Image src={url} alt="" fill sizes="80px" className="object-cover" />
-                </div>
-                <span className="flex items-center gap-1 text-muted-foreground">
-                  <input
-                    name="remove_images"
-                    type="checkbox"
-                    value={url}
-                    className="h-3.5 w-3.5 rounded border-muted-foreground/40 accent-accent"
-                  />
-                  Remover
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
+      {existingImages && <ExistingImagesField images={existingImages} />}
 
-      <Field label={existingImages ? "Adicionar fotos" : "Fotos"}>
+      <FormField label={existingImages ? "Adicionar fotos" : "Fotos"}>
         <input
           name="images"
           type="file"
@@ -228,7 +164,7 @@ export function ProductForm({
           multiple
           className="block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-accent-foreground hover:file:bg-accent/90"
         />
-      </Field>
+      </FormField>
 
       <button
         type="submit"
@@ -238,20 +174,5 @@ export function ProductForm({
         {isPending ? pendingLabel : submitLabel}
       </button>
     </form>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="flex flex-col gap-1.5 text-sm">
-      <span className="font-medium text-foreground">{label}</span>
-      {children}
-    </label>
   );
 }

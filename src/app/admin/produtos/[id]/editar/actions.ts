@@ -32,9 +32,9 @@ export async function updateProduct(
     return { status: "error", message: parsed.message };
   }
 
-  const supabase = createAdminClient();
+  const adminClient = createAdminClient();
 
-  const { data: current } = await supabase
+  const { data: current } = await adminClient
     .from("products")
     .select("images")
     .eq("id", productId)
@@ -47,7 +47,7 @@ export async function updateProduct(
     .getAll("images")
     .filter((file): file is File => file instanceof File && file.size > 0);
 
-  const upload = await uploadProductImages(supabase, newFiles);
+  const upload = await uploadProductImages(adminClient, newFiles);
   if (!upload.ok) {
     return { status: "error", message: upload.message };
   }
@@ -66,7 +66,7 @@ export async function updateProduct(
     active,
   } = parsed.data;
 
-  const { error: updateError } = await supabase
+  const { error: updateError } = await adminClient
     .from("products")
     .update({
       name,
@@ -89,7 +89,7 @@ export async function updateProduct(
   }
 
   if (removeUrls.length > 0) {
-    await deleteProductImages(supabase, removeUrls);
+    await deleteProductImages(adminClient, removeUrls);
   }
 
   revalidatePath("/");

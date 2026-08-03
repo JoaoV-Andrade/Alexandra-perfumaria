@@ -2,6 +2,8 @@
 
 import { useActionState, useState } from "react";
 
+import { FormMessage } from "@/components/form-message";
+import { FIELD_CLASS } from "@/lib/ui";
 import type { OrderStatus } from "@/types/order";
 
 import {
@@ -13,18 +15,6 @@ import {
 
 const initialState: OrderActionState = { status: "idle" };
 
-const fieldClass =
-  "min-h-11 flex-1 rounded-lg border border-muted-foreground/30 bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
-
-function ActionError({ state }: { state: OrderActionState }) {
-  if (state.status !== "error") return null;
-  return (
-    <p className="border-l-4 border-foreground bg-surface px-4 py-3 text-sm text-foreground">
-      {state.message}
-    </p>
-  );
-}
-
 function ShipForm({ orderId }: { orderId: string }) {
   const [state, formAction, isPending] = useActionState(
     markAsShipped.bind(null, orderId),
@@ -34,14 +24,14 @@ function ShipForm({ orderId }: { orderId: string }) {
   return (
     <form action={formAction} className="flex flex-col gap-3">
       <p className="text-sm font-medium text-foreground">Marcar como enviado</p>
-      <ActionError state={state} />
+      <FormMessage message={state.message} />
       <div className="flex flex-col gap-2 sm:flex-row">
         <input
           name="tracking_code"
           type="text"
           placeholder="Código de rastreio"
           required
-          className={fieldClass}
+          className={`${FIELD_CLASS} flex-1`}
         />
         <button
           type="submit"
@@ -71,7 +61,7 @@ function CancelForm({ orderId }: { orderId: string }) {
       }}
       className="flex flex-col gap-2"
     >
-      <ActionError state={state} />
+      <FormMessage message={state.message} />
       <button
         type="submit"
         disabled={isPending}
@@ -103,7 +93,7 @@ function ConfirmWhatsappForm({ orderId }: { orderId: string }) {
       }}
       className="flex flex-col gap-2"
     >
-      <ActionError state={state} />
+      <FormMessage message={state.message} />
       <button
         type="submit"
         disabled={isPending}

@@ -1,8 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { createClient } from "@/lib/supabase/server";
 
 import { SignOutButton } from "./sign-out-button";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Painel administrativo",
+    template: "%s | Painel · Alexandra Perfumaria",
+  },
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({
   children,

@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EmptyState } from "@/components/empty-state";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Página não encontrada",
+};
 
 export default function NotFound() {
   return (
@@ -19,6 +25,7 @@ export default function NotFound() {
           Voltar para a loja
         </Link>
       </main>
+      <SiteFooter />
     </>
   );
 }

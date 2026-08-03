@@ -1,10 +1,18 @@
+import type { Metadata } from "next";
+
 import { PaymentError } from "@/components/payment-error";
 import { PaymentPending } from "@/components/payment-pending";
 import { PaymentSuccess } from "@/components/payment-success";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPayment } from "@/lib/mercado-pago";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { OrderItemSnapshot } from "@/types/order";
+
+export const metadata: Metadata = {
+  title: "Status do pagamento",
+  robots: { index: false, follow: false },
+};
 
 type CheckoutRetornoPageProps = {
   searchParams: Promise<{
@@ -88,6 +96,7 @@ export default async function CheckoutRetornoPage({
 
         {outcome === "erro" && <PaymentError />}
       </main>
+      <SiteFooter />
     </>
   );
 }

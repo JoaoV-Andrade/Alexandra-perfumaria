@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
+
 import { CartSummary } from "@/components/cart-summary";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Carrinho",
+  description: "Revise os itens do seu carrinho antes de finalizar a compra.",
+};
 
 export default function CartPage() {
   return (
@@ -11,6 +19,7 @@ export default function CartPage() {
           <CartSummary />
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }

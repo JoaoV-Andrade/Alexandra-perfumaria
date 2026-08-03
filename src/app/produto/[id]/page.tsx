@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { ProductGallery } from "@/components/product-gallery";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { formatPriceInCents } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
@@ -11,14 +14,45 @@ type ProductPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
+const fetchProduct = cache(async (id: string) => {
   const supabase = await createClient();
-  const { data: product } = await supabase
+  const { data } = await supabase
     .from("products")
     .select("id, name, brand, description, volume_ml, price, images, stock")
     .eq("id", id)
     .maybeSingle<ProductDetail>();
+  return data;
+});
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await fetchProduct(id);
+
+  if (!product) {
+    return { title: "Produto não encontrado" };
+  }
+
+  const title = `${product.name} — ${product.brand}`;
+  const description =
+    product.description?.slice(0, 160) ||
+    `${product.name} da ${product.brand}, ${product.volume_ml}ml. Confira na Alexandra Perfumaria.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: product.images?.[0] ? [product.images[0]] : undefined,
+    },
+  };
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params;
+  const product = await fetchProduct(id);
 
   if (!product) {
     notFound();
@@ -73,6 +107,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }

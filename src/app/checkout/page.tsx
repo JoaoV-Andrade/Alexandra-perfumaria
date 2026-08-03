@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
+
 import { CheckoutForm } from "@/components/checkout-form";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Finalizar compra",
+  description: "Informe seus dados de entrega e pagamento para concluir o pedido.",
+  robots: { index: false, follow: false },
+};
 
 export default function CheckoutPage() {
   return (
@@ -13,6 +22,7 @@ export default function CheckoutPage() {
           <CheckoutForm />
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }

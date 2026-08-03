@@ -1,5 +1,6 @@
 import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
@@ -30,6 +31,7 @@ export default async function Home() {
           <ProductGrid products={data as Product[]} />
         )}
       </main>
+      <SiteFooter />
     </>
   );
 }

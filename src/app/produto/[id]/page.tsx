@@ -62,6 +62,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const isOutOfStock = product.stock === 0;
   const isPromo = product.price_original != null;
+  const isLowStock = product.stock > 0 && product.stock <= 3;
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const fullBottleMessage = `Olá! Tenho interesse no frasco completo de ${product.name}.`;
@@ -81,9 +82,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <h1 className="mt-1 text-2xl font-semibold text-foreground">
               {product.name}
             </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Decante de {product.volume_ml}ml · perfume 100% original
-            </p>
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {isOutOfStock && (
@@ -94,6 +92,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {!isOutOfStock && isPromo && (
                 <span className="inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
                   Promoção
+                </span>
+              )}
+              {!isOutOfStock && isLowStock && (
+                <span className="inline-flex w-fit items-center rounded-full border border-foreground/30 px-2.5 py-1 text-xs font-medium text-foreground">
+                  Últimas unidades!
                 </span>
               )}
             </div>
@@ -112,6 +115,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {formatPriceInCents(product.price)}
               </p>
             )}
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Decante de {product.volume_ml}ml · fracionado de perfume 100%
+              original
+            </p>
 
             {product.description && (
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -132,14 +140,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <AddToCartButton product={product} />
             </div>
 
-            <a
-              href={fullBottleWhatsAppUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              Quero o frasco completo — falar no WhatsApp
-            </a>
+            <div className="mt-6 rounded-2xl bg-surface p-4">
+              <p className="text-sm font-semibold text-foreground">
+                Quer o frasco completo? Chame no WhatsApp
+              </p>
+              <a
+                href={fullBottleWhatsAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Falar no WhatsApp
+              </a>
+            </div>
           </div>
         </div>
       </main>

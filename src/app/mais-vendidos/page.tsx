@@ -1,27 +1,34 @@
+import type { Metadata } from "next";
+
 import { ProductCatalog } from "@/components/product-catalog";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Mais Vendidos",
+  description:
+    "Os decants de perfumes importados 100% originais mais pedidos na Alexandra Perfumaria.",
+};
+
+export default function MaisVendidosPage() {
   return (
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-            Decants de perfumes importados 100% originais
+            Mais Vendidos
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Frações de 5ml a 10ml, retiradas de frascos originais, para você
-            conhecer sua próxima fragrância favorita sem comprometimento.
-            Não vendemos o frasco completo pelo site — quem tiver interesse
-            no frasco inteiro pode falar com a gente pelo WhatsApp em cada
-            produto.
+            Os decants preferidos de quem já comprou com a gente.
           </p>
         </div>
 
         <div className="mt-8">
-          <ProductCatalog emptyDescription="Estamos preparando o catálogo. Volte em breve!" />
+          <ProductCatalog
+            filterColumn="is_bestseller"
+            emptyDescription="Ainda não marcamos nenhum produto como mais vendido. Volte em breve!"
+          />
         </div>
       </main>
       <SiteFooter />

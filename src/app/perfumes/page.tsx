@@ -1,22 +1,26 @@
+import type { Metadata } from "next";
+
 import { ProductCatalog } from "@/components/product-catalog";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Todos os Perfumes",
+  description:
+    "Catálogo completo de decants de perfumes importados 100% originais.",
+};
+
+export default function PerfumesPage() {
   return (
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-            Decants de perfumes importados 100% originais
+            Todos os Perfumes
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Frações de 5ml a 10ml, retiradas de frascos originais, para você
-            conhecer sua próxima fragrância favorita sem comprometimento.
-            Não vendemos o frasco completo pelo site — quem tiver interesse
-            no frasco inteiro pode falar com a gente pelo WhatsApp em cada
-            produto.
+            O catálogo completo de decants da Alexandra Perfumaria.
           </p>
         </div>
 

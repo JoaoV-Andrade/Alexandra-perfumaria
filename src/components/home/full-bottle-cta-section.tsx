@@ -1,10 +1,14 @@
+import { BannerPlaceholder } from "@/components/banner-placeholder";
 import { FULL_BOTTLE_WHATSAPP_URL } from "@/lib/nav-items";
 
 export function FullBottleCtaSection() {
   return (
     <section className="bg-foreground py-10 text-background">
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 text-center">
-        <h2 className="text-lg font-semibold sm:text-xl">
+        {/* Espaço reservado para a foto do banner (16:9 — ver lista de fotos necessárias) */}
+        <BannerPlaceholder className="aspect-video w-full rounded-2xl" />
+
+        <h2 className="mt-6 text-lg font-semibold sm:text-xl">
           Quer o frasco completo? Fale com a gente!
         </h2>
         <a

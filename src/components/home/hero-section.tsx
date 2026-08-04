@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { BannerPlaceholder } from "@/components/banner-placeholder";
+
 export function HeroSection() {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
@@ -29,34 +31,9 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Espaço reservado para a imagem/foto de destaque (placeholder por enquanto) */}
-        <div
-          className="flex aspect-[4/3] w-full items-center justify-center rounded-2xl bg-gradient-to-br from-surface to-surface-alt sm:aspect-video md:aspect-square"
-          aria-hidden="true"
-        >
-          <PerfumeBottleIcon className="h-16 w-16 text-muted-foreground/40" />
-        </div>
+        {/* Espaço reservado para a foto de destaque (1:1 — ver lista de fotos necessárias) */}
+        <BannerPlaceholder className="aspect-square w-full rounded-2xl" />
       </div>
     </section>
-  );
-}
-
-function PerfumeBottleIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.25}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M10 2h4M11 2v3.2c0 .4-.15.78-.42 1.08L8.9 8.1A2 2 0 0 0 8 9.68V11" />
-      <path d="M13 2v3.2c0 .4.15.78.42 1.08l1.68 1.82A2 2 0 0 1 16 9.68V11" />
-      <path d="M7 11h10a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1Z" />
-      <path d="M10 14.5h4" />
-    </svg>
   );
 }

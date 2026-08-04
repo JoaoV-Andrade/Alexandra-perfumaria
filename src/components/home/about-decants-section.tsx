@@ -1,3 +1,5 @@
+import { BannerPlaceholder } from "@/components/banner-placeholder";
+
 const CHECKS = [
   "Custo mais acessível",
   "Praticidade no dia a dia",
@@ -10,7 +12,10 @@ export function AboutDecantsSection() {
       id="o-que-sao-decantes"
       className="mx-auto w-full max-w-3xl scroll-mt-24 px-4 py-12 text-center"
     >
-      <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+      {/* Espaço reservado para a foto da seção (16:9 — ver lista de fotos necessárias) */}
+      <BannerPlaceholder className="aspect-video w-full rounded-2xl" />
+
+      <h2 className="mt-8 text-xl font-semibold text-foreground sm:text-2xl">
         O que são decantes?
       </h2>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">

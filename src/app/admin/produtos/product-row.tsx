@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 
+import { ProductImage } from "@/components/product-image";
 import type { ProductAdmin } from "@/types/product";
 
 import { toggleProductActive, updateProductPrice, updateProductStock } from "./actions";
@@ -85,19 +85,12 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
     <tr className={lowStock ? "bg-status-warning" : undefined}>
       <td className="p-3">
         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-surface">
-          {product.images[0] ? (
-            <Image
-              src={product.images[0]}
-              alt={product.name}
-              fill
-              sizes="48px"
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-center text-[9px] text-muted-foreground">
-              Sem foto
-            </div>
-          )}
+          <ProductImage
+            src={product.images[0]}
+            alt={product.name}
+            sizes="48px"
+            compact
+          />
         </div>
       </td>
 

@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { EmptyState } from "@/components/empty-state";
+import { ProductImage } from "@/components/product-image";
 import {
   ShippingCalculator,
   type ShippingOption,
@@ -42,19 +42,12 @@ export function CartSummary() {
         {items.map((item) => (
           <li key={item.productId} className="flex gap-4 py-4">
             <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface">
-              {item.image ? (
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-center text-[10px] text-muted-foreground">
-                  Sem foto
-                </div>
-              )}
+              <ProductImage
+                src={item.image}
+                alt={item.name}
+                sizes="80px"
+                compact
+              />
             </div>
 
             <div className="flex flex-1 flex-col">

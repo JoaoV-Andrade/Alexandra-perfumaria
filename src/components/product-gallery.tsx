@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { ProductImage } from "@/components/product-image";
+
 type ProductGalleryProps = {
   images: string[];
   productName: string;
@@ -15,20 +17,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <div>
       <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-surface">
-        {selectedImage ? (
-          <Image
-            src={selectedImage}
-            alt={productName}
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover"
-            priority
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
-            Sem foto
-          </div>
-        )}
+        <ProductImage
+          src={selectedImage}
+          alt={productName}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          priority
+        />
       </div>
 
       {images.length > 1 && (

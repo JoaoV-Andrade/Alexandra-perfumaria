@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { ProductImage } from "@/components/product-image";
 import { formatPriceInCents } from "@/lib/format";
 import type { Product } from "@/types/product";
 
@@ -15,19 +15,12 @@ export function ProductCard({ product }: { product: Product }) {
       className="group block overflow-hidden rounded-2xl border border-surface-alt bg-background transition-shadow hover:shadow-lg hover:shadow-accent/10"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-surface">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={product.name}
-            fill
-            sizes="(min-width: 768px) 25vw, 50vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
-            Sem foto
-          </div>
-        )}
+        <ProductImage
+          src={imageUrl}
+          alt={product.name}
+          sizes="(min-width: 768px) 25vw, 50vw"
+          imageClassName="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
 
         {isOutOfStock && (
           <span className="absolute left-3 top-3 rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">

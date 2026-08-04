@@ -14,6 +14,7 @@ type OrderItem = {
   name: string;
   brand: string;
   price: number;
+  volume_ml: number;
   quantity: number;
 };
 
@@ -147,7 +148,7 @@ function buildWhatsAppMessage({
 }): string {
   const lines = items.map(
     (item) =>
-      `${item.quantity}x ${item.name} (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
+      `${item.quantity}x ${item.name} - decante ${item.volume_ml}ml (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
   );
 
   const totalsLines =

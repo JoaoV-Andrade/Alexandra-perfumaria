@@ -18,6 +18,11 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-semibold text-foreground">
           Finalizar compra
         </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Você está comprando decants (frações de perfumes importados 100%
+          originais). Postamos em até 2 a 5 dias úteis após a confirmação do
+          pagamento, com rastreio para todo o Brasil.
+        </p>
         <div className="mt-6">
           <CheckoutForm />
         </div>

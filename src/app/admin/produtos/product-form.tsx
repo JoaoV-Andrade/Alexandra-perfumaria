@@ -93,7 +93,7 @@ export function ProductForm({
       </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <FormField label="Volume (ml)">
+        <FormField label="Volume do decante (ml)">
           <input
             name="volume_ml"
             type="number"

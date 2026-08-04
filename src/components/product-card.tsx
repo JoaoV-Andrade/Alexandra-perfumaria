@@ -42,6 +42,9 @@ export function ProductCard({ product }: { product: Product }) {
         <h3 className="mt-1 text-sm font-medium text-foreground">
           {product.name}
         </h3>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Decante {product.volume_ml}ml
+        </p>
         <p className="mt-2 text-base font-semibold text-foreground">
           {formatPriceInCents(product.price)}
         </p>

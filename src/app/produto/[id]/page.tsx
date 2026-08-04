@@ -37,7 +37,7 @@ export async function generateMetadata({
   const title = `${product.name} — ${product.brand}`;
   const description =
     product.description?.slice(0, 160) ||
-    `${product.name} da ${product.brand}, ${product.volume_ml}ml. Confira na Alexandra Perfumaria.`;
+    `Decante de ${product.volume_ml}ml do perfume ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`;
 
   return {
     title,
@@ -60,6 +60,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const isOutOfStock = product.stock === 0;
 
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const fullBottleMessage = `Olá! Tenho interesse no frasco completo de ${product.name}.`;
+  const fullBottleWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(fullBottleMessage)}`;
+
   return (
     <>
       <SiteHeader />
@@ -75,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {product.name}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {product.volume_ml}ml
+              Decante de {product.volume_ml}ml · perfume 100% original
             </p>
 
             {isOutOfStock && (
@@ -96,14 +100,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <AddToCartButton product={product} />
-
-              <button
-                type="button"
-                className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                Comprar pelo WhatsApp
-              </button>
             </div>
+
+            <a
+              href={fullBottleWhatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Quero o frasco completo — falar no WhatsApp
+            </a>
           </div>
         </div>
       </main>

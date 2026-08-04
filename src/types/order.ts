@@ -14,6 +14,7 @@ export type OrderItemSnapshot = {
   name: string;
   brand: string;
   price: number; // centavos
+  volume_ml: number; // decante: geralmente 5ml, às vezes 10ml
   quantity: number;
 };
 

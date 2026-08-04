@@ -121,7 +121,10 @@ export function CheckoutForm() {
             className="flex items-center justify-between py-3 text-sm"
           >
             <span className="text-foreground">
-              {item.quantity}x {item.name}
+              {item.quantity}x {item.name}{" "}
+              <span className="text-muted-foreground">
+                (decante {item.volumeMl}ml)
+              </span>
             </span>
             <span className="whitespace-nowrap font-medium text-foreground">
               {formatPriceInCents(item.price * item.quantity)}

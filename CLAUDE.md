@@ -11,6 +11,16 @@ Sei pouco de programação e pouco de React. Portanto:
 - Prefira soluções simples e padrão em vez de abstrações sofisticadas.
 - Sempre me diga como testar o que foi feito (comando + o que devo ver na tela).
 
+## Contexto do negócio
+
+A loja vende **decantes**: frações de 5ml (às vezes 10ml) retiradas de perfumes importados 100% originais. **Não vendemos o frasco completo pelo site.**
+
+- Isso deve ficar explícito e transparente em todo o site: páginas de produto, home e checkout. Nunca usar textos ou imagens que sugiram a venda do frasco lacrado.
+- Quem quiser o frasco completo deve ser direcionado ao WhatsApp da loja (link wa.me com mensagem pré-pronta "Olá! Tenho interesse no frasco completo de [nome do perfume]").
+- Argumentos de venda dos decantes: custo acessível para conhecer perfumes importados, praticidade para o dia a dia e para viagens, ideal para experimentar antes de investir no frasco grande.
+- Tom de voz: acolhedor e elegante, focado em público feminino exigente; transparência e confiança são valores centrais.
+- Operação: postagem em 2 a 5 dias úteis após confirmação do pagamento; entrega para todo o Brasil com rastreio; quantidade limitada por fragrância (pronta entrega).
+
 ## Stack (não trocar sem me consultar)
 
 - Next.js (App Router) + TypeScript + Tailwind CSS

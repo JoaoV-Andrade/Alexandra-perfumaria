@@ -8,7 +8,7 @@ import type { ProductDetail } from "@/types/product";
 type AddToCartButtonProps = {
   product: Pick<
     ProductDetail,
-    "id" | "name" | "brand" | "price" | "images" | "stock"
+    "id" | "name" | "brand" | "price" | "images" | "stock" | "volume_ml"
   >;
 };
 
@@ -30,6 +30,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       brand: product.brand,
       price: product.price,
       image: product.images[0] ?? null,
+      volumeMl: product.volume_ml,
     });
     setJustAdded(true);
   }

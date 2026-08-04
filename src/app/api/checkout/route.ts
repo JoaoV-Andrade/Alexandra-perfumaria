@@ -98,7 +98,7 @@ export async function POST(request: Request) {
   // banco e da API do Melhor Envio; o navegador só envia ids e quantidades.
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, name, brand, price, stock")
+    .select("id, name, brand, price, stock, volume_ml")
     .in(
       "id",
       validItems.map((item) => item.productId),
@@ -128,6 +128,7 @@ export async function POST(request: Request) {
         name: product.name,
         brand: product.brand,
         price: product.price,
+        volume_ml: product.volume_ml,
         quantity: requested.quantity,
       };
     })
@@ -208,7 +209,7 @@ export async function POST(request: Request) {
 
   const preferenceItems: PreferenceItem[] = orderItems.map((item) => ({
     id: item.product_id,
-    title: `${item.name} - ${item.brand}`,
+    title: `${item.name} - Decante ${item.volume_ml}ml (${item.brand})`,
     quantity: item.quantity,
     unitPrice: item.price,
   }));

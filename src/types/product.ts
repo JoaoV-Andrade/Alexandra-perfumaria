@@ -5,11 +5,11 @@ export type Product = {
   price: number; // centavos
   images: string[];
   stock: number;
+  volume_ml: number; // decante: geralmente 5ml, às vezes 10ml
 };
 
 export type ProductDetail = Product & {
   description: string | null;
-  volume_ml: number;
 };
 
 export type ProductAdmin = ProductDetail & {

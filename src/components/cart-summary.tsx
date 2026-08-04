@@ -62,6 +62,9 @@ export function CartSummary() {
                 {item.brand}
               </p>
               <p className="text-sm font-medium text-foreground">{item.name}</p>
+              <p className="text-xs text-muted-foreground">
+                Decante {item.volumeMl}ml
+              </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {formatPriceInCents(item.price)} / un.
               </p>

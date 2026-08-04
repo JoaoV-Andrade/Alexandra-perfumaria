@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     template: "%s | Alexandra Perfumaria",
   },
   description:
-    "Perfumes selecionados com curadoria própria. Compre online com entrega para todo o Brasil e finalize também pelo WhatsApp.",
+    "Decants de perfumes importados 100% originais, a partir de 5ml. Praticidade e economia para conhecer sua próxima fragrância favorita, com entrega para todo o Brasil.",
   openGraph: {
     type: "website",
     locale: "pt_BR",
     siteName: "Alexandra Perfumaria",
     title: "Alexandra Perfumaria",
     description:
-      "Perfumes selecionados com curadoria própria. Compre online com entrega para todo o Brasil.",
+      "Decants de perfumes importados 100% originais, a partir de 5ml, com entrega para todo o Brasil.",
   },
 };
 

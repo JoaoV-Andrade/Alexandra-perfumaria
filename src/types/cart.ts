@@ -4,5 +4,6 @@ export type CartItem = {
   brand: string;
   price: number; // centavos, capturado no momento em que foi adicionado
   image: string | null;
+  volumeMl: number; // decante: geralmente 5ml, às vezes 10ml
   quantity: number;
 };

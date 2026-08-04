@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   // Preço e existência dos produtos vêm sempre do banco, nunca do navegador.
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, name, brand, price")
+    .select("id, name, brand, price, volume_ml")
     .in(
       "id",
       validItems.map((item) => item.productId),
@@ -72,6 +72,7 @@ export async function POST(request: Request) {
         name: product.name,
         brand: product.brand,
         price: product.price,
+        volume_ml: product.volume_ml,
         quantity: requested.quantity,
       };
     })

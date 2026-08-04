@@ -89,7 +89,10 @@ export default async function AdminPedidoDetailPage({
             >
               <span className="text-foreground">
                 {item.quantity}x {item.name}{" "}
-                <span className="text-muted-foreground">({item.brand})</span>
+                <span className="text-muted-foreground">
+                  ({item.brand}
+                  {item.volume_ml ? `, decante ${item.volume_ml}ml` : ""})
+                </span>
               </span>
               <span className="whitespace-nowrap font-medium text-foreground">
                 {formatPriceInCents(item.price * item.quantity)}

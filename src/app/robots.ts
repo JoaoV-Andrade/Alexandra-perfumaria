@@ -7,7 +7,12 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/admin", "/checkout", "/carrinho"],
+      disallow: [
+        "/admin",
+        "/checkout",
+        "/carrinho",
+        "/politica-de-trocas-e-devolucoes",
+      ],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
   };

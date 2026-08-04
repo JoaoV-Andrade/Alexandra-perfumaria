@@ -11,7 +11,7 @@ export default async function AdminProdutosPage() {
   const { data: products } = await supabase
     .from("products")
     .select(
-      "id, name, brand, description, volume_ml, price, stock, images, active, weight_g, length_cm, width_cm, height_cm, created_at",
+      "id, name, brand, description, volume_ml, price, price_original, stock, images, active, is_bestseller, is_exclusive, is_kit, notes, weight_g, length_cm, width_cm, height_cm, created_at",
     )
     .order("created_at", { ascending: false })
     .returns<ProductAdmin[]>();

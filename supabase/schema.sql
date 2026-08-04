@@ -20,10 +20,20 @@ create table if not exists public.products (
   length_cm integer not null check (length_cm > 0),
   width_cm integer not null check (width_cm > 0),
   height_cm integer not null check (height_cm > 0),
+  -- preço "de", em centavos; nulo = sem promoção (só usado quando o produto
+  -- de fato custava mais e baixou de preço)
+  price_original integer check (price_original is null or price_original > price),
+  is_bestseller boolean not null default false,
+  is_exclusive boolean not null default false,
+  is_kit boolean not null default false, -- kit: conjunto de decantes vendido como produto próprio
+  notes text, -- notas olfativas, opcional
   created_at timestamptz not null default now()
 );
 
 create index if not exists products_active_idx on public.products (active);
+create index if not exists products_is_bestseller_idx on public.products (is_bestseller);
+create index if not exists products_is_exclusive_idx on public.products (is_exclusive);
+create index if not exists products_is_kit_idx on public.products (is_kit);
 
 alter table public.products enable row level security;
 

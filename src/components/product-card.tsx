@@ -7,6 +7,7 @@ import type { Product } from "@/types/product";
 export function ProductCard({ product }: { product: Product }) {
   const isOutOfStock = product.stock === 0;
   const imageUrl = product.images[0];
+  const isPromo = product.price_original != null;
 
   return (
     <Link
@@ -33,6 +34,12 @@ export function ProductCard({ product }: { product: Product }) {
             Esgotado
           </span>
         )}
+
+        {!isOutOfStock && isPromo && (
+          <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+            Promoção
+          </span>
+        )}
       </div>
 
       <div className="p-4">
@@ -45,9 +52,20 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-1 text-xs text-muted-foreground">
           Decante {product.volume_ml}ml
         </p>
-        <p className="mt-2 text-base font-semibold text-foreground">
-          {formatPriceInCents(product.price)}
-        </p>
+        {isPromo ? (
+          <p className="mt-2 flex items-baseline gap-2">
+            <span className="text-xs text-muted-foreground line-through">
+              {formatPriceInCents(product.price_original!)}
+            </span>
+            <span className="text-base font-semibold text-foreground">
+              {formatPriceInCents(product.price)}
+            </span>
+          </p>
+        ) : (
+          <p className="mt-2 text-base font-semibold text-foreground">
+            {formatPriceInCents(product.price)}
+          </p>
+        )}
       </div>
     </Link>
   );

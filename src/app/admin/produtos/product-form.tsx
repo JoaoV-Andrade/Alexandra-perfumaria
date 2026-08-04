@@ -20,12 +20,17 @@ export type ProductFormDefaults = {
   description: string | null;
   volume_ml: number;
   price: number; // centavos
+  price_original: number | null; // centavos; preço "de", só quando em promoção real
   stock: number;
   weight_g: number;
   length_cm: number;
   width_cm: number;
   height_cm: number;
   active: boolean;
+  is_bestseller: boolean;
+  is_exclusive: boolean;
+  is_kit: boolean;
+  notes: string | null;
 };
 
 type ProductFormProps = {
@@ -92,6 +97,16 @@ export function ProductForm({
         />
       </FormField>
 
+      <FormField label="Notas olfativas (opcional)">
+        <textarea
+          name="notes"
+          rows={2}
+          placeholder="Ex.: Baunilha, âmbar, madeira"
+          defaultValue={defaultValues?.notes ?? undefined}
+          className={FIELD_CLASS}
+        />
+      </FormField>
+
       <div className="grid grid-cols-2 gap-4">
         <FormField label="Volume do decante (ml)">
           <input
@@ -144,15 +159,63 @@ export function ProductForm({
         </FormField>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-foreground">
+      <FormField label="Preço original (R$) — só se estiver em promoção real">
         <input
-          name="active"
-          type="checkbox"
-          defaultChecked={defaultValues?.active ?? true}
-          className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          name="price_original"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Deixe em branco se não houver promoção"
+          defaultValue={
+            defaultValues?.price_original
+              ? (defaultValues.price_original / 100).toFixed(2)
+              : undefined
+          }
+          className={FIELD_CLASS}
         />
-        Produto ativo (visível na loja)
-      </label>
+      </FormField>
+
+      <div className="flex flex-col gap-2">
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input
+            name="active"
+            type="checkbox"
+            defaultChecked={defaultValues?.active ?? true}
+            className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          Produto ativo (visível na loja)
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input
+            name="is_bestseller"
+            type="checkbox"
+            defaultChecked={defaultValues?.is_bestseller ?? false}
+            className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          Mais vendido
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input
+            name="is_exclusive"
+            type="checkbox"
+            defaultChecked={defaultValues?.is_exclusive ?? false}
+            className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          Exclusivo
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input
+            name="is_kit"
+            type="checkbox"
+            defaultChecked={defaultValues?.is_kit ?? false}
+            className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          Kit (conjunto de decantes)
+        </label>
+      </div>
 
       {existingImages && <ExistingImagesField images={existingImages} />}
 

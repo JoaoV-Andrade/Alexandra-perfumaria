@@ -62,7 +62,7 @@ Regras de UX:
 
 ## Modelo de dados
 
-**products**: id, name, brand, description, volume_ml, price (centavos, integer), stock (integer), images (text[]), active (boolean), weight_g, created_at
+**products**: id, name, brand, description, volume_ml, price (centavos, integer), price_original (centavos, integer, opcional — só quando o produto de fato custava mais e baixou; exibe "De R$ X por R$ Y" e selo PROMOÇÃO), stock (integer), images (text[]), active (boolean), is_bestseller (boolean), is_exclusive (boolean), is_kit (boolean — conjunto de decantes vendido como produto próprio), notes (text, opcional — notas olfativas), weight_g, created_at
 
 **orders**: id, customer_name, customer_phone, customer_email, address (jsonb), items (jsonb — snapshot com preço do momento da compra), subtotal, shipping_cost, shipping_service, total, status, mp_payment_id, mp_preference_id, tracking_code, created_at
 

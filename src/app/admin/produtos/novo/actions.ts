@@ -42,21 +42,42 @@ export async function createProduct(
     return { status: "error", message: upload.message };
   }
 
-  const { name, brand, description, volumeMl, priceCents, stock, weightG, lengthCm, widthCm, heightCm, active } =
-    parsed.data;
+  const {
+    name,
+    brand,
+    description,
+    notes,
+    volumeMl,
+    priceCents,
+    priceOriginalCents,
+    stock,
+    weightG,
+    lengthCm,
+    widthCm,
+    heightCm,
+    active,
+    isBestseller,
+    isExclusive,
+    isKit,
+  } = parsed.data;
 
   const { error: insertError } = await adminClient.from("products").insert({
     name,
     brand,
     description,
+    notes,
     volume_ml: volumeMl,
     price: priceCents,
+    price_original: priceOriginalCents,
     stock,
     weight_g: weightG,
     length_cm: lengthCm,
     width_cm: widthCm,
     height_cm: heightCm,
     active,
+    is_bestseller: isBestseller,
+    is_exclusive: isExclusive,
+    is_kit: isKit,
     images: upload.urls,
   });
 

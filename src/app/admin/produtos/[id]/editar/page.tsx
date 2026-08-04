@@ -17,7 +17,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   const { data: product } = await supabase
     .from("products")
     .select(
-      "id, name, brand, description, volume_ml, price, stock, images, active, weight_g, length_cm, width_cm, height_cm",
+      "id, name, brand, description, volume_ml, price, price_original, stock, images, active, is_bestseller, is_exclusive, is_kit, notes, weight_g, length_cm, width_cm, height_cm",
     )
     .eq("id", id)
     .maybeSingle<ProductAdmin>();
@@ -42,14 +42,19 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
             name: product.name,
             brand: product.brand,
             description: product.description,
+            notes: product.notes,
             volume_ml: product.volume_ml,
             price: product.price,
+            price_original: product.price_original,
             stock: product.stock,
             weight_g: product.weight_g,
             length_cm: product.length_cm,
             width_cm: product.width_cm,
             height_cm: product.height_cm,
             active: product.active,
+            is_bestseller: product.is_bestseller,
+            is_exclusive: product.is_exclusive,
+            is_kit: product.is_kit,
           }}
           existingImages={product.images}
         />

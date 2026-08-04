@@ -18,7 +18,9 @@ const fetchProduct = cache(async (id: string) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("id, name, brand, description, volume_ml, price, images, stock")
+    .select(
+      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes",
+    )
     .eq("id", id)
     .maybeSingle<ProductDetail>();
   return data;
@@ -59,6 +61,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const isOutOfStock = product.stock === 0;
+  const isPromo = product.price_original != null;
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const fullBottleMessage = `Olá! Tenho interesse no frasco completo de ${product.name}.`;
@@ -82,19 +85,46 @@ export default async function ProductPage({ params }: ProductPageProps) {
               Decante de {product.volume_ml}ml · perfume 100% original
             </p>
 
-            {isOutOfStock && (
-              <span className="mt-3 inline-flex w-fit items-center rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
-                Esgotado
-              </span>
-            )}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {isOutOfStock && (
+                <span className="inline-flex w-fit items-center rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
+                  Esgotado
+                </span>
+              )}
+              {!isOutOfStock && isPromo && (
+                <span className="inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+                  Promoção
+                </span>
+              )}
+            </div>
 
-            <p className="mt-4 text-3xl font-semibold text-foreground">
-              {formatPriceInCents(product.price)}
-            </p>
+            {isPromo ? (
+              <p className="mt-4 flex items-baseline gap-3">
+                <span className="text-base text-muted-foreground line-through">
+                  De {formatPriceInCents(product.price_original!)}
+                </span>
+                <span className="text-3xl font-semibold text-foreground">
+                  por {formatPriceInCents(product.price)}
+                </span>
+              </p>
+            ) : (
+              <p className="mt-4 text-3xl font-semibold text-foreground">
+                {formatPriceInCents(product.price)}
+              </p>
+            )}
 
             {product.description && (
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 {product.description}
+              </p>
+            )}
+
+            {product.notes && (
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <span className="font-medium text-foreground">
+                  Notas olfativas:
+                </span>{" "}
+                {product.notes}
               </p>
             )}
 

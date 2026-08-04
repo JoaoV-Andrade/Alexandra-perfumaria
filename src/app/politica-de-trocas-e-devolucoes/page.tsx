@@ -34,7 +34,7 @@ export default function PoliticaDeTrocasEDevolucoesPage() {
           RASCUNHO — revisar antes do lançamento
         </div>
 
-        <h1 className="mt-6 text-2xl font-semibold text-foreground">
+        <h1 className="mt-6 bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
           Política de Trocas e Devoluções
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">

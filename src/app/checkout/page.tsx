@@ -15,7 +15,7 @@ export default function CheckoutPage() {
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-        <h1 className="text-2xl font-semibold text-foreground">
+        <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
           Finalizar compra
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">

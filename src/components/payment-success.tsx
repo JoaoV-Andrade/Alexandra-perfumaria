@@ -11,7 +11,7 @@ type PaymentSuccessProps = {
 export function PaymentSuccess({ items, total }: PaymentSuccessProps) {
   return (
     <div className="flex flex-col items-center gap-4 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[image:var(--gold-gradient)]">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -26,7 +26,7 @@ export function PaymentSuccess({ items, total }: PaymentSuccessProps) {
         </svg>
       </div>
 
-      <h1 className="text-2xl font-semibold text-foreground">
+      <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
         Pagamento aprovado!
       </h1>
       <p className="max-w-sm text-sm text-muted-foreground">
@@ -38,7 +38,7 @@ export function PaymentSuccess({ items, total }: PaymentSuccessProps) {
 
       <Link
         href="/"
-        className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
       >
         Ver mais produtos
       </Link>

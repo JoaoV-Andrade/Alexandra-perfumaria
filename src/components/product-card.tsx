@@ -31,13 +31,13 @@ export function ProductCard({ product }: { product: Product }) {
         )}
 
         {!isOutOfStock && isPromo && (
-          <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+          <span className="absolute left-3 top-3 rounded-full bg-[image:var(--gold-gradient)] px-2.5 py-1 text-xs font-semibold text-accent-foreground">
             Promoção
           </span>
         )}
 
         {product.is_exclusive && (
-          <span className="absolute right-3 top-3 rounded-full border border-accent/60 bg-background/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-accent">
+          <span className="absolute right-3 top-3 rounded-full border border-link/60 bg-background/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-link">
             Exclusivo
           </span>
         )}
@@ -69,7 +69,7 @@ export function ProductCard({ product }: { product: Product }) {
         )}
 
         {isLastUnits && (
-          <p className="mt-1.5 inline-flex w-fit items-center rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-semibold text-accent">
+          <p className="mt-1.5 inline-flex w-fit items-center rounded-full bg-link/15 px-2 py-0.5 text-[11px] font-semibold text-link">
             Últimas {product.stock} unidades
           </p>
         )}

@@ -14,21 +14,23 @@ export default function MaisVendidosPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-            Mais Vendidos
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Os decants preferidos de quem já comprou com a gente.
-          </p>
-        </div>
+      <main className="flex-1 bg-bg-alt">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
+              Mais Vendidos
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Os decants preferidos de quem já comprou com a gente.
+            </p>
+          </div>
 
-        <div className="mt-8">
-          <ProductCatalog
-            filterColumn="is_bestseller"
-            emptyDescription="Estamos preparando a lista dos queridinhos."
-          />
+          <div className="mt-8">
+            <ProductCatalog
+              filterColumn="is_bestseller"
+              emptyDescription="Estamos preparando a lista dos queridinhos."
+            />
+          </div>
         </div>
       </main>
       <SiteFooter />

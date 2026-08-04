@@ -8,10 +8,8 @@ const CHECKS = [
 
 export function AboutDecantsSection() {
   return (
-    <section
-      id="o-que-sao-decantes"
-      className="mx-auto w-full max-w-3xl scroll-mt-24 px-4 py-12 text-center"
-    >
+    <section id="o-que-sao-decantes" className="scroll-mt-24 bg-bg-alt">
+      <div className="mx-auto w-full max-w-3xl px-4 py-12 text-center">
       <Image
         src="/decante.png"
         alt="Um decante de perfume de 5ml"
@@ -20,7 +18,7 @@ export function AboutDecantsSection() {
         className="mx-auto h-40 w-40 sm:h-48 sm:w-48"
       />
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground sm:text-2xl">
+      <h2 className="mt-8 bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
         O que são decantes?
       </h2>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -35,15 +33,15 @@ export function AboutDecantsSection() {
             key={check}
             className="flex items-center gap-2 text-sm text-foreground"
           >
-            <CheckIcon className="h-5 w-5 shrink-0 text-accent" />
+            <CheckIcon className="h-5 w-5 shrink-0 text-link" />
             {check}
           </li>
         ))}
       </ul>
 
-      <div className="mt-6 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-4 text-left">
+      <div className="mt-6 rounded-2xl border border-link/30 bg-link/10 px-4 py-4 text-left">
         <div className="flex items-center gap-2">
-          <ClockIcon className="h-5 w-5 shrink-0 text-accent" />
+          <ClockIcon className="h-5 w-5 shrink-0 text-link" />
           <p className="text-base font-semibold text-foreground">
             Quanto tempo dura um decante?
           </p>
@@ -54,10 +52,11 @@ export function AboutDecantsSection() {
         </p>
       </div>
 
-      <p className="mt-4 border-l-4 border-accent bg-surface px-4 py-3 text-left text-sm font-medium text-foreground">
+      <p className="mt-4 border-l-4 border-link bg-surface px-4 py-3 text-left text-sm font-medium text-foreground">
         Vendemos frascos fracionados. Não vendemos o frasco completo pelo
         site.
       </p>
+      </div>
     </section>
   );
 }

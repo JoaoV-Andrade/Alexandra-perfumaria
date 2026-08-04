@@ -36,7 +36,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               aria-pressed={index === selectedIndex}
               className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition-colors ${
                 index === selectedIndex
-                  ? "border-accent"
+                  ? "border-link"
                   : "border-surface-alt hover:border-muted-foreground"
               }`}
             >

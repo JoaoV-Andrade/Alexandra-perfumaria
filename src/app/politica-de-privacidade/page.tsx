@@ -31,7 +31,7 @@ export default function PoliticaDePrivacidadePage() {
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-10">
-        <h1 className="text-2xl font-semibold text-foreground">
+        <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
           Política de Privacidade
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">

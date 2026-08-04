@@ -124,7 +124,7 @@ export function ShippingCalculator({
               key={option.id}
               className={`flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-sm transition-colors ${
                 selectedOption?.id === option.id
-                  ? "border-accent bg-surface"
+                  ? "border-link bg-surface"
                   : "border-muted-foreground/30 hover:bg-surface-alt"
               }`}
             >

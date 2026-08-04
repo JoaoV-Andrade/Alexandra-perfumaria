@@ -20,7 +20,7 @@ export function AnnouncementBar() {
   }, []);
 
   return (
-    <div className="bg-foreground py-1.5 text-center text-background">
+    <div className="bg-bg-primary py-1.5 text-center text-foreground">
       <p key={index} aria-live="polite" className="animate-fade-in text-xs font-medium">
         {MESSAGES[index]}
       </p>

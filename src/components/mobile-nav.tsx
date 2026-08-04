@@ -70,7 +70,7 @@ export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
                 onClick={onClose}
                 className={`flex h-12 items-center rounded-lg px-3 text-base font-medium transition-colors ${
                   isActive
-                    ? "bg-surface text-accent"
+                    ? "bg-surface text-link"
                     : "text-foreground hover:bg-surface-alt"
                 }`}
               >
@@ -84,7 +84,7 @@ export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="mt-3 flex h-12 items-center justify-center rounded-full bg-accent px-4 text-center text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90"
+            className="mt-3 flex h-12 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-4 text-center text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90"
           >
             Frasco Completo? Chame no WhatsApp
           </a>

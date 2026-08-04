@@ -14,7 +14,9 @@ export default function CartPage() {
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-        <h1 className="text-2xl font-semibold text-foreground">Carrinho</h1>
+        <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
+          Carrinho
+        </h1>
         <div className="mt-6">
           <CartSummary />
         </div>

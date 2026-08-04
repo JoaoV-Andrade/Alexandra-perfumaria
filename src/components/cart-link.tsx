@@ -11,11 +11,11 @@ export function CartLink() {
     <Link
       href="/carrinho"
       aria-label="Carrinho"
-      className="relative flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-surface-alt hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="relative flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-surface-alt hover:text-link focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
     >
       <CartIcon className="h-6 w-6" />
       {totalItems > 0 && (
-        <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-foreground">
+        <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-1 text-[10px] font-semibold text-accent-foreground">
           {totalItems > 99 ? "99+" : totalItems}
         </span>
       )}

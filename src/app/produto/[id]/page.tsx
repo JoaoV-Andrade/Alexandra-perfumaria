@@ -82,7 +82,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {product.brand}
             </p>
-            <h1 className="mt-1 text-2xl font-semibold text-foreground">
+            <h1 className="mt-1 bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
               {product.name}
             </h1>
 
@@ -93,12 +93,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </span>
               )}
               {!isOutOfStock && isPromo && (
-                <span className="inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+                <span className="inline-flex w-fit items-center rounded-full bg-[image:var(--gold-gradient)] px-2.5 py-1 text-xs font-semibold text-accent-foreground">
                   Promoção
                 </span>
               )}
               {isLastUnits && (
-                <span className="inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+                <span className="inline-flex w-fit items-center rounded-full bg-[image:var(--gold-gradient)] px-2.5 py-1 text-xs font-semibold text-accent-foreground">
                   Últimas {product.stock} unidades
                 </span>
               )}
@@ -158,7 +158,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   href={restockWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
                 >
                   Avise-me pelo WhatsApp
                 </a>
@@ -173,7 +173,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 href={fullBottleWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
               >
                 Falar no WhatsApp
               </a>

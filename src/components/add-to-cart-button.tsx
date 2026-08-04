@@ -40,7 +40,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       type="button"
       onClick={handleClick}
       disabled={isOutOfStock}
-      className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-alt disabled:text-muted-foreground"
+      className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:cursor-not-allowed disabled:bg-surface-alt disabled:text-muted-foreground"
     >
       {isOutOfStock
         ? "Esgotado"

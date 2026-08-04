@@ -14,8 +14,8 @@ const SHIPPING_INFO = [
 
 export function ImportantInfoSection() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 py-12">
-      <div className="grid gap-6 sm:grid-cols-2">
+    <section className="bg-bg-alt">
+      <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-12 sm:grid-cols-2">
         <InfoCard title="Sobre os frascos" items={BOTTLE_INFO} />
         <InfoCard title="Prazo de entrega" items={SHIPPING_INFO} />
       </div>

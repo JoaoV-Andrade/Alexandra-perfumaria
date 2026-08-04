@@ -35,8 +35,8 @@ export function SiteHeader() {
                   href={item.href}
                   className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? "text-accent"
-                      : "text-foreground hover:text-accent"
+                      ? "text-link"
+                      : "text-foreground hover:text-link"
                   }`}
                 >
                   {item.label}
@@ -48,7 +48,7 @@ export function SiteHeader() {
               href={FULL_BOTTLE_WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-2 inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="ml-2 inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-[image:var(--gold-gradient)] px-4 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
             >
               Frasco Completo? Chame no WhatsApp
             </a>

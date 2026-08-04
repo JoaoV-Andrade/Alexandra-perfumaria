@@ -7,12 +7,43 @@
   --surface-alt: #f1f5f9;
 
   /* Textos */
-  --foreground: #0f172a;
-  --muted-foreground: #64748b;
+  --foreground: #1f2937;
+  --muted-foreground: #475569;
 
-  /* Destaque (usar só para ênfase: CTAs, badges, links em hover, foco) */
+  /* Destaque turquesa — fundo alternado das seções da loja (ver
+     bg-bg-primary/bg-bg-alt) e também usado em pequenos detalhes no
+     painel administrativo, que mantém a paleta antiga. */
   --accent: #44e2d9;
   --accent-foreground: #0f172a;
+
+  /* Fundos alternados das seções da loja pública */
+  --bg-primary: #44e2d9;
+  --bg-alt: #ffffff;
+
+  /* Dourado — botões, links, ícones de destaque, bordas decorativas.
+     accent-gold-1/2/3 formam o gradiente usado em fundos preenchidos
+     (botões, badges); --link é um dourado mais escuro, calibrado pra
+     passar no contraste WCAG AA em texto normal (ver CLAUDE.md). */
+  --accent-gold-1: #d2ac47;
+  --accent-gold-2: #f7ef8a;
+  --accent-gold-3: #ae8625;
+  --gold-gradient: linear-gradient(
+    135deg,
+    var(--accent-gold-1) 5%,
+    var(--accent-gold-2) 45%,
+    var(--accent-gold-3) 85%
+  );
+  /* Gradiente dourado calibrado pra texto (títulos): evita o tom claro
+     --accent-gold-2, que fica ilegível como cor de texto em fundo claro. */
+  --title-gradient: linear-gradient(
+    90deg,
+    #8a6a1a 5%,
+    var(--accent-gold-3) 45%,
+    #8a6a1a 85%
+  );
+
+  --link: #8a6a1a;
+  --link-hover: #6f5716;
 
   /* Status (só pro painel administrativo: badge de pedido, estoque baixo) */
   --status-success: #ecfdf5;
@@ -33,6 +64,13 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-alt: var(--bg-alt);
+  --color-accent-gold-1: var(--accent-gold-1);
+  --color-accent-gold-2: var(--accent-gold-2);
+  --color-accent-gold-3: var(--accent-gold-3);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
   --color-status-success: var(--status-success);
   --color-status-success-foreground: var(--status-success-foreground);
   --color-status-warning: var(--status-warning);

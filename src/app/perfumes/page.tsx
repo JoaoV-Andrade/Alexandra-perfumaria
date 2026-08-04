@@ -14,18 +14,22 @@ export default function PerfumesPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-            Todos os Perfumes
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            O catálogo completo de decants da Alexandra Perfumaria.
-          </p>
-        </div>
+      <main className="flex-1 bg-bg-primary">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+          <div className="mx-auto max-w-2xl text-center">
+            {/* Título sobre fundo turquesa: texto escuro sólido, sem o
+                gradiente dourado (contraste insuficiente — ver CLAUDE.md). */}
+            <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
+              Todos os Perfumes
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              O catálogo completo de decants da Alexandra Perfumaria.
+            </p>
+          </div>
 
-        <div className="mt-8">
-          <ProductCatalog emptyDescription="Estamos preparando o catálogo. Volte em breve!" />
+          <div className="mt-8">
+            <ProductCatalog emptyDescription="Estamos preparando o catálogo. Volte em breve!" />
+          </div>
         </div>
       </main>
       <SiteFooter />

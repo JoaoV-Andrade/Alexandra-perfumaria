@@ -62,11 +62,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const isOutOfStock = product.stock === 0;
   const isPromo = product.price_original != null;
-  const isLowStock = product.stock > 0 && product.stock <= 3;
+  const isLastUnits = !isOutOfStock && product.stock <= 3;
+  const isFewUnits = !isOutOfStock && product.stock > 3 && product.stock <= 8;
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const fullBottleMessage = `Olá! Tenho interesse no frasco completo de ${product.name}.`;
   const fullBottleWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(fullBottleMessage)}`;
+  const restockMessage = `Olá! Quero ser avisada quando ${product.name} voltar ao estoque.`;
+  const restockWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(restockMessage)}`;
 
   return (
     <>
@@ -94,9 +97,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Promoção
                 </span>
               )}
-              {!isOutOfStock && isLowStock && (
-                <span className="inline-flex w-fit items-center rounded-full border border-foreground/30 px-2.5 py-1 text-xs font-medium text-foreground">
-                  Últimas unidades!
+              {isLastUnits && (
+                <span className="inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+                  Últimas {product.stock} unidades
                 </span>
               )}
             </div>
@@ -121,6 +124,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
               original
             </p>
 
+            {isFewUnits && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Poucas unidades disponíveis
+              </p>
+            )}
+
+            <p className="mt-3 inline-flex w-fit items-center rounded-full border border-muted-foreground/30 px-3 py-1 text-xs font-medium text-muted-foreground">
+              Lote limitado — decantes fracionados de um único frasco
+              original
+            </p>
+
             {product.description && (
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 {product.description}
@@ -138,6 +152,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <AddToCartButton product={product} />
+
+              {isOutOfStock && (
+                <a
+                  href={restockWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  Avise-me pelo WhatsApp
+                </a>
+              )}
             </div>
 
             <div className="mt-6 rounded-2xl bg-surface p-4">

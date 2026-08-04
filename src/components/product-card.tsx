@@ -8,6 +8,8 @@ export function ProductCard({ product }: { product: Product }) {
   const isOutOfStock = product.stock === 0;
   const imageUrl = product.images[0];
   const isPromo = product.price_original != null;
+  const isLastUnits = !isOutOfStock && product.stock <= 3;
+  const isFewUnits = !isOutOfStock && product.stock > 3 && product.stock <= 8;
 
   return (
     <Link
@@ -63,6 +65,17 @@ export function ProductCard({ product }: { product: Product }) {
         ) : (
           <p className="mt-2 text-base font-semibold text-foreground">
             {formatPriceInCents(product.price)}
+          </p>
+        )}
+
+        {isLastUnits && (
+          <p className="mt-1.5 inline-flex w-fit items-center rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-semibold text-accent">
+            Últimas {product.stock} unidades
+          </p>
+        )}
+        {isFewUnits && (
+          <p className="mt-1.5 text-[11px] text-muted-foreground">
+            Poucas unidades disponíveis
           </p>
         )}
       </div>

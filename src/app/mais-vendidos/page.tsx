@@ -27,7 +27,7 @@ export default function MaisVendidosPage() {
         <div className="mt-8">
           <ProductCatalog
             filterColumn="is_bestseller"
-            emptyDescription="Ainda não marcamos nenhum produto como mais vendido. Volte em breve!"
+            emptyDescription="Estamos preparando a lista dos queridinhos."
           />
         </div>
       </main>

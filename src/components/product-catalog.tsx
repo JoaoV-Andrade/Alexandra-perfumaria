@@ -15,7 +15,9 @@ export async function ProductCatalog({
   const supabase = await createClient();
   const baseQuery = supabase
     .from("products")
-    .select("id, name, brand, price, price_original, images, stock, volume_ml")
+    .select(
+      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive",
+    )
     .eq("active", true)
     .order("created_at", { ascending: false });
 
@@ -33,7 +35,13 @@ export async function ProductCatalog({
   }
 
   if (!data || data.length === 0) {
-    return (
+    return filterColumn ? (
+      <EmptyState
+        title="Em breve novidades aqui 💛"
+        description={emptyDescription}
+        action={{ label: "Ver todos os perfumes", href: "/perfumes" }}
+      />
+    ) : (
       <EmptyState title="Nenhum produto disponível" description={emptyDescription} />
     );
   }

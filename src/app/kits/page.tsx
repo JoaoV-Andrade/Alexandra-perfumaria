@@ -20,15 +20,14 @@ export default function KitsPage() {
             Kits de Decantes
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Conjuntos de decants selecionados, vendidos juntos por um preço
-            especial.
+            Conjuntos de decantes para presentear ou variar a semana.
           </p>
         </div>
 
         <div className="mt-8">
           <ProductCatalog
             filterColumn="is_kit"
-            emptyDescription="Ainda não temos kits disponíveis. Volte em breve!"
+            emptyDescription="Novos kits estão a caminho."
           />
         </div>
       </main>

@@ -19,7 +19,7 @@ const fetchProduct = cache(async (id: string) => {
   const { data } = await supabase
     .from("products")
     .select(
-      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes",
+      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes, is_exclusive",
     )
     .eq("id", id)
     .maybeSingle<ProductDetail>();

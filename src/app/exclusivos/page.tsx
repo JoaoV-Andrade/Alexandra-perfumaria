@@ -27,7 +27,7 @@ export default function ExclusivosPage() {
         <div className="mt-8">
           <ProductCatalog
             filterColumn="is_exclusive"
-            emptyDescription="Ainda não marcamos nenhum produto como exclusivo. Volte em breve!"
+            emptyDescription="Novas fragrâncias exclusivas estão a caminho."
           />
         </div>
       </main>

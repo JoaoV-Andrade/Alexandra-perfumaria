@@ -7,6 +7,7 @@ export type Product = {
   images: string[];
   stock: number;
   volume_ml: number; // decante: geralmente 5ml, às vezes 10ml
+  is_exclusive: boolean;
 };
 
 export type ProductDetail = Product & {
@@ -17,7 +18,6 @@ export type ProductDetail = Product & {
 export type ProductAdmin = ProductDetail & {
   active: boolean;
   is_bestseller: boolean;
-  is_exclusive: boolean;
   is_kit: boolean; // kit: conjunto de decantes vendido como produto próprio
   weight_g: number;
   length_cm: number;

@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/produto/${product.id}`}
       className="group block overflow-hidden rounded-2xl border border-surface-alt bg-background transition-shadow hover:shadow-lg hover:shadow-accent/10"
     >
-      <div className="relative aspect-square w-full overflow-hidden bg-surface">
+      <div className="relative aspect-[2/3] w-full overflow-hidden bg-surface">
         <ProductImage
           src={imageUrl}
           alt={product.name}

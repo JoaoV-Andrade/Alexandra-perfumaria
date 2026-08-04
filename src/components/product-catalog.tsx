@@ -21,9 +21,11 @@ export async function ProductCatalog({
     .eq("active", true)
     .order("created_at", { ascending: false });
 
+  // Sem filtro específico (catálogo "Todos os Perfumes"), kits não entram
+  // aqui — eles têm a própria página em /kits.
   const { data, error } = filterColumn
     ? await baseQuery.eq(filterColumn, true)
-    : await baseQuery;
+    : await baseQuery.eq("is_kit", false);
 
   if (error) {
     return (

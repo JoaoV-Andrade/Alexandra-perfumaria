@@ -1,4 +1,9 @@
-import { ProductCatalog } from "@/components/product-catalog";
+import { AboutDecantsSection } from "@/components/home/about-decants-section";
+import { BenefitsSection } from "@/components/home/benefits-section";
+import { FeaturedProductsSection } from "@/components/home/featured-products-section";
+import { FullBottleCtaSection } from "@/components/home/full-bottle-cta-section";
+import { HeroSection } from "@/components/home/hero-section";
+import { ImportantInfoSection } from "@/components/home/important-info-section";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -6,23 +11,28 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-xl font-semibold text-foreground sm:text-2xl">
-            Decants de perfumes importados 100% originais
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Frações de 5ml a 10ml, retiradas de frascos originais, para você
-            conhecer sua próxima fragrância favorita sem comprometimento.
-            Não vendemos o frasco completo pelo site — quem tiver interesse
-            no frasco inteiro pode falar com a gente pelo WhatsApp em cada
-            produto.
-          </p>
-        </div>
+      <main className="flex-1">
+        <HeroSection />
 
-        <div className="mt-8">
-          <ProductCatalog emptyDescription="Estamos preparando o catálogo. Volte em breve!" />
-        </div>
+        <FeaturedProductsSection
+          title="Mais Vendidos"
+          viewAllHref="/mais-vendidos"
+          filterColumn="is_bestseller"
+        />
+
+        <BenefitsSection />
+
+        <AboutDecantsSection />
+
+        <FullBottleCtaSection />
+
+        <ImportantInfoSection />
+
+        <FeaturedProductsSection
+          title="Exclusivos"
+          viewAllHref="/exclusivos"
+          filterColumn="is_exclusive"
+        />
       </main>
       <SiteFooter />
     </>

@@ -45,6 +45,11 @@
   --link: #8a6a1a;
   --link-hover: #6f5716;
 
+  /* Verde oficial do WhatsApp — só pro botão "Compre pelo Whatsapp sem
+     taxa" na página de produto. Texto escuro (--accent-foreground) em
+     cima dele passa no contraste WCAG AA; branco não passaria. */
+  --whatsapp: #25d366;
+
   /* Status (só pro painel administrativo: badge de pedido, estoque baixo) */
   --status-success: #ecfdf5;
   --status-success-foreground: #047857;
@@ -71,6 +76,7 @@
   --color-accent-gold-3: var(--accent-gold-3);
   --color-link: var(--link);
   --color-link-hover: var(--link-hover);
+  --color-whatsapp: var(--whatsapp);
   --color-status-success: var(--status-success);
   --color-status-success-foreground: var(--status-success-foreground);
   --color-status-warning: var(--status-warning);

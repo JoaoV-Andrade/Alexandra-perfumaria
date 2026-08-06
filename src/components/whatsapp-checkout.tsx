@@ -125,7 +125,7 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
         disabled={status === "loading"}
         className="inline-flex h-11 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "loading" ? "Enviando..." : "Finalizar pelo WhatsApp"}
+        {status === "loading" ? "Enviando..." : "Compre pelo Whatsapp sem taxa"}
       </button>
     </form>
   );

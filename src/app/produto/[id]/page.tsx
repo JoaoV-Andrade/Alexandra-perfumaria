@@ -70,6 +70,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const fullBottleWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(fullBottleMessage)}`;
   const restockMessage = `Olá! Quero ser avisada quando ${product.name} voltar ao estoque.`;
   const restockWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(restockMessage)}`;
+  const buyMessage = `Olá! Quero comprar o decante de ${product.volume_ml}ml de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - direto pelo WhatsApp, sem taxa.`;
+  const buyWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buyMessage)}`;
 
   return (
     <>
@@ -153,7 +155,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <AddToCartButton product={product} />
 
-              {isOutOfStock && (
+              {isOutOfStock ? (
                 <a
                   href={restockWhatsAppUrl}
                   target="_blank"
@@ -161,6 +163,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
                 >
                   Avise-me pelo WhatsApp
+                </a>
+              ) : (
+                <a
+                  href={buyWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-whatsapp px-6 text-center text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+                >
+                  Compre pelo Whatsapp sem taxa
                 </a>
               )}
             </div>

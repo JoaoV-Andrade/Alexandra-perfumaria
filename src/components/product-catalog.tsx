@@ -1,5 +1,5 @@
 import { EmptyState } from "@/components/empty-state";
-import { ProductGrid } from "@/components/product-grid";
+import { SortableProductGrid } from "@/components/sortable-product-grid";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
 
@@ -48,5 +48,5 @@ export async function ProductCatalog({
     );
   }
 
-  return <ProductGrid products={data as Product[]} />;
+  return <SortableProductGrid products={data as Product[]} />;
 }

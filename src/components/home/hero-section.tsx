@@ -19,7 +19,9 @@ export function HeroSection() {
           </div>
 
           <h1 className="mt-4 bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent sm:text-3xl md:text-4xl">
-            Perfumes importados originais, em decantes de 5ml
+            Perfumes Importados Originais
+            <br />
+            Decantes de 5ML
           </h1>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
             Experimente as fragrâncias dos seus sonhos por uma fração do

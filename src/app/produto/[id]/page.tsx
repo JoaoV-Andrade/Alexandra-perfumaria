@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -121,10 +122,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             )}
 
-            <p className="mt-1 text-sm text-muted-foreground">
-              Decante de {product.volume_ml}ml · fracionado de perfume 100%
-              original
-            </p>
+            <div className="mt-2 flex items-center gap-2">
+              <Image
+                src="/decante-badge.png"
+                alt=""
+                aria-hidden="true"
+                width={48}
+                height={48}
+                className="h-12 w-12 shrink-0 rounded-full object-cover"
+              />
+              <p className="text-sm text-muted-foreground">
+                Decante de {product.volume_ml}ml · fracionado de perfume 100%
+                original
+              </p>
+            </div>
 
             {isFewUnits && (
               <p className="mt-1 text-xs text-muted-foreground">

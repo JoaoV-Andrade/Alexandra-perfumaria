@@ -15,13 +15,26 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const selectedImage = images[selectedIndex];
 
   return (
-    <div>
+    <div className="relative">
       <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-surface">
         <ProductImage
           src={selectedImage}
           alt={productName}
           sizes="(min-width: 768px) 50vw, 100vw"
           priority
+        />
+      </div>
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-3 -top-3 z-10 h-20 w-20 overflow-hidden rounded-full shadow-md sm:-left-4 sm:-top-4 sm:h-24 sm:w-24 md:-left-5 md:-top-5 md:h-28 md:w-28"
+      >
+        <Image
+          src="/decante-badge.png"
+          alt=""
+          fill
+          sizes="112px"
+          className="object-cover"
         />
       </div>
 

@@ -46,9 +46,7 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
             quantity: item.quantity,
           })),
           shipping_cost: shipping?.price ?? 0,
-          shipping_service: shipping
-            ? `${shipping.company} - ${shipping.name}`
-            : undefined,
+          shipping_service: shipping ? `Correios - ${shipping.name}` : undefined,
         }),
       });
 

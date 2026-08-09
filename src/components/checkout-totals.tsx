@@ -18,7 +18,7 @@ export function CheckoutTotals({ subtotal, shipping, total }: CheckoutTotalsProp
       {shipping && (
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            Frete ({shipping.company} · {shipping.name})
+            Frete (Correios · {shipping.name})
           </span>
           <span>{formatPriceInCents(shipping.price)}</span>
         </div>

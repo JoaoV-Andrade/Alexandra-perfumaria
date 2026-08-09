@@ -121,7 +121,7 @@ export function CartSummary() {
         {selectedShipping && (
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>
-              Frete ({selectedShipping.company} · {selectedShipping.name})
+              Frete (Correios · {selectedShipping.name})
             </span>
             <span>{formatPriceInCents(selectedShipping.price)}</span>
           </div>

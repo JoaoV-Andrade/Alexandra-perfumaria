@@ -11,6 +11,7 @@ type CreatePreferenceParams = {
   payerName: string;
   payerEmail: string;
   payerPhone: string; // só dígitos
+  shippingCost?: number; // centavos — aparece separado no checkout, fora de "items"
 };
 
 export type CreatePreferenceResult =
@@ -84,6 +85,7 @@ export async function createCheckoutPreference({
   payerName,
   payerEmail,
   payerPhone,
+  shippingCost,
 }: CreatePreferenceParams): Promise<CreatePreferenceResult> {
   const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -114,6 +116,11 @@ export async function createCheckoutPreference({
       phone: { area_code: areaCode, number },
     },
     external_reference: orderId,
+    // Frete mostrado separado dos produtos no checkout, em vez de virar mais
+    // uma linha em "items".
+    ...(shippingCost && shippingCost > 0
+      ? { shipments: { cost: shippingCost / 100, mode: "not_specified" } }
+      : {}),
     back_urls: {
       success: `${siteUrl}/checkout/retorno?pedido=${orderId}&status=sucesso`,
       pending: `${siteUrl}/checkout/retorno?pedido=${orderId}&status=pendente`,

@@ -95,6 +95,7 @@ export async function POST(request: Request) {
     id: number;
     status: string;
     external_reference?: string;
+    transaction_amount?: number;
   };
 
   const orderId = payment.external_reference;
@@ -105,6 +106,27 @@ export async function POST(request: Request) {
   const supabase = createAdminClient();
 
   if (payment.status === "approved") {
+    const { data: order } = await supabase
+      .from("orders")
+      .select("total")
+      .eq("id", orderId)
+      .maybeSingle();
+
+    if (!order) {
+      console.error(`Webhook Mercado Pago: pedido ${orderId} não encontrado`);
+      return NextResponse.json({ received: true });
+    }
+
+    const paidAmountCents = Math.round((payment.transaction_amount ?? 0) * 100);
+    if (paidAmountCents !== order.total) {
+      // Nunca aprova um pedido cujo valor pago não bate com o total salvo —
+      // só loga para investigação manual. Não é idempotência, é segurança.
+      console.error(
+        `Webhook Mercado Pago: valor pago (${paidAmountCents}) difere do total do pedido ${orderId} (${order.total}). Pagamento ${payment.id} não confirmado automaticamente.`,
+      );
+      return NextResponse.json({ received: true });
+    }
+
     const { error } = await supabase.rpc("mark_order_paid", {
       p_order_id: orderId,
       p_payment_id: String(payment.id),

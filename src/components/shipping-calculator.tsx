@@ -9,7 +9,6 @@ import { formatPriceInCents } from "@/lib/format";
 export type ShippingOption = {
   id: string;
   name: string;
-  company: string;
   price: number; // centavos
   deliveryDays: number | null;
 };
@@ -138,7 +137,7 @@ export function ShippingCalculator({
                 />
                 <span className="flex flex-col">
                   <span className="font-medium text-foreground">
-                    {option.company} · {option.name}
+                    Correios · {option.name}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {option.deliveryDays

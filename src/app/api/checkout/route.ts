@@ -180,7 +180,7 @@ export async function POST(request: Request) {
   }
 
   const shippingCost = shippingOption.price;
-  const shippingService = `${shippingOption.company} - ${shippingOption.name}`;
+  const shippingService = `Correios - ${shippingOption.name}`;
   const total = subtotal + shippingCost;
 
   const { data: order, error: insertError } = await supabase
@@ -214,21 +214,13 @@ export async function POST(request: Request) {
     unitPrice: item.price,
   }));
 
-  if (shippingCost > 0) {
-    preferenceItems.push({
-      id: "frete",
-      title: `Frete - ${shippingService}`,
-      quantity: 1,
-      unitPrice: shippingCost,
-    });
-  }
-
   const preference = await createCheckoutPreference({
     orderId: order.id,
     items: preferenceItems,
     payerName: customerName,
     payerEmail: customerEmail,
     payerPhone: customerPhone,
+    shippingCost,
   });
 
   if (!preference.ok) {

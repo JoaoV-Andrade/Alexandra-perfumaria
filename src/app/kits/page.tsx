@@ -29,6 +29,7 @@ export default function KitsPage() {
             <ProductCatalog
               filterColumn="is_kit"
               emptyDescription="Novos kits estão a caminho."
+              showDecantBadge
             />
           </div>
         </div>

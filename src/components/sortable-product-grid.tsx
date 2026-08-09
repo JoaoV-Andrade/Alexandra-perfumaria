@@ -7,7 +7,13 @@ import type { Product } from "@/types/product";
 
 type SortOrder = "recentes" | "menor-preco" | "maior-preco";
 
-export function SortableProductGrid({ products }: { products: Product[] }) {
+export function SortableProductGrid({
+  products,
+  showDecantBadge,
+}: {
+  products: Product[];
+  showDecantBadge?: boolean;
+}) {
   const [sortOrder, setSortOrder] = useState<SortOrder>("recentes");
 
   const sortedProducts = useMemo(() => {
@@ -54,7 +60,7 @@ export function SortableProductGrid({ products }: { products: Product[] }) {
       </div>
 
       <div className="mt-4">
-        <ProductGrid products={sortedProducts} />
+        <ProductGrid products={sortedProducts} showDecantBadge={showDecantBadge} />
       </div>
     </div>
   );

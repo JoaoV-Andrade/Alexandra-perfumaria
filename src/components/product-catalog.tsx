@@ -6,11 +6,13 @@ import type { Product } from "@/types/product";
 type ProductCatalogProps = {
   filterColumn?: "is_bestseller" | "is_exclusive" | "is_kit";
   emptyDescription: string;
+  showDecantBadge?: boolean;
 };
 
 export async function ProductCatalog({
   filterColumn,
   emptyDescription,
+  showDecantBadge,
 }: ProductCatalogProps) {
   const supabase = await createClient();
   const baseQuery = supabase
@@ -48,5 +50,10 @@ export async function ProductCatalog({
     );
   }
 
-  return <SortableProductGrid products={data as Product[]} />;
+  return (
+    <SortableProductGrid
+      products={data as Product[]}
+      showDecantBadge={showDecantBadge}
+    />
+  );
 }

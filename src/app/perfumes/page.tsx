@@ -28,7 +28,10 @@ export default function PerfumesPage() {
           </div>
 
           <div className="mt-8">
-            <ProductCatalog emptyDescription="Estamos preparando o catálogo. Volte em breve!" />
+            <ProductCatalog
+              emptyDescription="Estamos preparando o catálogo. Volte em breve!"
+              showDecantBadge
+            />
           </div>
         </div>
       </main>

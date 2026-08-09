@@ -90,7 +90,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {isOutOfStock && (
-                <span className="inline-flex w-fit items-center rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
+                <span className="inline-flex w-fit items-center rounded-full border border-foreground/15 bg-surface px-2.5 py-1 text-xs font-medium text-foreground">
                   Esgotado
                 </span>
               )}

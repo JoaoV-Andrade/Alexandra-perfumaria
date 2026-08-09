@@ -5,7 +5,7 @@ import { CONTACT_WHATSAPP_URL, NAV_ITEMS } from "@/lib/nav-items";
 export function SiteFooter() {
   return (
     <footer className="border-t border-surface-alt bg-surface">
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div className="mx-auto grid w-full max-w-page gap-10 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         <div>
           <p className="text-base font-semibold text-foreground">
             Alexandra Perfumaria

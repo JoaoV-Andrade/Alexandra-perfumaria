@@ -15,7 +15,7 @@ export default function ExclusivosPage() {
     <>
       <SiteHeader />
       <main className="flex-1 bg-bg-primary">
-        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+        <div className="mx-auto w-full max-w-page px-4 py-8">
           <div className="mx-auto max-w-2xl text-center">
             {/* Título sobre fundo turquesa: texto escuro sólido, sem o
                 gradiente dourado (contraste insuficiente — ver CLAUDE.md). */}

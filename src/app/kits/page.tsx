@@ -15,7 +15,7 @@ export default function KitsPage() {
     <>
       <SiteHeader />
       <main className="flex-1 bg-bg-alt">
-        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+        <div className="mx-auto w-full max-w-page px-4 py-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
               Kits de Decantes

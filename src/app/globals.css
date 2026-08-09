@@ -1,29 +1,39 @@
 @import "tailwindcss";
 
 :root {
+  /* Cor de texto única e obrigatória do site inteiro: preto.
+     Todo token de texto abaixo (--foreground, --muted-foreground, --link,
+     --accent-foreground, --status-*-foreground) aponta pra esta única
+     variável — mude aqui pra mudar em todo lugar de uma vez. */
+  --cor-texto: #000000;
+
+  /* Escala de espaçamento, raio e sombra: usa a escala padrão do Tailwind
+     (múltiplos de 4px, rounded-lg/xl/2xl, shadow-sm/lg), já aplicada de
+     forma consistente em todos os componentes — não duplicada aqui. */
+
   /* Fundos neutros */
   --background: #ffffff;
   --surface: #f8fafc;
   --surface-alt: #f1f5f9;
 
-  /* Textos */
-  --foreground: #1f2937;
-  --muted-foreground: #475569;
+  /* Textos — sempre pretos (ver --cor-texto acima) */
+  --foreground: var(--cor-texto);
+  --muted-foreground: var(--cor-texto);
 
   /* Destaque turquesa — fundo alternado das seções da loja (ver
      bg-bg-primary/bg-bg-alt) e também usado em pequenos detalhes no
-     painel administrativo, que mantém a paleta antiga. */
+     painel administrativo, que mantém a paleta antiga. Texto sobre ele
+     é sempre preto (--cor-texto), que tem contraste alto sobre o turquesa. */
   --accent: #44e2d9;
-  --accent-foreground: #0f172a;
+  --accent-foreground: var(--cor-texto);
 
   /* Fundos alternados das seções da loja pública */
   --bg-primary: #44e2d9;
   --bg-alt: #ffffff;
 
-  /* Dourado — botões, links, ícones de destaque, bordas decorativas.
-     accent-gold-1/2/3 formam o gradiente usado em fundos preenchidos
-     (botões, badges); --link é um dourado mais escuro, calibrado pra
-     passar no contraste WCAG AA em texto normal (ver CLAUDE.md). */
+  /* Dourado — só usado como FUNDO de botões e badges (nunca como cor de
+     texto, já que todo texto é preto). accent-gold-1/2/3 formam o
+     gradiente do fundo preenchido. */
   --accent-gold-1: #d2ac47;
   --accent-gold-2: #f7ef8a;
   --accent-gold-3: #ae8625;
@@ -33,32 +43,33 @@
     var(--accent-gold-2) 45%,
     var(--accent-gold-3) 85%
   );
-  /* Gradiente dourado calibrado pra texto (títulos): evita o tom claro
-     --accent-gold-2, que fica ilegível como cor de texto em fundo claro. */
+  /* Antes um gradiente dourado "clicado" no texto do título (bg-clip-text);
+     agora vira um "gradiente" sólido preto pra manter os títulos preenchidos
+     sem precisar tocar em cada página que usa bg-clip-text. */
   --title-gradient: linear-gradient(
     90deg,
-    #8a6a1a 5%,
-    var(--accent-gold-3) 45%,
-    #8a6a1a 85%
+    var(--cor-texto) 0%,
+    var(--cor-texto) 100%
   );
 
-  --link: #8a6a1a;
-  --link-hover: #6f5716;
+  --link: var(--cor-texto);
+  --link-hover: var(--cor-texto);
 
   /* Verde oficial do WhatsApp — só pro botão "Compre pelo Whatsapp sem
-     taxa" na página de produto. Texto escuro (--accent-foreground) em
-     cima dele passa no contraste WCAG AA; branco não passaria. */
+     taxa" na página de produto. Texto preto por cima tem ótimo contraste. */
   --whatsapp: #25d366;
 
-  /* Status (só pro painel administrativo: badge de pedido, estoque baixo) */
+  /* Status (só pro painel administrativo: badge de pedido, estoque baixo).
+     Fundos claros mantidos pra diferenciar os estados visualmente mesmo
+     com o texto sempre preto por cima. */
   --status-success: #ecfdf5;
-  --status-success-foreground: #047857;
+  --status-success-foreground: var(--cor-texto);
   --status-warning: #fffbeb;
-  --status-warning-foreground: #b45309;
+  --status-warning-foreground: var(--cor-texto);
   --status-danger: #fef2f2;
-  --status-danger-foreground: #b91c1c;
+  --status-danger-foreground: var(--cor-texto);
   --status-info: #f0f9ff;
-  --status-info-foreground: #0369a1;
+  --status-info-foreground: var(--cor-texto);
 }
 
 @theme inline {
@@ -86,12 +97,98 @@
   --color-status-info: var(--status-info);
   --color-status-info-foreground: var(--status-info-foreground);
   --font-sans: var(--font-inter);
+
+  /* Todo peso de fonte do site vira 700 (negrito), inclusive as classes
+     font-medium/font-semibold já usadas nos componentes — sem precisar
+     trocar classe por classe em cada arquivo. */
+  --font-weight-thin: 700;
+  --font-weight-extralight: 700;
+  --font-weight-light: 700;
+  --font-weight-normal: 700;
+  --font-weight-medium: 700;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 700;
+  --font-weight-black: 700;
+
+  /* Largura máxima única do "grid" da loja pública (cabeçalho, seções da
+     home, catálogo, rodapé) — gera a classe max-w-page. Mais larga que o
+     antigo max-w-6xl (1152px) pra caber o menu em maiúsculas/negrito sem
+     cortar, mantendo cabeçalho e conteúdo alinhados na mesma borda. */
+  --container-page: 90rem;
+
+  /* Escala tipográfica fluida (clamp), proporção ~1.25 entre os passos,
+     usada pelos títulos (text-lg a text-4xl) em todas as páginas. */
+  --text-lg: clamp(1.05rem, 0.98rem + 0.35vw, 1.125rem);
+  --text-xl: clamp(1.15rem, 1.05rem + 0.5vw, 1.25rem);
+  --text-2xl: clamp(1.35rem, 1.15rem + 1vw, 1.5rem);
+  --text-3xl: clamp(1.6rem, 1.3rem + 1.5vw, 1.875rem);
+  --text-4xl: clamp(1.9rem, 1.5rem + 2vw, 2.25rem);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Regras obrigatórias de tipografia: todo texto visível preto, negrito e
+   maiúsculo — inclusive placeholders e estados de hover/focus/active/disabled,
+   que herdam a cor via --foreground/--link/--muted-foreground (ver :root). */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  button,
+  label,
+  li,
+  td,
+  th,
+  dt,
+  dd,
+  input,
+  textarea,
+  select,
+  option,
+  blockquote,
+  small,
+  strong,
+  em,
+  cite,
+  mark,
+  time,
+  figcaption,
+  legend {
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+  }
+
+  ::placeholder {
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--foreground);
+    opacity: 1;
+  }
+
+  /* Como cor não distingue mais o estado de hover/focus dos links (tudo é
+     preto), o sublinhado vira o feedback visual — mantém a exigência de
+     "feedback claro em toda ação" mesmo com a paleta de texto única. */
+  a {
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 @keyframes fade-in {

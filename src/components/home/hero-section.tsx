@@ -4,7 +4,7 @@ import Link from "next/link";
 export function HeroSection() {
   return (
     <section className="bg-bg-primary px-4 py-10 sm:py-14">
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-8 md:grid-cols-2 md:gap-12">
+      <div className="mx-auto grid w-full max-w-page items-center gap-8 md:grid-cols-2 md:gap-12">
         <div className="text-center md:text-left">
           <div className="flex items-center justify-center gap-2 md:justify-start">
             <Image

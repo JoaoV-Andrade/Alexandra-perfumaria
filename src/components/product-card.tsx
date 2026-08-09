@@ -25,7 +25,7 @@ export function ProductCard({ product }: { product: Product }) {
         />
 
         {isOutOfStock && (
-          <span className="absolute left-3 top-3 rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
+          <span className="absolute left-3 top-3 rounded-full border border-foreground/15 bg-surface px-2.5 py-1 text-xs font-medium text-foreground">
             Esgotado
           </span>
         )}

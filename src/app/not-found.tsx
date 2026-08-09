@@ -13,7 +13,7 @@ export default function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-8">
+      <main className="mx-auto flex w-full max-w-page flex-1 flex-col items-center justify-center px-4 py-8">
         <EmptyState
           title="Página não encontrada"
           description="O que você procurava não existe ou foi removido."

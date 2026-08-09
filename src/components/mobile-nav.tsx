@@ -33,7 +33,7 @@ export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}
+      className={`fixed inset-0 z-50 xl:hidden ${open ? "" : "pointer-events-none"}`}
       aria-hidden={!open}
     >
       <div

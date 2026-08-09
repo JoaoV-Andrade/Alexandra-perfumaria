@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+      <main className="mx-auto w-full max-w-page flex-1 px-4 py-8">
         <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <div

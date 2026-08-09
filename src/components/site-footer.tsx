@@ -87,6 +87,7 @@ export function SiteFooter() {
           © {new Date().getFullYear()} Alexandra Perfumaria. Todos os
           direitos reservados. Pagamentos processados pelo Mercado Pago.
         </p>
+        <p className="mt-1">CNPJ: 63.736.403/0001-13</p>
       </div>
     </footer>
   );

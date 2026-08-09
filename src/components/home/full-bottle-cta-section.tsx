@@ -1,12 +1,20 @@
-import { BannerPlaceholder } from "@/components/banner-placeholder";
+import Image from "next/image";
+
 import { FULL_BOTTLE_WHATSAPP_URL } from "@/lib/nav-items";
 
 export function FullBottleCtaSection() {
   return (
     <section className="bg-bg-alt py-10">
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 text-center">
-        {/* Espaço reservado para a foto do banner (16:9 — ver lista de fotos necessárias) */}
-        <BannerPlaceholder className="aspect-video w-full rounded-2xl" />
+        <div className="relative aspect-[4/5] w-full max-w-xs overflow-hidden rounded-2xl bg-surface">
+          <Image
+            src="/fotos/frasco-completo.jpeg"
+            alt="Frasco completo de perfume importado"
+            fill
+            sizes="(min-width: 640px) 20rem, 80vw"
+            className="object-cover"
+          />
+        </div>
 
         <h2 className="mt-6 bg-[image:var(--title-gradient)] bg-clip-text text-lg font-semibold text-transparent sm:text-xl">
           Quer o frasco completo? Fale com a gente!

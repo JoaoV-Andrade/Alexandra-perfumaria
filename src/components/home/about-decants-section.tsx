@@ -8,7 +8,7 @@ const CHECKS = [
 
 export function AboutDecantsSection() {
   return (
-    <section id="o-que-sao-decantes" className="scroll-mt-24 bg-bg-alt">
+    <section id="o-que-sao-decantes" className="scroll-mt-24 bg-bg-primary">
       <div className="mx-auto grid w-full max-w-5xl items-center gap-8 px-4 py-12 md:grid-cols-2 md:gap-12">
         <Image
           src="/decantes-foto.png"
@@ -19,7 +19,7 @@ export function AboutDecantsSection() {
         />
 
         <div>
-          <h2 className="bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
+          <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
             O que são decantes?
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -34,7 +34,7 @@ export function AboutDecantsSection() {
                 key={check}
                 className="flex items-center gap-2 text-sm text-foreground"
               >
-                <CheckIcon className="h-5 w-5 shrink-0 text-link" />
+                <CheckIcon className="h-5 w-5 shrink-0 text-foreground" />
                 {check}
               </li>
             ))}

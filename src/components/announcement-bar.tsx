@@ -20,7 +20,7 @@ export function AnnouncementBar() {
   }, []);
 
   return (
-    <div className="bg-bg-primary px-4 py-1.5 text-center text-foreground">
+    <div className="bg-[image:var(--gold-gradient)] px-4 py-1.5 text-center text-accent-foreground">
       <p key={index} aria-live="polite" className="animate-fade-in text-xs font-medium">
         {MESSAGES[index]}
       </p>

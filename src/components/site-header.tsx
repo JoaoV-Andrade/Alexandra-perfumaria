@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,13 +18,17 @@ export function SiteHeader() {
     <>
       <AnnouncementBar />
 
-      <header className="sticky top-0 z-40 border-b border-surface-alt bg-background shadow-sm">
+      <header className="sticky top-0 z-40 bg-bg-primary shadow-sm">
         <div className="mx-auto flex h-16 w-full max-w-page items-center justify-between gap-4 px-4">
-          <Link
-            href="/"
-            className="shrink-0 text-lg font-semibold tracking-tight text-foreground"
-          >
-            Alexandra Perfumaria
+          <Link href="/" className="shrink-0">
+            <Image
+              src="/logo-frasco.png"
+              alt="Alexandra Perfumaria"
+              width={68}
+              height={121}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
 
           <nav className="hidden min-w-0 flex-1 items-center gap-1 overflow-x-auto scrollbar-hide xl:flex">

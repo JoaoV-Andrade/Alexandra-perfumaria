@@ -20,7 +20,7 @@ export default function Home() {
           title="Mais Vendidos"
           viewAllHref="/mais-vendidos"
           filterColumn="is_bestseller"
-          background="primary"
+          background="alt"
         />
 
         <BenefitsSection />
@@ -33,7 +33,7 @@ export default function Home() {
           title="Exclusivos"
           viewAllHref="/exclusivos"
           filterColumn="is_exclusive"
-          background="primary"
+          background="alt"
         />
       </main>
       <SiteFooter />

@@ -3,14 +3,12 @@ import { FULL_BOTTLE_WHATSAPP_URL } from "@/lib/nav-items";
 
 export function FullBottleCtaSection() {
   return (
-    <section className="bg-bg-primary py-10">
+    <section className="bg-bg-alt py-10">
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 text-center">
         {/* Espaço reservado para a foto do banner (16:9 — ver lista de fotos necessárias) */}
         <BannerPlaceholder className="aspect-video w-full rounded-2xl" />
 
-        {/* Título sobre fundo turquesa: texto escuro sólido, sem o
-            gradiente dourado (contraste insuficiente — ver CLAUDE.md). */}
-        <h2 className="mt-6 text-lg font-semibold text-foreground sm:text-xl">
+        <h2 className="mt-6 bg-[image:var(--title-gradient)] bg-clip-text text-lg font-semibold text-transparent sm:text-xl">
           Quer o frasco completo? Fale com a gente!
         </h2>
         <a

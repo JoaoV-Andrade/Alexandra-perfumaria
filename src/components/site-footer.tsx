@@ -1,16 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { CONTACT_WHATSAPP_URL, NAV_ITEMS } from "@/lib/nav-items";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-surface-alt bg-surface">
+    <footer className="bg-bg-primary">
       <div className="mx-auto grid w-full max-w-page gap-10 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         <div>
-          <p className="text-base font-semibold text-foreground">
-            Alexandra Perfumaria
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <Image
+            src="/logo-com-nome.png"
+            alt="Alexandra Perfumaria"
+            width={94}
+            height={105}
+            className="h-16 w-auto"
+          />
+          <p className="mt-3 text-sm text-muted-foreground">
             Curadoria de perfumes importados, com carinho e originalidade.
           </p>
           <p className="mt-4 text-xs text-muted-foreground">
@@ -77,7 +82,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-surface-alt px-4 py-6 text-center text-xs text-muted-foreground">
+      <div className="border-t border-foreground/10 px-4 py-6 text-center text-xs text-muted-foreground">
         <p>
           © {new Date().getFullYear()} Alexandra Perfumaria. Todos os
           direitos reservados. Pagamentos processados pelo Mercado Pago.

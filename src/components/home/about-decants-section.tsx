@@ -9,53 +9,55 @@ const CHECKS = [
 export function AboutDecantsSection() {
   return (
     <section id="o-que-sao-decantes" className="scroll-mt-24 bg-bg-alt">
-      <div className="mx-auto w-full max-w-3xl px-4 py-12 text-center">
-      <Image
-        src="/decante.png"
-        alt="Um decante de perfume de 5ml"
-        width={400}
-        height={400}
-        className="mx-auto h-40 w-40 sm:h-48 sm:w-48"
-      />
+      <div className="mx-auto grid w-full max-w-5xl items-center gap-8 px-4 py-12 md:grid-cols-2 md:gap-12">
+        <Image
+          src="/decantes-foto.png"
+          alt="Decantes de perfume de 5ml com tampa dourada"
+          width={600}
+          height={600}
+          className="mx-auto w-full max-w-sm rounded-2xl object-cover md:max-w-none"
+        />
 
-      <h2 className="mt-8 bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
-        O que são decantes?
-      </h2>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-        São amostras de 5ml retiradas diretamente de perfumes originais,
-        permitindo experimentar fragrâncias importadas antes de investir no
-        frasco completo.
-      </p>
+        <div>
+          <h2 className="bg-[image:var(--title-gradient)] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
+            O que são decantes?
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            São amostras de 5ml retiradas diretamente de perfumes originais,
+            permitindo experimentar fragrâncias importadas antes de investir
+            no frasco completo.
+          </p>
 
-      <ul className="mt-6 flex flex-col gap-3 text-left sm:mx-auto sm:w-fit">
-        {CHECKS.map((check) => (
-          <li
-            key={check}
-            className="flex items-center gap-2 text-sm text-foreground"
-          >
-            <CheckIcon className="h-5 w-5 shrink-0 text-link" />
-            {check}
-          </li>
-        ))}
-      </ul>
+          <ul className="mt-6 flex flex-col gap-3">
+            {CHECKS.map((check) => (
+              <li
+                key={check}
+                className="flex items-center gap-2 text-sm text-foreground"
+              >
+                <CheckIcon className="h-5 w-5 shrink-0 text-link" />
+                {check}
+              </li>
+            ))}
+          </ul>
 
-      <div className="mt-6 rounded-2xl border border-link/30 bg-link/10 px-4 py-4 text-left">
-        <div className="flex items-center gap-2">
-          <ClockIcon className="h-5 w-5 shrink-0 text-link" />
-          <p className="text-base font-semibold text-foreground">
-            Quanto tempo dura um decante?
+          <div className="mt-6 rounded-2xl border border-link/30 bg-link/10 px-4 py-4">
+            <div className="flex items-center gap-2">
+              <ClockIcon className="h-5 w-5 shrink-0 text-link" />
+              <p className="text-base font-semibold text-foreground">
+                Quanto tempo dura um decante?
+              </p>
+            </div>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Em média, 80 borrifadas por decante de 5ml — validade de 5 meses
+              após aberto.
+            </p>
+          </div>
+
+          <p className="mt-4 border-l-4 border-link bg-surface px-4 py-3 text-sm font-medium text-foreground">
+            Vendemos frascos fracionados. Não vendemos o frasco completo pelo
+            site.
           </p>
         </div>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          Em média, 80 borrifadas por decante de 5ml — validade de 5 meses
-          após aberto.
-        </p>
-      </div>
-
-      <p className="mt-4 border-l-4 border-link bg-surface px-4 py-3 text-left text-sm font-medium text-foreground">
-        Vendemos frascos fracionados. Não vendemos o frasco completo pelo
-        site.
-      </p>
       </div>
     </section>
   );

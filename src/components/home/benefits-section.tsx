@@ -24,15 +24,11 @@ const BENEFITS: Benefit[] = [
 
 export function BenefitsSection() {
   return (
-    <section className="bg-bg-primary">
+    <section className="bg-bg-alt">
       <div className="mx-auto grid w-full max-w-page gap-6 px-4 py-8 sm:grid-cols-3">
         {BENEFITS.map((benefit) => (
           <div key={benefit.title} className="flex items-start gap-3">
-            {/*
-              Ícone escuro (não dourado): sobre o fundo turquesa da seção,
-              o dourado não fecha o contraste mínimo — ver CLAUDE.md.
-            */}
-            <benefit.icon className="h-6 w-6 shrink-0 text-foreground" />
+            <benefit.icon className="h-6 w-6 shrink-0 text-link" />
             <div>
               <p className="text-sm font-semibold text-foreground">
                 {benefit.title}

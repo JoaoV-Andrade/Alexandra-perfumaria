@@ -14,15 +14,16 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
 
+        <AboutDecantsSection />
+
         <FeaturedProductsSection
           title="Mais Vendidos"
           viewAllHref="/mais-vendidos"
           filterColumn="is_bestseller"
+          background="primary"
         />
 
         <BenefitsSection />
-
-        <AboutDecantsSection />
 
         <FullBottleCtaSection />
 

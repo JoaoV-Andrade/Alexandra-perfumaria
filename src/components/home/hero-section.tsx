@@ -1,6 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const DELIVERY_HIGHLIGHTS = [
+  "Entregas para todo o Brasil e exterior",
+  "Entrega via Correios",
+  "Rastreamento disponível em todo o processo",
+];
+
 export function HeroSection() {
   return (
     <section className="bg-[image:var(--gold-gradient)] px-4 py-6 sm:py-8">
@@ -15,6 +21,18 @@ export function HeroSection() {
             Experimente as fragrâncias dos seus sonhos por uma fração do
             preço.
           </p>
+
+          <ul className="mt-4 flex flex-col gap-2 sm:mx-auto sm:w-fit md:mx-0">
+            {DELIVERY_HIGHLIGHTS.map((highlight) => (
+              <li
+                key={highlight}
+                className="flex items-center gap-2 text-sm text-foreground"
+              >
+                <CheckIcon className="h-4 w-4 shrink-0" />
+                {highlight}
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
             <Link
@@ -44,5 +62,22 @@ export function HeroSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M5 12.5l4.5 4.5L19 7.5" />
+    </svg>
   );
 }

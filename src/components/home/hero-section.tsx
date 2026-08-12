@@ -9,15 +9,29 @@ const DELIVERY_HIGHLIGHTS = [
 
 export function HeroSection() {
   return (
-    <section className="bg-[image:var(--gold-gradient)] px-4 py-6 sm:py-8">
-      <div className="mx-auto grid w-full max-w-page items-center gap-8 md:grid-cols-2 md:gap-12">
-        <div className="text-center md:text-left">
-          <h1 className="bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent sm:text-3xl md:text-4xl">
+    <section className="relative overflow-hidden px-4 py-14 sm:py-20 md:py-28">
+      <Image
+        src="/fotos/foto-hero.jpeg"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/20"
+      />
+
+      <div className="relative mx-auto w-full max-w-page">
+        <div className="max-w-xl text-center md:text-left">
+          <h1 className="text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
             Perfumes Importados Originais
             <br />
             Decantes de 5ML
           </h1>
-          <p className="mt-3 text-sm text-foreground/80 sm:text-base">
+          <p className="mt-3 text-sm text-white/90 sm:text-base">
             Experimente as fragrâncias dos seus sonhos por uma fração do
             preço.
           </p>
@@ -26,7 +40,7 @@ export function HeroSection() {
             {DELIVERY_HIGHLIGHTS.map((highlight) => (
               <li
                 key={highlight}
-                className="flex items-center gap-2 text-sm text-foreground"
+                className="flex items-center gap-2 text-sm text-white"
               >
                 <CheckIcon className="h-4 w-4 shrink-0" />
                 {highlight}
@@ -43,22 +57,11 @@ export function HeroSection() {
             </Link>
             <a
               href="#o-que-sao-decantes"
-              className="inline-flex h-11 items-center justify-center rounded-full border border-foreground/40 px-6 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-white/60 px-6 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
             >
               O que são decantes?
             </a>
           </div>
-        </div>
-
-        <div className="flex justify-center md:justify-end">
-          <Image
-            src="/logo-com-nome.png"
-            alt="Alexandra Perfumaria"
-            width={94}
-            height={105}
-            priority
-            className="h-48 w-auto sm:h-56 md:h-64"
-          />
         </div>
       </div>
     </section>

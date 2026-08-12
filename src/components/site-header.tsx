@@ -19,14 +19,14 @@ export function SiteHeader() {
       <AnnouncementBar />
 
       <header className="sticky top-0 z-40 bg-bg-primary shadow-sm">
-        <div className="mx-auto flex h-16 w-full max-w-page items-center justify-between gap-4 px-4">
+        <div className="mx-auto flex h-20 w-full max-w-page items-center justify-between gap-4 px-4">
           <Link href="/" className="shrink-0">
             <Image
               src="/logo-frasco.png"
               alt="Alexandra Perfumaria"
               width={68}
               height={121}
-              className="h-12 w-auto"
+              className="h-16 w-auto"
               priority
             />
           </Link>

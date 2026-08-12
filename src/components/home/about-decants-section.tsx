@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { FULL_BOTTLE_WHATSAPP_URL } from "@/lib/nav-items";
+
 const CHECKS = [
   "Custo mais acessível",
   "Praticidade no dia a dia",
@@ -53,10 +55,19 @@ export function AboutDecantsSection() {
             </p>
           </div>
 
-          <p className="mt-4 border-l-4 border-link bg-surface px-4 py-3 text-sm font-medium text-foreground">
-            Vendemos frascos fracionados. Não vendemos o frasco completo pelo
-            site.
-          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-l-4 border-link bg-surface px-4 py-3">
+            <p className="text-sm font-medium text-foreground">
+              Venda dos Frascos Inteiros através do nosso WhatsApp Comercial!
+            </p>
+            <a
+              href={FULL_BOTTLE_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-whatsapp px-5 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+            >
+              Chamar no WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </section>

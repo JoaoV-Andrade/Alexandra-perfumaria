@@ -1,6 +1,5 @@
 const BOTTLE_INFO = [
   "Frascos fracionados de 5ml",
-  "Não vendemos o frasco completo pelo site",
   "Perfumes 100% originais importados",
   "Quantidade limitada por fragrância",
   "Pronta entrega após confirmação do pagamento",
@@ -9,7 +8,7 @@ const BOTTLE_INFO = [
 const SHIPPING_INFO = [
   "Postagem em 2 a 5 dias úteis após a confirmação do pagamento",
   "O prazo de entrega conta a partir da postagem e varia por região e modalidade de frete",
-  "Entregas para todo o Brasil, com rastreamento",
+  "Entregas para todo o Brasil e Exterior, com rastreamento",
 ];
 
 export function ImportantInfoSection() {

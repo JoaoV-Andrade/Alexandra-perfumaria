@@ -15,6 +15,8 @@ export type ParsedProductFields = {
   isBestseller: boolean;
   isExclusive: boolean;
   isKit: boolean;
+  isMasculine: boolean;
+  isBottleOnly: boolean;
 };
 
 export type ParseProductFormResult =
@@ -40,6 +42,8 @@ export function parseProductFormData(formData: FormData): ParseProductFormResult
   const isBestseller = formData.get("is_bestseller") === "on";
   const isExclusive = formData.get("is_exclusive") === "on";
   const isKit = formData.get("is_kit") === "on";
+  const isMasculine = formData.get("is_masculine") === "on";
+  const isBottleOnly = formData.get("is_bottle_only") === "on";
 
   if (!name || !brand) {
     return { ok: false, message: "Preencha nome e marca." };
@@ -96,6 +100,8 @@ export function parseProductFormData(formData: FormData): ParseProductFormResult
       isBestseller,
       isExclusive,
       isKit,
+      isMasculine,
+      isBottleOnly,
     },
   };
 }

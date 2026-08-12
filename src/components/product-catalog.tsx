@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
 
 type ProductCatalogProps = {
-  filterColumn?: "is_bestseller" | "is_exclusive" | "is_kit";
+  filterColumn?: "is_bestseller" | "is_exclusive" | "is_kit" | "is_masculine";
   emptyDescription: string;
   showDecantBadge?: boolean;
 };
@@ -18,7 +18,7 @@ export async function ProductCatalog({
   const baseQuery = supabase
     .from("products")
     .select(
-      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive",
+      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive, is_bottle_only",
     )
     .eq("active", true)
     .order("created_at", { ascending: false });

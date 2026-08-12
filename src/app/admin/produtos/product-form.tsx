@@ -30,6 +30,8 @@ export type ProductFormDefaults = {
   is_bestseller: boolean;
   is_exclusive: boolean;
   is_kit: boolean;
+  is_masculine: boolean;
+  is_bottle_only: boolean;
   notes: string | null;
 };
 
@@ -108,7 +110,7 @@ export function ProductForm({
       </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <FormField label="Volume do decante (ml)">
+        <FormField label={'Volume do decante (ml) — ou do frasco, se marcar "Só frasco completo" abaixo'}>
           <input
             name="volume_ml"
             type="number"
@@ -214,6 +216,33 @@ export function ProductForm({
             className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
           />
           Kit (conjunto de decantes)
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input
+            name="is_masculine"
+            type="checkbox"
+            defaultChecked={defaultValues?.is_masculine ?? false}
+            className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          Masculino
+        </label>
+
+        <label className="flex items-start gap-2 text-sm text-foreground">
+          <input
+            name="is_bottle_only"
+            type="checkbox"
+            defaultChecked={defaultValues?.is_bottle_only ?? false}
+            className="mt-0.5 h-4 w-4 rounded border-muted-foreground/40 accent-accent"
+          />
+          <span>
+            Só frasco completo (sem decante disponível)
+            <span className="block text-xs font-normal text-muted-foreground">
+              O preço acima vira o preço do frasco. A página não deixa
+              adicionar ao carrinho — mostra só o preço e direciona pro
+              WhatsApp.
+            </span>
+          </span>
         </label>
       </div>
 

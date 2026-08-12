@@ -6,8 +6,9 @@ export type Product = {
   price_original: number | null; // centavos; preço "de", só quando em promoção real
   images: string[];
   stock: number;
-  volume_ml: number; // decante: geralmente 5ml, às vezes 10ml
+  volume_ml: number; // decante: geralmente 5ml, às vezes 10ml (ou o volume do frasco, se is_bottle_only)
   is_exclusive: boolean;
+  is_bottle_only: boolean; // só existe no frasco completo, sem decante — não entra no carrinho
 };
 
 export type ProductDetail = Product & {
@@ -19,6 +20,7 @@ export type ProductAdmin = ProductDetail & {
   active: boolean;
   is_bestseller: boolean;
   is_kit: boolean; // kit: conjunto de decantes vendido como produto próprio
+  is_masculine: boolean; // perfume masculino, entra na seção "Masculinos"
   weight_g: number;
   length_cm: number;
   width_cm: number;

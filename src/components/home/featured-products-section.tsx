@@ -7,7 +7,7 @@ import type { Product } from "@/types/product";
 type FeaturedProductsSectionProps = {
   title: string;
   viewAllHref: string;
-  filterColumn: "is_bestseller" | "is_exclusive";
+  filterColumn: "is_bestseller" | "is_exclusive" | "is_masculine";
   // Alternância de fundo das seções da home: "alt" = branco, "primary" =
   // turquesa. Sobre turquesa o título e o link ficam em texto escuro
   // sólido em vez de dourado, por contraste — ver CLAUDE.md.
@@ -24,7 +24,7 @@ export async function FeaturedProductsSection({
   const { data } = await supabase
     .from("products")
     .select(
-      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive",
+      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive, is_bottle_only",
     )
     .eq("active", true)
     .eq(filterColumn, true)

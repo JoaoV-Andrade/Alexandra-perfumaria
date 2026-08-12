@@ -59,6 +59,8 @@ export async function createProduct(
     isBestseller,
     isExclusive,
     isKit,
+    isMasculine,
+    isBottleOnly,
   } = parsed.data;
 
   const { error: insertError } = await adminClient.from("products").insert({
@@ -78,6 +80,8 @@ export async function createProduct(
     is_bestseller: isBestseller,
     is_exclusive: isExclusive,
     is_kit: isKit,
+    is_masculine: isMasculine,
+    is_bottle_only: isBottleOnly,
     images: upload.urls,
   });
 

@@ -59,7 +59,9 @@ export function ProductCard({
             {product.name}
           </h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            Decante {product.volume_ml}ml
+            {product.is_bottle_only
+              ? "Frasco completo"
+              : `Decante ${product.volume_ml}ml`}
           </p>
           {isPromo ? (
             <p className="mt-2 flex items-baseline gap-2">
@@ -89,7 +91,7 @@ export function ProductCard({
         </div>
       </Link>
 
-      {showDecantBadge && (
+      {showDecantBadge && !product.is_bottle_only && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-3 -top-3 z-10 h-16 w-16 overflow-hidden rounded-full shadow-md sm:-left-4 sm:-top-4 sm:h-20 sm:w-20 md:-left-5 md:-top-5 md:h-24 md:w-24"

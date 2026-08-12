@@ -35,6 +35,13 @@ export default function Home() {
           filterColumn="is_exclusive"
           background="alt"
         />
+
+        <FeaturedProductsSection
+          title="Perfumes Masculinos"
+          viewAllHref="/masculinos"
+          filterColumn="is_masculine"
+          background="primary"
+        />
       </main>
       <SiteFooter />
     </>

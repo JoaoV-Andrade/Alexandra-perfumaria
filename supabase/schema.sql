@@ -26,6 +26,11 @@ create table if not exists public.products (
   is_bestseller boolean not null default false,
   is_exclusive boolean not null default false,
   is_kit boolean not null default false, -- kit: conjunto de decantes vendido como produto próprio
+  is_masculine boolean not null default false, -- perfume masculino, entra na seção "Masculinos"
+  -- só existe no frasco completo (sem decante); volume_ml vira o volume do
+  -- frasco e o site não deixa adicionar ao carrinho, só mostra o preço e
+  -- direciona pro WhatsApp
+  is_bottle_only boolean not null default false,
   notes text, -- notas olfativas, opcional
   created_at timestamptz not null default now()
 );
@@ -34,6 +39,7 @@ create index if not exists products_active_idx on public.products (active);
 create index if not exists products_is_bestseller_idx on public.products (is_bestseller);
 create index if not exists products_is_exclusive_idx on public.products (is_exclusive);
 create index if not exists products_is_kit_idx on public.products (is_kit);
+create index if not exists products_is_masculine_idx on public.products (is_masculine);
 
 alter table public.products enable row level security;
 

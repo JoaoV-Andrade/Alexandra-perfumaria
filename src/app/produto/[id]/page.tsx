@@ -20,7 +20,7 @@ const fetchProduct = cache(async (id: string) => {
   const { data } = await supabase
     .from("products")
     .select(
-      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes, is_exclusive",
+      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes, is_exclusive, is_bottle_only",
     )
     .eq("id", id)
     .maybeSingle<ProductDetail>();
@@ -40,7 +40,9 @@ export async function generateMetadata({
   const title = `${product.name} — ${product.brand}`;
   const description =
     product.description?.slice(0, 160) ||
-    `Decante de ${product.volume_ml}ml do perfume ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`;
+    (product.is_bottle_only
+      ? `Frasco completo de ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`
+      : `Decante de ${product.volume_ml}ml do perfume ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`);
 
   return {
     title,
@@ -71,7 +73,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const fullBottleWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(fullBottleMessage)}`;
   const restockMessage = `Olá! Quero ser avisada quando ${product.name} voltar ao estoque.`;
   const restockWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(restockMessage)}`;
-  const buyMessage = `Olá! Quero comprar o decante de ${product.volume_ml}ml de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - direto pelo WhatsApp, sem taxa.`;
+  const buyMessage = product.is_bottle_only
+    ? `Olá! Tenho interesse no frasco completo de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - vi no site.`
+    : `Olá! Quero comprar o decante de ${product.volume_ml}ml de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - direto pelo WhatsApp, sem taxa.`;
   const buyWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buyMessage)}`;
 
   return (
@@ -122,20 +126,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             )}
 
-            <div className="mt-2 flex items-center gap-2">
-              <Image
-                src="/decante-badge.png"
-                alt=""
-                aria-hidden="true"
-                width={48}
-                height={48}
-                className="h-12 w-12 shrink-0 rounded-full object-cover"
-              />
-              <p className="text-sm text-muted-foreground">
-                Decante de {product.volume_ml}ml · fracionado de perfume 100%
-                original
+            {product.is_bottle_only ? (
+              <p className="mt-2 text-sm text-muted-foreground">
+                Frasco completo e lacrado · 100% original
               </p>
-            </div>
+            ) : (
+              <div className="mt-2 flex items-center gap-2">
+                <Image
+                  src="/decante-badge.png"
+                  alt=""
+                  aria-hidden="true"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 shrink-0 rounded-full object-cover"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Decante de {product.volume_ml}ml · fracionado de perfume 100%
+                  original
+                </p>
+              </div>
+            )}
 
             {isFewUnits && (
               <p className="mt-1 text-xs text-muted-foreground">
@@ -143,10 +153,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             )}
 
-            <p className="mt-3 inline-flex w-fit items-center rounded-full border border-muted-foreground/30 px-3 py-1 text-xs font-medium text-muted-foreground">
-              Lote limitado — decantes fracionados de um único frasco
-              original
-            </p>
+            {!product.is_bottle_only && (
+              <p className="mt-3 inline-flex w-fit items-center rounded-full border border-muted-foreground/30 px-3 py-1 text-xs font-medium text-muted-foreground">
+                Lote limitado — decantes fracionados de um único frasco
+                original
+              </p>
+            )}
 
             {product.description && (
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -164,7 +176,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <AddToCartButton product={product} />
+              {!product.is_bottle_only && <AddToCartButton product={product} />}
 
               {isOutOfStock ? (
                 <a
@@ -187,19 +199,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
             </div>
 
-            <div className="mt-6 rounded-2xl bg-surface p-4">
-              <p className="text-sm font-semibold text-foreground">
-                Quer o frasco completo? Chame no WhatsApp
-              </p>
-              <a
-                href={fullBottleWhatsAppUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
-              >
-                Falar no WhatsApp
-              </a>
-            </div>
+            {!product.is_bottle_only && (
+              <div className="mt-6 rounded-2xl bg-surface p-4">
+                <p className="text-sm font-semibold text-foreground">
+                  Quer o frasco completo? Chame no WhatsApp
+                </p>
+                <a
+                  href={fullBottleWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex h-11 items-center justify-center rounded-full border border-muted-foreground/30 px-6 text-center text-sm font-semibold text-foreground transition-colors hover:bg-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+                >
+                  Falar no WhatsApp
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </main>

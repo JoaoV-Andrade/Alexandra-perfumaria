@@ -103,7 +103,8 @@ export async function POST(request: Request) {
       "id",
       validItems.map((item) => item.productId),
     )
-    .eq("active", true);
+    .eq("active", true)
+    .eq("is_bottle_only", false);
 
   if (productsError) {
     return NextResponse.json(

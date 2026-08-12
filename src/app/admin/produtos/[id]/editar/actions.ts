@@ -69,6 +69,8 @@ export async function updateProduct(
     isBestseller,
     isExclusive,
     isKit,
+    isMasculine,
+    isBottleOnly,
   } = parsed.data;
 
   const { error: updateError } = await adminClient
@@ -90,6 +92,8 @@ export async function updateProduct(
       is_bestseller: isBestseller,
       is_exclusive: isExclusive,
       is_kit: isKit,
+      is_masculine: isMasculine,
+      is_bottle_only: isBottleOnly,
       images: [...remainingImages, ...upload.urls],
     })
     .eq("id", productId);

@@ -5,12 +5,16 @@ import type { Product } from "@/types/product";
 
 type ProductCatalogProps = {
   filterColumn?: "is_bestseller" | "is_exclusive" | "is_kit" | "is_masculine";
+  // Promoção não é um selo booleano: um produto está em promoção quando tem
+  // price_original preenchido (preço "de"), então usa um filtro à parte.
+  onlyPromo?: boolean;
   emptyDescription: string;
   showDecantBadge?: boolean;
 };
 
 export async function ProductCatalog({
   filterColumn,
+  onlyPromo,
   emptyDescription,
   showDecantBadge,
 }: ProductCatalogProps) {
@@ -25,9 +29,11 @@ export async function ProductCatalog({
 
   // Sem filtro específico (catálogo "Todos os Perfumes"), kits não entram
   // aqui — eles têm a própria página em /kits.
-  const { data, error } = filterColumn
-    ? await baseQuery.eq(filterColumn, true)
-    : await baseQuery.eq("is_kit", false);
+  const { data, error } = onlyPromo
+    ? await baseQuery.not("price_original", "is", null)
+    : filterColumn
+      ? await baseQuery.eq(filterColumn, true)
+      : await baseQuery.eq("is_kit", false);
 
   if (error) {
     return (
@@ -39,7 +45,7 @@ export async function ProductCatalog({
   }
 
   if (!data || data.length === 0) {
-    return filterColumn ? (
+    return filterColumn || onlyPromo ? (
       <EmptyState
         title="Em breve novidades aqui 💛"
         description={emptyDescription}

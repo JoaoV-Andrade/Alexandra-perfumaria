@@ -62,6 +62,15 @@ export function HeroSection() {
               O que são decantes?
             </a>
           </div>
+
+          <div className="mt-3 flex justify-center md:justify-start">
+            <Link
+              href="/promocoes"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+            >
+              Promoção
+            </Link>
+          </div>
         </div>
       </div>
     </section>

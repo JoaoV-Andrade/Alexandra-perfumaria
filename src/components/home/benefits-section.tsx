@@ -1,6 +1,6 @@
 type Benefit = {
   title: string;
-  description: string;
+  description: React.ReactNode;
   icon: (props: { className?: string }) => React.ReactElement;
 };
 
@@ -12,11 +12,16 @@ const BENEFITS: Benefit[] = [
   },
   {
     title: "Curadoria especial",
-    description: "As melhores marcas importadas, 100% originais.",
+    description: (
+      <>
+        As melhores marcas importadas,{" "}
+        <span className="whitespace-nowrap">100% originais.</span>
+      </>
+    ),
     icon: SparkleIcon,
   },
   {
-    title: "Entrega para todo o Brasil",
+    title: "Entrega para todo o Brasil e Exterior",
     description: "Postagem em 2 a 5 dias úteis, com rastreio.",
     icon: TruckIcon,
   },

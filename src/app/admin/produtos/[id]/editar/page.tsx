@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -30,7 +31,14 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
-      <h1 className="text-2xl font-semibold text-foreground">Editar produto</h1>
+      <Link
+        href="/admin/produtos"
+        className="text-sm font-medium text-muted-foreground hover:text-foreground hover:underline"
+      >
+        ← Voltar para produtos
+      </Link>
+
+      <h1 className="mt-4 text-2xl font-semibold text-foreground">Editar produto</h1>
       <p className="mt-1 text-sm text-muted-foreground">{product.name}</p>
 
       <div className="mt-6">

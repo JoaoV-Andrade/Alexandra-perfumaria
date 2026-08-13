@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { ProductImage } from "@/components/product-image";
 import type { ProductAdmin } from "@/types/product";
 
-import { toggleProductActive, updateProductPrice, updateProductStock } from "./actions";
+import {
+  deleteProduct,
+  toggleProductActive,
+  updateProductPrice,
+  updateProductStock,
+} from "./actions";
 
 const LOW_STOCK_THRESHOLD = 3;
 
@@ -14,6 +20,7 @@ const cellInputClass =
   "w-full rounded-lg border bg-background px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export function ProductRow({ product }: { product: ProductAdmin }) {
+  const router = useRouter();
   const [confirmedPrice, setConfirmedPrice] = useState(product.price); // centavos
   const [confirmedStock, setConfirmedStock] = useState(product.stock);
   const [active, setActive] = useState(product.active);
@@ -22,6 +29,7 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
   const [stockInput, setStockInput] = useState(String(product.stock));
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const lowStock = confirmedStock <= LOW_STOCK_THRESHOLD;
 
@@ -62,6 +70,24 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
         setMessage(null);
       } else {
         setStockInput(String(confirmedStock));
+        setMessage(result.message);
+      }
+    });
+  }
+
+  function handleDelete() {
+    const confirmed = window.confirm(
+      `Excluir "${product.name}"? Essa ação não pode ser desfeita.`,
+    );
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    startTransition(async () => {
+      const result = await deleteProduct(product.id);
+      if (result.ok) {
+        router.refresh();
+      } else {
+        setIsDeleting(false);
         setMessage(result.message);
       }
     });
@@ -163,12 +189,22 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
       </td>
 
       <td className="p-3 text-right">
-        <Link
-          href={`/admin/produtos/${product.id}/editar`}
-          className="text-xs font-medium text-muted-foreground hover:text-foreground hover:underline"
-        >
-          Editar
-        </Link>
+        <div className="flex items-center justify-end gap-3">
+          <Link
+            href={`/admin/produtos/${product.id}/editar`}
+            className="text-xs font-medium text-muted-foreground hover:text-foreground hover:underline"
+          >
+            Editar
+          </Link>
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isPending || isDeleting}
+            className="text-xs font-medium text-status-danger-foreground hover:underline disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isDeleting ? "Excluindo..." : "Excluir"}
+          </button>
+        </div>
       </td>
     </tr>
   );

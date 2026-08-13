@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import { deleteProductImages } from "@/lib/products/upload-product-images";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export type InlineActionResult = { ok: true } | { ok: false; message: string };
@@ -56,6 +58,29 @@ export async function updateProductStock(
   const { error } = await supabase.from("products").update({ stock }).eq("id", productId);
 
   if (error) return { ok: false, message: "Não foi possível salvar o estoque." };
+
+  revalidateProductPaths(productId);
+  return { ok: true };
+}
+
+export async function deleteProduct(productId: string): Promise<InlineActionResult> {
+  const supabase = await getAuthedClient();
+  if (!supabase) return { ok: false, message: "Sessão expirada. Faça login novamente." };
+
+  const adminClient = createAdminClient();
+
+  const { data: product } = await adminClient
+    .from("products")
+    .select("images")
+    .eq("id", productId)
+    .maybeSingle<{ images: string[] }>();
+
+  const { error } = await adminClient.from("products").delete().eq("id", productId);
+  if (error) return { ok: false, message: "Não foi possível excluir o produto." };
+
+  if (product?.images && product.images.length > 0) {
+    await deleteProductImages(adminClient, product.images);
+  }
 
   revalidateProductPaths(productId);
   return { ok: true };

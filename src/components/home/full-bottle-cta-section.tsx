@@ -17,7 +17,8 @@ export function FullBottleCtaSection() {
 
       <div className="relative mx-auto flex w-full max-w-2xl flex-col items-center px-4 text-center">
         <h2 className="text-lg font-semibold text-white sm:text-xl">
-          Quer o frasco completo? Fale com a gente!
+          Quer o frasco completo?{" "}
+          <span className="whitespace-nowrap">Fale com a gente!</span>
         </h2>
         <a
           href={FULL_BOTTLE_WHATSAPP_URL}

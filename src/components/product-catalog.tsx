@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
 
 type ProductCatalogProps = {
-  filterColumn?: "is_bestseller" | "is_exclusive" | "is_kit" | "is_masculine";
+  filterColumn?: "is_bestseller" | "is_feminine" | "is_kit" | "is_masculine";
   // Promoção não é um selo booleano: um produto está em promoção quando tem
   // price_original preenchido (preço "de"), então usa um filtro à parte.
   onlyPromo?: boolean;
@@ -22,7 +22,7 @@ export async function ProductCatalog({
   const baseQuery = supabase
     .from("products")
     .select(
-      "id, name, brand, price, price_original, images, stock, volume_ml, is_exclusive, is_bottle_only",
+      "id, name, brand, price, price_original, images, stock, volume_ml, is_bottle_only",
     )
     .eq("active", true)
     .order("created_at", { ascending: false });

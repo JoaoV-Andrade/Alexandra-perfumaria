@@ -8,7 +8,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Promoções", href: "/promocoes" },
   { label: "Mais Vendidos", href: "/mais-vendidos" },
   { label: "Kits de Decantes", href: "/kits" },
-  { label: "Exclusivos", href: "/exclusivos" },
+  { label: "Femininos", href: "/femininos" },
   { label: "Masculinos", href: "/masculinos" },
   { label: "Todos os Perfumes", href: "/perfumes" },
 ];

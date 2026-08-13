@@ -30,9 +30,9 @@ export default function Home() {
         <ImportantInfoSection />
 
         <FeaturedProductsSection
-          title="Exclusivos"
-          viewAllHref="/exclusivos"
-          filterColumn="is_exclusive"
+          title="Perfumes Femininos"
+          viewAllHref="/femininos"
+          filterColumn="is_feminine"
           background="alt"
         />
 

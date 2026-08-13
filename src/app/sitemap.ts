@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${siteUrl}/exclusivos`,
+      url: `${siteUrl}/femininos`,
       changeFrequency: "weekly",
       priority: 0.7,
     },

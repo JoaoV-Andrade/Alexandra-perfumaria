@@ -28,7 +28,7 @@ export type ProductFormDefaults = {
   height_cm: number;
   active: boolean;
   is_bestseller: boolean;
-  is_exclusive: boolean;
+  is_feminine: boolean;
   is_kit: boolean;
   is_masculine: boolean;
   is_bottle_only: boolean;
@@ -200,12 +200,12 @@ export function ProductForm({
 
         <label className="flex items-center gap-2 text-sm text-foreground">
           <input
-            name="is_exclusive"
+            name="is_feminine"
             type="checkbox"
-            defaultChecked={defaultValues?.is_exclusive ?? false}
+            defaultChecked={defaultValues?.is_feminine ?? false}
             className="h-4 w-4 rounded border-muted-foreground/40 accent-accent"
           />
-          Exclusivo
+          Feminino
         </label>
 
         <label className="flex items-center gap-2 text-sm text-foreground">

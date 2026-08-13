@@ -31,7 +31,7 @@ export function HeroSection() {
             <br />
             Decantes de 5ML
           </h1>
-          <p className="mt-3 text-sm text-white/90 sm:text-base">
+          <p className="mt-3 text-sm font-semibold text-white sm:text-base">
             Experimente as fragrâncias dos seus sonhos por uma fração do
             preço.
           </p>
@@ -40,9 +40,9 @@ export function HeroSection() {
             {DELIVERY_HIGHLIGHTS.map((highlight) => (
               <li
                 key={highlight}
-                className="flex items-center gap-2 text-sm text-white"
+                className="flex items-start gap-2 text-left text-sm font-semibold text-white"
               >
-                <CheckIcon className="h-4 w-4 shrink-0" />
+                <CheckIcon className="mt-0.5 h-4 w-4 shrink-0" />
                 {highlight}
               </li>
             ))}

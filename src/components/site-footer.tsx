@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,15 +6,18 @@ import { CONTACT_WHATSAPP_URL, NAV_ITEMS } from "@/lib/nav-items";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-bg-primary">
-      <div className="mx-auto grid w-full max-w-page gap-10 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-        <div>
+    <footer
+      className="bg-[#1f2937]"
+      style={{ "--foreground": "#ffffff", "--muted-foreground": "#cbd5e1" } as CSSProperties}
+    >
+      <div className="mx-auto grid w-full max-w-page grid-cols-2 gap-x-6 gap-y-10 px-4 py-10 lg:grid-cols-4 lg:gap-8">
+        <div className="col-span-2 lg:order-1 lg:col-span-1">
           <Image
             src="/logo-com-nome.png"
             alt="Alexandra Perfumaria"
             width={94}
             height={105}
-            className="h-16 w-auto"
+            className="mx-auto block h-24 w-auto lg:mx-0"
           />
           <p className="mt-3 text-sm text-muted-foreground">
             Curadoria de perfumes importados, com carinho e originalidade.
@@ -24,7 +28,7 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <div>
+        <div className="lg:order-2">
           <p className="text-sm font-semibold text-foreground">Navegue</p>
           <ul className="mt-3 flex flex-col gap-3 sm:gap-2">
             {NAV_ITEMS.map((item) => (
@@ -40,24 +44,7 @@ export function SiteFooter() {
           </ul>
         </div>
 
-        <div>
-          <p className="text-sm font-semibold text-foreground">Atendimento</p>
-          <div className="mt-3 flex flex-col items-start gap-3">
-            <a
-              href={CONTACT_WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-4 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
-            >
-              Falar no WhatsApp
-            </a>
-            <p className="text-sm text-muted-foreground">
-              Respondemos pelo WhatsApp assim que possível.
-            </p>
-          </div>
-        </div>
-
-        <div>
+        <div className="lg:order-4">
           <p className="text-sm font-semibold text-foreground">
             Institucional
           </p>
@@ -79,6 +66,23 @@ export function SiteFooter() {
               </Link>
             </li>
           </ul>
+        </div>
+
+        <div className="col-span-2 lg:order-3 lg:col-span-1">
+          <p className="text-sm font-semibold text-foreground">Atendimento</p>
+          <div className="mt-3 flex flex-col items-start gap-3">
+            <a
+              href={CONTACT_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-4 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link"
+            >
+              Falar no WhatsApp
+            </a>
+            <p className="text-sm text-muted-foreground">
+              Respondemos pelo WhatsApp assim que possível.
+            </p>
+          </div>
         </div>
       </div>
 

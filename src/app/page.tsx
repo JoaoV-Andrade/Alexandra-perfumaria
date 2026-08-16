@@ -4,6 +4,7 @@ import { FeaturedProductsSection } from "@/components/home/featured-products-sec
 import { FullBottleCtaSection } from "@/components/home/full-bottle-cta-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { ImportantInfoSection } from "@/components/home/important-info-section";
+import { PaymentMethodsSection } from "@/components/home/payment-methods-section";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -42,6 +43,8 @@ export default function Home() {
           filterColumn="is_masculine"
           background="primary"
         />
+
+        <PaymentMethodsSection />
       </main>
       <SiteFooter />
     </>

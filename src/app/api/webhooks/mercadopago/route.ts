@@ -102,6 +102,7 @@ export async function POST(request: Request) {
     status: string;
     external_reference?: string;
     transaction_amount?: number;
+    transaction_details?: { total_paid_amount?: number };
   };
 
   const orderId = payment.external_reference;
@@ -123,7 +124,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    const paidAmountCents = Math.round((payment.transaction_amount ?? 0) * 100);
+    // transaction_amount é só o valor dos produtos; quando o pedido tem
+    // frete, o valor de fato pago pelo cliente (produtos + frete) vem em
+    // transaction_details.total_paid_amount.
+    const paidAmountReais =
+      payment.transaction_details?.total_paid_amount ??
+      payment.transaction_amount ??
+      0;
+    const paidAmountCents = Math.round(paidAmountReais * 100);
     if (paidAmountCents !== order.total) {
       // Nunca aprova um pedido cujo valor pago não bate com o total salvo —
       // só loga para investigação manual. Não é idempotência, é segurança.

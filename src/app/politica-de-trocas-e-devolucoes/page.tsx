@@ -30,51 +30,50 @@ export default function PoliticaDeTrocasEDevolucoesPage() {
     <>
       <SiteHeader />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-10">
-        <div className="rounded-2xl border-2 border-dashed border-muted-foreground/40 bg-surface px-4 py-3 text-center text-sm font-semibold text-foreground">
-          RASCUNHO — revisar antes do lançamento
-        </div>
-
         <h1 className="mt-6 bg-[image:var(--title-gradient)] bg-clip-text text-2xl font-semibold text-transparent">
           Política de Trocas e Devoluções
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Este texto é um exemplo de ponto de partida e ainda não é a
-          política oficial da loja. Os prazos e condições abaixo estão entre
-          colchetes e precisam ser confirmados antes de publicar esta página.
+          Queremos que você compre com confiança. Veja abaixo como funcionam as
+          trocas e devoluções na Alexandra Perfumaria.
         </p>
 
         <Section title="Prazo para solicitar troca ou devolução">
           <p>
-            Você pode solicitar a troca ou devolução em até [X dias corridos]
-            após o recebimento do produto, conforme o direito de
-            arrependimento previsto no Código de Defesa do Consumidor para
-            compras feitas fora de estabelecimento físico.
+            Você pode solicitar a troca ou devolução em até 7 dias corridos após
+            o recebimento do produto, conforme o direito de arrependimento
+            previsto no Código de Defesa do Consumidor para compras feitas fora
+            de estabelecimento físico.
           </p>
         </Section>
 
         <Section title="Condições para aceitar a troca ou devolução">
           <p>
             Por se tratar de decantes (frações de perfume), a devolução só é
-            aceita em caso de [defeito, erro no envio ou avaria no
-            transporte]. Por questões de higiene, não aceitamos devolução por
-            simples arrependimento quando o lacre do decante foi rompido —
-            [confirmar esta regra antes de publicar].
+            aceita em caso de defeito, erro no envio ou avaria no transporte.
+            Por questões de higiene, não aceitamos devolução por simples
+            arrependimento quando o lacre do decante já foi rompido.
           </p>
         </Section>
 
         <Section title="Como solicitar">
           <p>
             Entre em contato pelo WhatsApp da loja informando o número do
-            pedido e o motivo da solicitação. [Definir prazo de resposta e
-            quem paga o frete de devolução.]
+            pedido, o motivo da solicitação e, se possível, uma foto do
+            problema. Respondemos em até 2 dias úteis com o próximo passo.
+          </p>
+          <p>
+            O produto deve ser enviado de volta pelo cliente; o valor do frete
+            de devolução é reembolsado junto com o produto quando a troca ou
+            devolução for aprovada.
           </p>
         </Section>
 
         <Section title="Reembolso">
           <p>
             Após a análise e aprovação da troca ou devolução, o reembolso é
-            feito [em até X dias úteis, pelo mesmo meio de pagamento usado na
-            compra — confirmar antes de publicar].
+            feito em até 10 dias úteis, pelo mesmo meio de pagamento usado na
+            compra.
           </p>
         </Section>
       </main>

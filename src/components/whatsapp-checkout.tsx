@@ -34,6 +34,11 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
     setStatus("loading");
     setErrorMessage("");
 
+    // Abre a aba do WhatsApp já aqui, ainda no clique do usuário: se
+    // esperarmos o fetch terminar, o navegador não reconhece mais o
+    // window.open como resultado direto do clique e bloqueia o popup.
+    const whatsappTab = window.open("", "_blank");
+
     try {
       const response = await fetch("/api/pedidos", {
         method: "POST",
@@ -46,13 +51,16 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
             quantity: item.quantity,
           })),
           shipping_cost: shipping?.price ?? 0,
-          shipping_service: shipping ? `Correios - ${shipping.name}` : undefined,
+          shipping_service: shipping
+            ? `Correios - ${shipping.name}`
+            : undefined,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        whatsappTab?.close();
         setStatus("error");
         setErrorMessage(data.error ?? "Não foi possível finalizar o pedido.");
         return;
@@ -67,16 +75,21 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
         total: data.total as number,
       });
 
-      window.open(
-        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
-        "_blank",
-      );
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      if (whatsappTab) {
+        whatsappTab.location.href = whatsappUrl;
+      } else {
+        // Aba não pôde ser aberta (ex.: bloqueador de pop-up mesmo assim);
+        // usa a própria janela como último recurso.
+        window.location.href = whatsappUrl;
+      }
 
       clearCart();
       setCustomerName("");
       setCustomerPhone("");
       setStatus("idle");
     } catch {
+      whatsappTab?.close();
       setStatus("error");
       setErrorMessage("Não foi possível finalizar o pedido. Tente novamente.");
     }
@@ -89,6 +102,10 @@ export function WhatsAppCheckout({ shipping }: WhatsAppCheckoutProps) {
     >
       <p className="text-sm font-medium text-foreground">
         Finalizar pelo WhatsApp
+      </p>
+      <p className="-mt-2 text-xs text-muted-foreground">
+        Comprando de fora do Brasil? Sem problema — finalize por aqui e
+        combinamos o frete internacional na conversa.
       </p>
 
       {status === "error" && <FormMessage message={errorMessage} />}

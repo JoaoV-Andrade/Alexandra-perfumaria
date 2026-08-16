@@ -25,7 +25,9 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
   const [confirmedStock, setConfirmedStock] = useState(product.stock);
   const [active, setActive] = useState(product.active);
 
-  const [priceInput, setPriceInput] = useState((product.price / 100).toFixed(2));
+  const [priceInput, setPriceInput] = useState(
+    (product.price / 100).toFixed(2),
+  );
   const [stockInput, setStockInput] = useState(String(product.stock));
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -129,7 +131,9 @@ export function ProductRow({ product }: { product: ProductAdmin }) {
         </Link>
         <p className="text-xs text-muted-foreground">{product.brand}</p>
         {message && (
-          <p className="mt-1 text-xs text-status-danger-foreground">{message}</p>
+          <p className="mt-1 text-xs text-status-danger-foreground">
+            {message}
+          </p>
         )}
       </td>
 

@@ -41,12 +41,15 @@ export async function markAsShipped(
     .select("id");
 
   if (error) {
-    return { status: "error", message: "Não foi possível marcar como enviado." };
+    return {
+      status: "error",
+      message: "Não foi possível marcar como enviado.",
+    };
   }
   if (!data || data.length === 0) {
     return {
       status: "error",
-      message: "Esse pedido não está mais como \"pago\" — atualize a página.",
+      message: 'Esse pedido não está mais como "pago" — atualize a página.',
     };
   }
 

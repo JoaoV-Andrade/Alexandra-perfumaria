@@ -12,7 +12,10 @@ type CheckoutCustomerFieldsProps = {
   onChange: (field: keyof CustomerInfo, value: string) => void;
 };
 
-export function CheckoutCustomerFields({ value, onChange }: CheckoutCustomerFieldsProps) {
+export function CheckoutCustomerFields({
+  value,
+  onChange,
+}: CheckoutCustomerFieldsProps) {
   return (
     <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
       <p className="text-sm font-medium text-foreground">Seus dados</p>

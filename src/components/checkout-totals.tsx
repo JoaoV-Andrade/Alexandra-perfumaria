@@ -7,7 +7,11 @@ type CheckoutTotalsProps = {
   total: number;
 };
 
-export function CheckoutTotals({ subtotal, shipping, total }: CheckoutTotalsProps) {
+export function CheckoutTotals({
+  subtotal,
+  shipping,
+  total,
+}: CheckoutTotalsProps) {
   return (
     <div className="flex flex-col gap-2 border-t border-surface-alt pt-4">
       <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -17,9 +21,7 @@ export function CheckoutTotals({ subtotal, shipping, total }: CheckoutTotalsProp
 
       {shipping && (
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>
-            Frete (Correios · {shipping.name})
-          </span>
+          <span>Frete (Correios · {shipping.name})</span>
           <span>{formatPriceInCents(shipping.price)}</span>
         </div>
       )}

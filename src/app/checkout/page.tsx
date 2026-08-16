@@ -6,7 +6,8 @@ import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
   title: "Finalizar compra",
-  description: "Informe seus dados de entrega e pagamento para concluir o pedido.",
+  description:
+    "Informe seus dados de entrega e pagamento para concluir o pedido.",
   robots: { index: false, follow: false },
 };
 

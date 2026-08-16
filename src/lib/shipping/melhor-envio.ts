@@ -116,7 +116,10 @@ export async function quoteShipping(
     };
   }
 
-  const totalWeightG = meItems.reduce((sum, item) => sum + item.totalWeightG, 0);
+  const totalWeightG = meItems.reduce(
+    (sum, item) => sum + item.totalWeightG,
+    0,
+  );
   const cacheKey = getCacheKey(postalCode, totalWeightG);
   const cached = quoteCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {

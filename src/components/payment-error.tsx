@@ -24,9 +24,8 @@ export function PaymentError() {
       </h1>
       <p className="max-w-sm text-sm text-muted-foreground">
         Isso pode acontecer por vários motivos — cartão recusado, dados
-        incorretos ou uma instabilidade momentânea. Você pode voltar ao
-        carrinho e tentar de novo, com o mesmo cartão ou outra forma de
-        pagamento.
+        incorretos ou uma instabilidade momentânea. Você pode voltar ao carrinho
+        e tentar de novo, com o mesmo cartão ou outra forma de pagamento.
       </p>
 
       <Link

@@ -1,8 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type UploadImagesResult =
-  | { ok: true; urls: string[] }
-  | { ok: false; message: string };
+  { ok: true; urls: string[] } | { ok: false; message: string };
 
 // Envia fotos novas pro Storage e devolve as URLs públicas, na ordem enviada.
 export async function uploadProductImages(
@@ -47,7 +46,9 @@ export async function deleteProductImages(
   supabase: SupabaseClient,
   urls: string[],
 ): Promise<void> {
-  const paths = urls.map(pathFromPublicUrl).filter((path): path is string => Boolean(path));
+  const paths = urls
+    .map(pathFromPublicUrl)
+    .filter((path): path is string => Boolean(path));
   if (paths.length === 0) return;
 
   const { error } = await supabase.storage.from("product-images").remove(paths);

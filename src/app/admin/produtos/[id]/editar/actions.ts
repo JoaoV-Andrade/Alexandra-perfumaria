@@ -3,7 +3,10 @@
 import { revalidatePath } from "next/cache";
 
 import { parseProductFormData } from "@/lib/products/parse-product-form";
-import { deleteProductImages, uploadProductImages } from "@/lib/products/upload-product-images";
+import {
+  deleteProductImages,
+  uploadProductImages,
+} from "@/lib/products/upload-product-images";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -24,7 +27,10 @@ export async function updateProduct(
     data: { user },
   } = await supabaseAuth.auth.getUser();
   if (!user) {
-    return { status: "error", message: "Sessão expirada. Faça login novamente." };
+    return {
+      status: "error",
+      message: "Sessão expirada. Faça login novamente.",
+    };
   }
 
   const parsed = parseProductFormData(formData);
@@ -40,8 +46,12 @@ export async function updateProduct(
     .eq("id", productId)
     .maybeSingle<{ images: string[] }>();
 
-  const removeUrls = formData.getAll("remove_images").map((value) => value.toString());
-  const remainingImages = (current?.images ?? []).filter((url) => !removeUrls.includes(url));
+  const removeUrls = formData
+    .getAll("remove_images")
+    .map((value) => value.toString());
+  const remainingImages = (current?.images ?? []).filter(
+    (url) => !removeUrls.includes(url),
+  );
 
   const newFiles = formData
     .getAll("images")
@@ -99,7 +109,10 @@ export async function updateProduct(
     .eq("id", productId);
 
   if (updateError) {
-    return { status: "error", message: `Falha ao salvar: ${updateError.message}` };
+    return {
+      status: "error",
+      message: `Falha ao salvar: ${updateError.message}`,
+    };
   }
 
   if (removeUrls.length > 0) {
@@ -110,5 +123,8 @@ export async function updateProduct(
   revalidatePath("/admin/produtos");
   revalidatePath(`/produto/${productId}`);
 
-  return { status: "success", message: `Produto "${name}" atualizado com sucesso.` };
+  return {
+    status: "success",
+    message: `Produto "${name}" atualizado com sucesso.`,
+  };
 }

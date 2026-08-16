@@ -55,7 +55,11 @@ function CancelForm({ orderId }: { orderId: string }) {
     <form
       action={formAction}
       onSubmit={(event) => {
-        if (!window.confirm("Cancelar este pedido? Essa ação não pode ser desfeita.")) {
+        if (
+          !window.confirm(
+            "Cancelar este pedido? Essa ação não pode ser desfeita.",
+          )
+        ) {
           event.preventDefault();
         }
       }}
@@ -118,7 +122,11 @@ export function OrderActions({
     return (
       <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
         <ConfirmWhatsappForm orderId={orderId} />
-        <CancelToggle show={showCancel} onToggle={setShowCancel} orderId={orderId} />
+        <CancelToggle
+          show={showCancel}
+          onToggle={setShowCancel}
+          orderId={orderId}
+        />
       </div>
     );
   }
@@ -127,7 +135,11 @@ export function OrderActions({
     return (
       <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
         <ShipForm orderId={orderId} />
-        <CancelToggle show={showCancel} onToggle={setShowCancel} orderId={orderId} />
+        <CancelToggle
+          show={showCancel}
+          onToggle={setShowCancel}
+          orderId={orderId}
+        />
       </div>
     );
   }
@@ -135,7 +147,11 @@ export function OrderActions({
   if (status === "pendente") {
     return (
       <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
-        <CancelToggle show={showCancel} onToggle={setShowCancel} orderId={orderId} />
+        <CancelToggle
+          show={showCancel}
+          onToggle={setShowCancel}
+          orderId={orderId}
+        />
       </div>
     );
   }

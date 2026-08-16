@@ -31,7 +31,8 @@ export async function updateProductPrice(
   }
 
   const supabase = await getAuthedClient();
-  if (!supabase) return { ok: false, message: "Sessão expirada. Faça login novamente." };
+  if (!supabase)
+    return { ok: false, message: "Sessão expirada. Faça login novamente." };
 
   const { error } = await supabase
     .from("products")
@@ -53,19 +54,27 @@ export async function updateProductStock(
   }
 
   const supabase = await getAuthedClient();
-  if (!supabase) return { ok: false, message: "Sessão expirada. Faça login novamente." };
+  if (!supabase)
+    return { ok: false, message: "Sessão expirada. Faça login novamente." };
 
-  const { error } = await supabase.from("products").update({ stock }).eq("id", productId);
+  const { error } = await supabase
+    .from("products")
+    .update({ stock })
+    .eq("id", productId);
 
-  if (error) return { ok: false, message: "Não foi possível salvar o estoque." };
+  if (error)
+    return { ok: false, message: "Não foi possível salvar o estoque." };
 
   revalidateProductPaths(productId);
   return { ok: true };
 }
 
-export async function deleteProduct(productId: string): Promise<InlineActionResult> {
+export async function deleteProduct(
+  productId: string,
+): Promise<InlineActionResult> {
   const supabase = await getAuthedClient();
-  if (!supabase) return { ok: false, message: "Sessão expirada. Faça login novamente." };
+  if (!supabase)
+    return { ok: false, message: "Sessão expirada. Faça login novamente." };
 
   const adminClient = createAdminClient();
 
@@ -75,8 +84,12 @@ export async function deleteProduct(productId: string): Promise<InlineActionResu
     .eq("id", productId)
     .maybeSingle<{ images: string[] }>();
 
-  const { error } = await adminClient.from("products").delete().eq("id", productId);
-  if (error) return { ok: false, message: "Não foi possível excluir o produto." };
+  const { error } = await adminClient
+    .from("products")
+    .delete()
+    .eq("id", productId);
+  if (error)
+    return { ok: false, message: "Não foi possível excluir o produto." };
 
   if (product?.images && product.images.length > 0) {
     await deleteProductImages(adminClient, product.images);
@@ -91,9 +104,13 @@ export async function toggleProductActive(
   active: boolean,
 ): Promise<InlineActionResult> {
   const supabase = await getAuthedClient();
-  if (!supabase) return { ok: false, message: "Sessão expirada. Faça login novamente." };
+  if (!supabase)
+    return { ok: false, message: "Sessão expirada. Faça login novamente." };
 
-  const { error } = await supabase.from("products").update({ active }).eq("id", productId);
+  const { error } = await supabase
+    .from("products")
+    .update({ active })
+    .eq("id", productId);
 
   if (error) return { ok: false, message: "Não foi possível atualizar." };
 

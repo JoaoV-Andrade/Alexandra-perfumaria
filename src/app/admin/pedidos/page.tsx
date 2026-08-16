@@ -3,7 +3,11 @@ import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { formatDateTime, formatPriceInCents } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
-import { ORDER_STATUSES, type OrderListItem, type OrderStatus } from "@/types/order";
+import {
+  ORDER_STATUSES,
+  type OrderListItem,
+  type OrderStatus,
+} from "@/types/order";
 
 import { OrderStatusBadge } from "./order-status-badge";
 import { StatusFilter } from "./status-filter";
@@ -13,7 +17,9 @@ type AdminPedidosPageProps = {
 };
 
 function parseStatus(value: string | undefined): OrderStatus | null {
-  return ORDER_STATUSES.includes(value as OrderStatus) ? (value as OrderStatus) : null;
+  return ORDER_STATUSES.includes(value as OrderStatus)
+    ? (value as OrderStatus)
+    : null;
 }
 
 export default async function AdminPedidosPage({

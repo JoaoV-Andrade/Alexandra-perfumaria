@@ -155,8 +155,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             {!product.is_bottle_only && (
               <p className="mt-3 inline-flex w-fit items-center rounded-full border border-muted-foreground/30 px-3 py-1 text-xs font-medium text-muted-foreground">
-                Lote limitado — decantes fracionados de um único frasco
-                original
+                Lote limitado — decantes fracionados de um único frasco original
               </p>
             )}
 

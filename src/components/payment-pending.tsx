@@ -89,8 +89,8 @@ export function PaymentPending({
           {qrCode && <CopyButton value={qrCode} label="Copiar código Pix" />}
 
           <p className="max-w-sm text-xs text-muted-foreground">
-            Abra o app do seu banco, escolha pagar com Pix e escaneie o
-            código acima, ou cole o código copiado na opção &quot;Pix Copia e
+            Abra o app do seu banco, escolha pagar com Pix e escaneie o código
+            acima, ou cole o código copiado na opção &quot;Pix Copia e
             Cola&quot;.
           </p>
         </>
@@ -132,7 +132,9 @@ export function PaymentPending({
         </p>
       )}
 
-      {items && total !== null && <OrderSummaryList items={items} total={total} />}
+      {items && total !== null && (
+        <OrderSummaryList items={items} total={total} />
+      )}
     </div>
   );
 }

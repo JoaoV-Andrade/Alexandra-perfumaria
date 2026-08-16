@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { BRAZILIAN_STATES } from "@/lib/brazilian-states";
-import { createCheckoutPreference, type PreferenceItem } from "@/lib/mercado-pago";
+import {
+  createCheckoutPreference,
+  type PreferenceItem,
+} from "@/lib/mercado-pago";
 import { quoteShipping } from "@/lib/shipping/melhor-envio";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { OrderAddress } from "@/types/order";
@@ -26,7 +29,9 @@ export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as RequestBody | null;
 
   const customerName = body?.customer_name?.toString().trim();
-  const customerPhone = (body?.customer_phone ?? "").toString().replace(/\D/g, "");
+  const customerPhone = (body?.customer_phone ?? "")
+    .toString()
+    .replace(/\D/g, "");
   const customerEmail = body?.customer_email?.toString().trim();
 
   if (!customerName) {
@@ -61,7 +66,9 @@ export async function POST(request: Request) {
     !address.number ||
     !address.neighborhood ||
     !address.city ||
-    !BRAZILIAN_STATES.includes(address.state as (typeof BRAZILIAN_STATES)[number])
+    !BRAZILIAN_STATES.includes(
+      address.state as (typeof BRAZILIAN_STATES)[number],
+    )
   ) {
     return NextResponse.json(
       { error: "Preencha o endereço completo corretamente." },

@@ -36,7 +36,10 @@ export type ProductFormDefaults = {
 };
 
 type ProductFormProps = {
-  action: (state: ProductFormState, formData: FormData) => Promise<ProductFormState>;
+  action: (
+    state: ProductFormState,
+    formData: FormData,
+  ) => Promise<ProductFormState>;
   submitLabel: string;
   pendingLabel: string;
   defaultValues?: ProductFormDefaults;
@@ -110,7 +113,11 @@ export function ProductForm({
       </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <FormField label={'Volume do decante (ml) — ou do frasco, se marcar "Só frasco completo" abaixo'}>
+        <FormField
+          label={
+            'Volume do decante (ml) — ou do frasco, se marcar "Só frasco completo" abaixo'
+          }
+        >
           <input
             name="volume_ml"
             type="number"
@@ -238,9 +245,8 @@ export function ProductForm({
           <span>
             Só frasco completo (sem decante disponível)
             <span className="block text-xs font-normal text-muted-foreground">
-              O preço acima vira o preço do frasco. A página não deixa
-              adicionar ao carrinho — mostra só o preço e direciona pro
-              WhatsApp.
+              O preço acima vira o preço do frasco. A página não deixa adicionar
+              ao carrinho — mostra só o preço e direciona pro WhatsApp.
             </span>
           </span>
         </label>

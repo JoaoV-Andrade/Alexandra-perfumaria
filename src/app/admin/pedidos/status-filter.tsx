@@ -14,14 +14,19 @@ const LABELS: Record<OrderStatus, string> = {
 export function StatusFilter({ current }: { current: OrderStatus | null }) {
   const options: { value: OrderStatus | null; label: string }[] = [
     { value: null, label: "Todos" },
-    ...ORDER_STATUSES.map((status) => ({ value: status, label: LABELS[status] })),
+    ...ORDER_STATUSES.map((status) => ({
+      value: status,
+      label: LABELS[status],
+    })),
   ];
 
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((option) => {
         const isActive = option.value === current;
-        const href = option.value ? `/admin/pedidos?status=${option.value}` : "/admin/pedidos";
+        const href = option.value
+          ? `/admin/pedidos?status=${option.value}`
+          : "/admin/pedidos";
 
         return (
           <Link

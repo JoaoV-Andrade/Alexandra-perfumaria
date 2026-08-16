@@ -3,8 +3,14 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
-import { CheckoutAddressFields, type AddressFormValues } from "@/components/checkout-address-fields";
-import { CheckoutCustomerFields, type CustomerInfo } from "@/components/checkout-customer-fields";
+import {
+  CheckoutAddressFields,
+  type AddressFormValues,
+} from "@/components/checkout-address-fields";
+import {
+  CheckoutCustomerFields,
+  type CustomerInfo,
+} from "@/components/checkout-customer-fields";
 import { CheckoutTotals } from "@/components/checkout-totals";
 import { EmptyState } from "@/components/empty-state";
 import { FormMessage } from "@/components/form-message";
@@ -69,7 +75,9 @@ export function CheckoutForm() {
 
     if (!shipping) {
       setStatus("error");
-      setErrorMessage("Calcule e escolha uma forma de envio antes de continuar.");
+      setErrorMessage(
+        "Calcule e escolha uma forma de envio antes de continuar.",
+      );
       return;
     }
 
@@ -100,7 +108,9 @@ export function CheckoutForm() {
 
       if (!response.ok) {
         setStatus("error");
-        setErrorMessage(data.error ?? "Não foi possível continuar para o pagamento.");
+        setErrorMessage(
+          data.error ?? "Não foi possível continuar para o pagamento.",
+        );
         return;
       }
 
@@ -108,7 +118,9 @@ export function CheckoutForm() {
       window.location.href = data.initPoint;
     } catch {
       setStatus("error");
-      setErrorMessage("Não foi possível continuar para o pagamento. Tente novamente.");
+      setErrorMessage(
+        "Não foi possível continuar para o pagamento. Tente novamente.",
+      );
     }
   }
 

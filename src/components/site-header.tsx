@@ -42,9 +42,7 @@ export function SiteHeader() {
                   key={item.href}
                   href={item.href}
                   className={`shrink-0 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "text-link"
-                      : "text-foreground hover:text-link"
+                    isActive ? "text-link" : "text-foreground hover:text-link"
                   }`}
                 >
                   {item.label}

@@ -34,7 +34,9 @@ export function SortableProductGrid({
           <span className="relative">
             <select
               value={sortOrder}
-              onChange={(event) => setSortOrder(event.target.value as SortOrder)}
+              onChange={(event) =>
+                setSortOrder(event.target.value as SortOrder)
+              }
               className="min-h-11 appearance-none rounded-full border border-link/40 bg-background py-2.5 pl-4 pr-9 text-sm font-medium text-foreground transition-colors hover:border-link focus:border-link focus:outline-none focus:ring-2 focus:ring-accent-gold-2/60"
             >
               <option value="recentes">Mais recentes</option>
@@ -60,7 +62,10 @@ export function SortableProductGrid({
       </div>
 
       <div className="mt-4">
-        <ProductGrid products={sortedProducts} showDecantBadge={showDecantBadge} />
+        <ProductGrid
+          products={sortedProducts}
+          showDecantBadge={showDecantBadge}
+        />
       </div>
     </div>
   );

@@ -11,7 +11,9 @@ type EditProductPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function EditProductPage({ params }: EditProductPageProps) {
+export default async function EditProductPage({
+  params,
+}: EditProductPageProps) {
   const { id } = await params;
 
   const supabase = await createClient();
@@ -38,7 +40,9 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
         ← Voltar para produtos
       </Link>
 
-      <h1 className="mt-4 text-2xl font-semibold text-foreground">Editar produto</h1>
+      <h1 className="mt-4 text-2xl font-semibold text-foreground">
+        Editar produto
+      </h1>
       <p className="mt-1 text-sm text-muted-foreground">{product.name}</p>
 
       <div className="mt-6">

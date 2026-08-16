@@ -8,7 +8,12 @@ export function SiteFooter() {
   return (
     <footer
       className="bg-[#1f2937]"
-      style={{ "--foreground": "#ffffff", "--muted-foreground": "#cbd5e1" } as CSSProperties}
+      style={
+        {
+          "--foreground": "#ffffff",
+          "--muted-foreground": "#cbd5e1",
+        } as CSSProperties
+      }
     >
       <div className="mx-auto grid w-full max-w-page grid-cols-2 gap-x-6 gap-y-10 px-4 py-10 lg:grid-cols-4 lg:gap-8">
         <div className="col-span-2 lg:order-1 lg:col-span-1">
@@ -45,9 +50,7 @@ export function SiteFooter() {
         </div>
 
         <div className="lg:order-4">
-          <p className="text-sm font-semibold text-foreground">
-            Institucional
-          </p>
+          <p className="text-sm font-semibold text-foreground">Institucional</p>
           <ul className="mt-3 flex flex-col gap-3 sm:gap-2">
             <li>
               <Link
@@ -88,8 +91,8 @@ export function SiteFooter() {
 
       <div className="border-t border-foreground/10 px-4 py-6 text-center text-xs text-muted-foreground">
         <p>
-          © {new Date().getFullYear()} Alexandra Perfumaria. Todos os
-          direitos reservados. Pagamentos processados pelo Mercado Pago.
+          © {new Date().getFullYear()} Alexandra Perfumaria. Todos os direitos
+          reservados. Pagamentos processados pelo Mercado Pago.
         </p>
         <p className="mt-1">CNPJ: 63.736.403/0001-13</p>
       </div>

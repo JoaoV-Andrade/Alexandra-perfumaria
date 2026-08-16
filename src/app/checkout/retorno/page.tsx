@@ -74,16 +74,21 @@ export default async function CheckoutRetornoPage({
     <>
       <SiteHeader />
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 py-8">
-        {outcome === "sucesso" && <PaymentSuccess items={items} total={total} />}
+        {outcome === "sucesso" && (
+          <PaymentSuccess items={items} total={total} />
+        )}
 
         {outcome === "pendente" && (
           <PaymentPending
             items={items}
             total={total}
             paymentTypeId={payment?.payment_type_id ?? null}
-            qrCode={payment?.point_of_interaction?.transaction_data?.qr_code ?? null}
+            qrCode={
+              payment?.point_of_interaction?.transaction_data?.qr_code ?? null
+            }
             qrCodeBase64={
-              payment?.point_of_interaction?.transaction_data?.qr_code_base64 ?? null
+              payment?.point_of_interaction?.transaction_data?.qr_code_base64 ??
+              null
             }
             ticketUrl={
               payment?.point_of_interaction?.transaction_data?.ticket_url ??

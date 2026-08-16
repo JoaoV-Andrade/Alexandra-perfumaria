@@ -28,10 +28,7 @@ function InfoCard({ title, items }: { title: string; items: string[] }) {
       <h2 className="text-base font-semibold text-foreground">{title}</h2>
       <ul className="mt-3 flex flex-col gap-2">
         {items.map((item) => (
-          <li
-            key={item}
-            className="flex gap-2 text-sm text-muted-foreground"
-          >
+          <li key={item} className="flex gap-2 text-sm text-muted-foreground">
             <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground" />
             {item}
           </li>

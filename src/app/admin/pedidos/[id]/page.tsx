@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { formatDateTime, formatPostalCode, formatPriceInCents } from "@/lib/format";
+import {
+  formatDateTime,
+  formatPostalCode,
+  formatPriceInCents,
+} from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import type { Order } from "@/types/order";
 
@@ -52,19 +56,24 @@ export default async function AdminPedidoDetailPage({
         <p className="text-sm text-foreground">{order.customer_name}</p>
         <p className="text-sm text-muted-foreground">{order.customer_phone}</p>
         {order.customer_email && (
-          <p className="text-sm text-muted-foreground">{order.customer_email}</p>
+          <p className="text-sm text-muted-foreground">
+            {order.customer_email}
+          </p>
         )}
       </section>
 
       {order.address && (
         <section className="mt-4 flex flex-col gap-1 rounded-2xl bg-surface p-4">
-          <p className="text-sm font-medium text-foreground">Endereço de entrega</p>
+          <p className="text-sm font-medium text-foreground">
+            Endereço de entrega
+          </p>
           <p className="text-sm text-muted-foreground">
             {order.address.street}, {order.address.number}
             {order.address.complement ? ` - ${order.address.complement}` : ""}
           </p>
           <p className="text-sm text-muted-foreground">
-            {order.address.neighborhood} — {order.address.city}/{order.address.state}
+            {order.address.neighborhood} — {order.address.city}/
+            {order.address.state}
           </p>
           <p className="text-sm text-muted-foreground">
             CEP {formatPostalCode(order.address.postal_code)}
@@ -108,7 +117,8 @@ export default async function AdminPedidoDetailPage({
           </div>
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>
-              Frete{order.shipping_service ? ` (${order.shipping_service})` : ""}
+              Frete
+              {order.shipping_service ? ` (${order.shipping_service})` : ""}
             </span>
             <span>{formatPriceInCents(order.shipping_cost)}</span>
           </div>

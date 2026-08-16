@@ -26,8 +26,8 @@ export function AboutDecantsSection() {
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
             São amostras de 5ml retiradas diretamente de perfumes originais,
-            permitindo experimentar fragrâncias importadas antes de investir
-            no frasco completo.
+            permitindo experimentar fragrâncias importadas antes de investir no
+            frasco completo.
           </p>
 
           <ul className="mt-6 flex flex-col gap-3">

@@ -32,8 +32,7 @@ export function HeroSection() {
             Decantes de 5ML
           </h1>
           <p className="mt-3 text-sm font-semibold text-white sm:text-base">
-            Experimente as fragrâncias dos seus sonhos por uma fração do
-            preço.
+            Experimente as fragrâncias dos seus sonhos por uma fração do preço.
           </p>
 
           <ul className="mt-4 flex flex-col gap-2 sm:mx-auto sm:w-fit md:mx-0">

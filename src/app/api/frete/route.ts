@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { quoteShipping, type ShippingQuoteItem } from "@/lib/shipping/melhor-envio";
+import {
+  quoteShipping,
+  type ShippingQuoteItem,
+} from "@/lib/shipping/melhor-envio";
 
 type RequestBody = {
   postal_code?: string;
@@ -41,7 +44,10 @@ export async function POST(request: Request) {
   });
 
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.status },
+    );
   }
 
   return NextResponse.json({ options: result.options });

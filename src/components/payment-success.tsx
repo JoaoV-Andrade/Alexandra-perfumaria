@@ -34,7 +34,9 @@ export function PaymentSuccess({ items, total }: PaymentSuccessProps) {
         novidades sobre o envio pelo WhatsApp.
       </p>
 
-      {items && total !== null && <OrderSummaryList items={items} total={total} />}
+      {items && total !== null && (
+        <OrderSummaryList items={items} total={total} />
+      )}
 
       <Link
         href="/"

@@ -20,11 +20,12 @@ export type ParsedProductFields = {
 };
 
 export type ParseProductFormResult =
-  | { ok: true; data: ParsedProductFields }
-  | { ok: false; message: string };
+  { ok: true; data: ParsedProductFields } | { ok: false; message: string };
 
 // Validação dos campos do produto, usada tanto no cadastro quanto na edição.
-export function parseProductFormData(formData: FormData): ParseProductFormResult {
+export function parseProductFormData(
+  formData: FormData,
+): ParseProductFormResult {
   const name = formData.get("name")?.toString().trim();
   const brand = formData.get("brand")?.toString().trim();
   const description = formData.get("description")?.toString().trim() || null;
@@ -90,7 +91,9 @@ export function parseProductFormData(formData: FormData): ParseProductFormResult
       volumeMl,
       priceCents: Math.round(priceReais * 100),
       priceOriginalCents:
-        priceOriginalReais !== null ? Math.round(priceOriginalReais * 100) : null,
+        priceOriginalReais !== null
+          ? Math.round(priceOriginalReais * 100)
+          : null,
       stock,
       weightG,
       lengthCm,

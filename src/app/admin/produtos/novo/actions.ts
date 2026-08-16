@@ -23,7 +23,10 @@ export async function createProduct(
     data: { user },
   } = await supabaseAuth.auth.getUser();
   if (!user) {
-    return { status: "error", message: "Sessão expirada. Faça login novamente." };
+    return {
+      status: "error",
+      message: "Sessão expirada. Faça login novamente.",
+    };
   }
 
   const parsed = parseProductFormData(formData);

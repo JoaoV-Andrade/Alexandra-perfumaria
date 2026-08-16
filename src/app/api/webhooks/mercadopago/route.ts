@@ -69,7 +69,10 @@ export async function POST(request: Request) {
     !xRequestId ||
     !isValidSignature({ xSignature, xRequestId, dataId, secret })
   ) {
-    return NextResponse.json({ error: "Assinatura inválida." }, { status: 401 });
+    return NextResponse.json(
+      { error: "Assinatura inválida." },
+      { status: 401 },
+    );
   }
 
   const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
@@ -88,7 +91,10 @@ export async function POST(request: Request) {
   );
 
   if (!paymentResponse.ok) {
-    return NextResponse.json({ error: "Pagamento não encontrado." }, { status: 404 });
+    return NextResponse.json(
+      { error: "Pagamento não encontrado." },
+      { status: 404 },
+    );
   }
 
   const payment = (await paymentResponse.json()) as {
@@ -133,7 +139,10 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Webhook Mercado Pago: falha ao confirmar pagamento", error);
+      console.error(
+        "Webhook Mercado Pago: falha ao confirmar pagamento",
+        error,
+      );
       return NextResponse.json(
         { error: "Falha ao confirmar pagamento." },
         { status: 500 },

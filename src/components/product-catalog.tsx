@@ -52,7 +52,10 @@ export async function ProductCatalog({
         action={{ label: "Ver todos os perfumes", href: "/perfumes" }}
       />
     ) : (
-      <EmptyState title="Nenhum produto disponível" description={emptyDescription} />
+      <EmptyState
+        title="Nenhum produto disponível"
+        description={emptyDescription}
+      />
     );
   }
 

@@ -1,10 +1,11 @@
 import { formatPriceInCents } from "@/lib/format";
-import type { OrderItemSnapshot } from "@/types/order";
+import type { OrderAddress, OrderItemSnapshot } from "@/types/order";
 
 type OrderForEmail = {
   id: string;
   customer_name: string;
   customer_phone: string;
+  address: OrderAddress | null;
   items: OrderItemSnapshot[];
   subtotal: number;
   shipping_cost: number;
@@ -32,6 +33,14 @@ export async function sendNewOrderEmail(order: OrderForEmail): Promise<void> {
     return;
   }
 
+  const addressHtml = order.address
+    ? `<p><strong>Endereço:</strong> ${escapeHtml(order.address.street)}, ${escapeHtml(order.address.number)}${
+        order.address.complement
+          ? ` - ${escapeHtml(order.address.complement)}`
+          : ""
+      } — ${escapeHtml(order.address.neighborhood)}, ${escapeHtml(order.address.city)}/${escapeHtml(order.address.state)} — CEP ${escapeHtml(order.address.postal_code)}</p>`
+    : "";
+
   const itemsHtml = order.items
     .map((item) => {
       const itemTotal = formatPriceInCents(item.price * item.quantity);
@@ -43,6 +52,7 @@ export async function sendNewOrderEmail(order: OrderForEmail): Promise<void> {
     <h2>Novo pedido pago!</h2>
     <p><strong>Cliente:</strong> ${escapeHtml(order.customer_name)}</p>
     <p><strong>WhatsApp:</strong> ${escapeHtml(order.customer_phone)}</p>
+    ${addressHtml}
     <ul>${itemsHtml}</ul>
     <p><strong>Subtotal:</strong> ${formatPriceInCents(order.subtotal)}</p>
     <p><strong>Frete:</strong> ${formatPriceInCents(order.shipping_cost)}</p>

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 import { sendNewOrderEmail } from "@/lib/notify-order-email";
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { OrderItemSnapshot } from "@/types/order";
+import type { OrderAddress, OrderItemSnapshot } from "@/types/order";
 
 // Status do Mercado Pago que rebaixamos direto no pedido (sem baixa de
 // estoque). "approved" tem tratamento à parte, via mark_order_paid.
@@ -118,12 +118,13 @@ export async function POST(request: Request) {
     const { data: order } = await supabase
       .from("orders")
       .select(
-        "customer_name, customer_phone, items, subtotal, shipping_cost, total",
+        "customer_name, customer_phone, address, items, subtotal, shipping_cost, total",
       )
       .eq("id", orderId)
       .maybeSingle<{
         customer_name: string;
         customer_phone: string;
+        address: OrderAddress | null;
         items: OrderItemSnapshot[];
         subtotal: number;
         shipping_cost: number;

@@ -2,21 +2,14 @@ import Link from "next/link";
 
 import { ORDER_STATUSES, type OrderStatus } from "@/types/order";
 
-const LABELS: Record<OrderStatus, string> = {
-  aguardando_whatsapp: "Aguardando WhatsApp",
-  pendente: "Pendente",
-  pago: "Pago",
-  enviado: "Enviado",
-  recusado: "Recusado",
-  cancelado: "Cancelado",
-};
+import { ORDER_STATUS_LABELS } from "./order-status-badge";
 
 export function StatusFilter({ current }: { current: OrderStatus | null }) {
   const options: { value: OrderStatus | null; label: string }[] = [
     { value: null, label: "Todos" },
     ...ORDER_STATUSES.map((status) => ({
       value: status,
-      label: LABELS[status],
+      label: ORDER_STATUS_LABELS[status],
     })),
   ];
 

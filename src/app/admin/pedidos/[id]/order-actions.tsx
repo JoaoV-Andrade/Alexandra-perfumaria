@@ -4,12 +4,15 @@ import { useActionState, useState } from "react";
 
 import { FormMessage } from "@/components/form-message";
 import { FIELD_CLASS } from "@/lib/ui";
-import type { OrderStatus } from "@/types/order";
+import { ORDER_STATUSES, type OrderStatus } from "@/types/order";
 
+import { ORDER_STATUS_LABELS } from "../order-status-badge";
 import {
   cancelOrder,
   confirmWhatsappOrder,
+  deleteOrder,
   markAsShipped,
+  updateOrderStatusManually,
   type OrderActionState,
 } from "./actions";
 
@@ -117,46 +120,152 @@ export function OrderActions({
   status: OrderStatus;
 }) {
   const [showCancel, setShowCancel] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
-  if (status === "aguardando_whatsapp") {
-    return (
-      <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
+  const canCancel =
+    status === "aguardando_whatsapp" || status === "pago" || status === "pendente";
+
+  return (
+    <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
+      {status === "aguardando_whatsapp" && (
         <ConfirmWhatsappForm orderId={orderId} />
+      )}
+      {status === "pago" && <ShipForm orderId={orderId} />}
+      {canCancel && (
         <CancelToggle
           show={showCancel}
           onToggle={setShowCancel}
           orderId={orderId}
         />
-      </div>
-    );
-  }
+      )}
 
-  if (status === "pago") {
+      <AdvancedActionsToggle
+        show={showAdvanced}
+        onToggle={setShowAdvanced}
+        orderId={orderId}
+        status={status}
+      />
+    </div>
+  );
+}
+
+// Ações avançadas (trocar status na mão, excluir) ficam escondidas atrás de
+// um link discreto pra não competir com as ações do dia a dia acima.
+function AdvancedActionsToggle({
+  show,
+  onToggle,
+  orderId,
+  status,
+}: {
+  show: boolean;
+  onToggle: (value: boolean) => void;
+  orderId: string;
+  status: OrderStatus;
+}) {
+  if (!show) {
     return (
-      <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
-        <ShipForm orderId={orderId} />
-        <CancelToggle
-          show={showCancel}
-          onToggle={setShowCancel}
-          orderId={orderId}
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => onToggle(true)}
+        className="text-left text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+      >
+        Ações avançadas
+      </button>
     );
   }
 
-  if (status === "pendente") {
-    return (
-      <div className="flex flex-col gap-4 border-t border-surface-alt pt-6">
-        <CancelToggle
-          show={showCancel}
-          onToggle={setShowCancel}
-          orderId={orderId}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="flex flex-col gap-6 rounded-2xl bg-surface p-4">
+      <ManualStatusForm orderId={orderId} currentStatus={status} />
+      <DeleteForm orderId={orderId} />
+    </div>
+  );
+}
 
-  return null;
+function ManualStatusForm({
+  orderId,
+  currentStatus,
+}: {
+  orderId: string;
+  currentStatus: OrderStatus;
+}) {
+  const [state, formAction, isPending] = useActionState(
+    updateOrderStatusManually.bind(null, orderId),
+    initialState,
+  );
+
+  return (
+    <form
+      action={formAction}
+      onSubmit={(event) => {
+        if (
+          !window.confirm(
+            "Alterar o status manualmente? Isso só muda o status — não dá baixa em estoque nem faz nenhuma outra ação automática.",
+          )
+        ) {
+          event.preventDefault();
+        }
+      }}
+      className="flex flex-col gap-3"
+    >
+      <p className="text-sm font-medium text-foreground">
+        Alterar status manualmente
+      </p>
+      <FormMessage message={state.message} />
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <select
+          name="status"
+          defaultValue={currentStatus}
+          className={`${FIELD_CLASS} flex-1`}
+        >
+          {ORDER_STATUSES.map((option) => (
+            <option key={option} value={option}>
+              {ORDER_STATUS_LABELS[option]}
+            </option>
+          ))}
+        </select>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isPending ? "Salvando..." : "Salvar status"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function DeleteForm({ orderId }: { orderId: string }) {
+  const [state, formAction, isPending] = useActionState(
+    deleteOrder.bind(null, orderId),
+    initialState,
+  );
+
+  return (
+    <form
+      action={formAction}
+      onSubmit={(event) => {
+        if (
+          !window.confirm(
+            "Excluir este pedido definitivamente? O pedido é apagado do banco de dados e essa ação não pode ser desfeita.",
+          )
+        ) {
+          event.preventDefault();
+        }
+      }}
+      className="flex flex-col gap-2"
+    >
+      <FormMessage message={state.message} />
+      <button
+        type="submit"
+        disabled={isPending}
+        className="inline-flex h-11 items-center justify-center rounded-full border border-status-danger bg-status-danger px-6 text-sm font-semibold text-status-danger-foreground transition-colors hover:bg-status-danger/70 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {isPending ? "Excluindo..." : "Excluir pedido definitivamente"}
+      </button>
+    </form>
+  );
 }
 
 // Some acoes (cancelar) ficam escondidas atras de um "Cancelar pedido"

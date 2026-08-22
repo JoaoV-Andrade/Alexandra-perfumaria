@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { ORDER_STATUSES, type OrderStatus } from "@/types/order";
 
 export type OrderActionState = {
   status: "idle" | "error";
@@ -89,6 +91,63 @@ export async function cancelOrder(
   revalidatePath(`/admin/pedidos/${orderId}`);
   revalidatePath("/admin/pedidos");
   return { status: "idle" };
+}
+
+// Troca de status "na mão", sem as travas dos botões guiados acima. Serve
+// pra corrigir status errado — não dá baixa em estoque nem faz mais nada
+// além de gravar o novo status.
+export async function updateOrderStatusManually(
+  orderId: string,
+  _prevState: OrderActionState,
+  formData: FormData,
+): Promise<OrderActionState> {
+  const newStatus = formData.get("status")?.toString();
+  if (!newStatus || !ORDER_STATUSES.includes(newStatus as OrderStatus)) {
+    return { status: "error", message: "Status inválido." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return initialErrorState;
+
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: newStatus as OrderStatus })
+    .eq("id", orderId);
+
+  if (error) {
+    return {
+      status: "error",
+      message: "Não foi possível atualizar o status.",
+    };
+  }
+
+  revalidatePath(`/admin/pedidos/${orderId}`);
+  revalidatePath("/admin/pedidos");
+  return { status: "idle" };
+}
+
+export async function deleteOrder(
+  orderId: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- assinatura exigida pelo useActionState
+  _prevState: OrderActionState,
+): Promise<OrderActionState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return initialErrorState;
+
+  const { error } = await supabase.from("orders").delete().eq("id", orderId);
+
+  if (error) {
+    return { status: "error", message: "Não foi possível excluir o pedido." };
+  }
+
+  revalidatePath("/admin/pedidos");
+  redirect("/admin/pedidos");
 }
 
 export async function confirmWhatsappOrder(

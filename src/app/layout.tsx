@@ -40,7 +40,7 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${inter.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

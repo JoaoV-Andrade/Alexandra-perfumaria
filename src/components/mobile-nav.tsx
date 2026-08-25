@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
+import { useCart } from "@/lib/cart/cart-context";
 import { FULL_BOTTLE_WHATSAPP_URL, NAV_ITEMS } from "@/lib/nav-items";
 
 type MobileNavProps = {
@@ -12,6 +13,8 @@ type MobileNavProps = {
 };
 
 export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
+  const { totalItems } = useCart();
+
   // Trava a rolagem da página por trás enquanto o painel está aberto.
   useEffect(() => {
     if (!open) return;
@@ -33,7 +36,7 @@ export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 xl:hidden ${open ? "" : "pointer-events-none"}`}
+      className={`fixed inset-0 z-50 overflow-hidden xl:hidden ${open ? "" : "pointer-events-none"}`}
       aria-hidden={!open}
     >
       <div
@@ -78,6 +81,23 @@ export function MobileNav({ open, onClose, pathname }: MobileNavProps) {
               </Link>
             );
           })}
+
+          <Link
+            href="/carrinho"
+            onClick={onClose}
+            className={`flex h-12 items-center justify-between rounded-lg px-3 text-base font-medium transition-colors ${
+              pathname === "/carrinho"
+                ? "bg-surface text-link"
+                : "text-foreground hover:bg-surface-alt"
+            }`}
+          >
+            <span>Carrinho</span>
+            {totalItems > 0 && (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-1.5 text-xs font-semibold text-accent-foreground">
+                {totalItems > 99 ? "99+" : totalItems}
+              </span>
+            )}
+          </Link>
 
           <a
             href={FULL_BOTTLE_WHATSAPP_URL}

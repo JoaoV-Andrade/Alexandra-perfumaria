@@ -61,15 +61,17 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1">
-            <CartLink />
+            <div className="hidden xl:block">
+              <CartLink />
+            </div>
 
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Abrir menu"
-              className="flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-surface-alt xl:hidden"
+              className="flex h-11 items-center rounded-full px-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt xl:hidden"
             >
-              <HamburgerIcon className="h-6 w-6" />
+              Menu
             </button>
           </div>
         </div>
@@ -81,22 +83,5 @@ export function SiteHeader() {
         pathname={pathname}
       />
     </>
-  );
-}
-
-function HamburgerIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17" />
-    </svg>
   );
 }

@@ -69,7 +69,7 @@ export function SiteHeader() {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Abrir menu"
-              className="flex h-11 items-center rounded-full px-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt xl:hidden"
+              className="flex h-11 items-center rounded-full border-2 border-foreground px-4 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt xl:hidden"
             >
               Menu
             </button>

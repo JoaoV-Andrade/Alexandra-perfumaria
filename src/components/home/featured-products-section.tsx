@@ -1,13 +1,18 @@
 import Link from "next/link";
 
 import { ProductRow } from "@/components/product-row";
+import { PROMO_OR_FILTER } from "@/lib/products/promo-filter";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
 
 type FeaturedProductsSectionProps = {
   title: string;
   viewAllHref: string;
-  filterColumn: "is_bestseller" | "is_feminine" | "is_masculine";
+  // Ou filtra por um selo booleano (is_bestseller, etc.), ou usa onlyPromo
+  // (produtos com price_original preenchido + todos os kits — ver
+  // PROMO_OR_FILTER). Um dos dois é obrigatório.
+  filterColumn?: "is_bestseller" | "is_feminine" | "is_masculine";
+  onlyPromo?: boolean;
   // Alternância de fundo das seções da home: "alt" = branco, "primary" =
   // turquesa. Sobre turquesa o título e o link ficam em texto escuro
   // sólido em vez de dourado, por contraste — ver CLAUDE.md.
@@ -18,18 +23,24 @@ export async function FeaturedProductsSection({
   title,
   viewAllHref,
   filterColumn,
+  onlyPromo,
   background = "alt",
 }: FeaturedProductsSectionProps) {
   const supabase = await createClient();
-  const { data } = await supabase
+  const baseQuery = supabase
     .from("products")
     .select(
       "id, name, brand, price, price_original, images, stock, volume_ml, is_bottle_only",
     )
     .eq("active", true)
-    .eq(filterColumn, true)
     .order("created_at", { ascending: false })
     .limit(12);
+
+  const { data } = onlyPromo
+    ? await baseQuery.or(PROMO_OR_FILTER)
+    : filterColumn
+      ? await baseQuery.eq(filterColumn, true)
+      : { data: null };
 
   const products = (data ?? []) as Product[];
   if (products.length === 0) return null;

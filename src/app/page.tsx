@@ -15,6 +15,13 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
 
+        <FeaturedProductsSection
+          title="Promoções"
+          viewAllHref="/promocoes"
+          onlyPromo
+          background="alt"
+        />
+
         <AboutDecantsSection />
 
         <FeaturedProductsSection

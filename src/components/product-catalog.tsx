@@ -1,12 +1,14 @@
 import { EmptyState } from "@/components/empty-state";
 import { SortableProductGrid } from "@/components/sortable-product-grid";
+import { PROMO_OR_FILTER } from "@/lib/products/promo-filter";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product";
 
 type ProductCatalogProps = {
   filterColumn?: "is_bestseller" | "is_feminine" | "is_kit" | "is_masculine";
   // Promoção não é um selo booleano: um produto está em promoção quando tem
-  // price_original preenchido (preço "de"), então usa um filtro à parte.
+  // price_original preenchido (preço "de") ou quando é um kit — kits sempre
+  // aparecem aqui também, mesmo sem desconto (ver PROMO_OR_FILTER).
   onlyPromo?: boolean;
   emptyDescription: string;
   showDecantBadge?: boolean;
@@ -30,7 +32,7 @@ export async function ProductCatalog({
   // Sem filtro específico (catálogo "Todos os Perfumes"), kits não entram
   // aqui — eles têm a própria página em /kits.
   const { data, error } = onlyPromo
-    ? await baseQuery.not("price_original", "is", null)
+    ? await baseQuery.or(PROMO_OR_FILTER)
     : filterColumn
       ? await baseQuery.eq(filterColumn, true)
       : await baseQuery.eq("is_kit", false);

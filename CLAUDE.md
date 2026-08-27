@@ -1,6 +1,6 @@
 # Projeto: E-commerce de Perfumes
 
-Loja virtual de perfumes com catálogo, checkout via Mercado Pago (Checkout Pro), pedido alternativo via WhatsApp e painel administrativo. Público acessa majoritariamente pelo celular: **mobile-first sempre**.
+Loja virtual de perfumes com catálogo, checkout via Asaas Checkout (Pix e cartão), pedido alternativo via WhatsApp e painel administrativo. Público acessa majoritariamente pelo celular: **mobile-first sempre**.
 
 ## Contexto de quem comanda o projeto
 
@@ -26,9 +26,9 @@ A loja vende **decantes**: frações de 5ml (às vezes 10ml) retiradas de perfum
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Supabase: Postgres, Auth (só a administradora tem login) e Storage (fotos)
 - Hospedagem: Vercel
-- Pagamentos: Mercado Pago **Checkout Pro** (redirect; nunca Checkout Transparente)
+- Pagamentos: **Asaas Checkout** (Pix e cartão, página hospedada pelo Asaas; nunca checkout transparente com dados de cartão passando pelo nosso servidor) — ambiente de produção (conta verificada no Asaas)
 - Frete: **API do Melhor Envio** (cotação por CEP; token em variável de ambiente; usar o ambiente sandbox nos testes e só trocar para produção quando eu pedir)
-- Sem login para clientes: **guest checkout** (nome, WhatsApp, e-mail, endereço no pedido)
+- Sem login para clientes: **guest checkout** (nome, WhatsApp, e-mail, CPF, endereço no pedido — CPF é exigido pelo Asaas para criar a cobrança)
 
 ## Design system (obrigatório em todas as telas)
 
@@ -69,15 +69,15 @@ Regras de UX:
 
 **products**: id, name, brand, description, volume_ml, price (centavos, integer), price_original (centavos, integer, opcional — só quando o produto de fato custava mais e baixou; exibe "De R$ X por R$ Y" e selo PROMOÇÃO), stock (integer), images (text[]), active (boolean), is_bestseller (boolean), is_exclusive (boolean), is_kit (boolean — conjunto de decantes vendido como produto próprio), notes (text, opcional — notas olfativas), weight_g, created_at
 
-**orders**: id, customer_name, customer_phone, customer_email, address (jsonb), items (jsonb — snapshot com preço do momento da compra), subtotal, shipping_cost, shipping_service, total, status, mp_payment_id, mp_preference_id, tracking_code, created_at
+**orders**: id, customer_name, customer_phone, customer_email, customer_cpf, address (jsonb), items (jsonb — snapshot com preço do momento da compra), subtotal, shipping_cost, shipping_service, total, status, payment_id, checkout_id, tracking_code, created_at
 
 Status possíveis de order: aguardando_whatsapp | pendente | pago | recusado | enviado | cancelado
 
 ## Regras de segurança (invioláveis)
 
 1. Preços e totais são SEMPRE recalculados no servidor a partir do banco. O navegador só envia ids e quantidades.
-2. Chaves secretas (Supabase service role, token do Mercado Pago, token do Melhor Envio) só em variáveis de ambiente. Nunca em código do cliente, nunca commitadas.
-3. Webhook do Mercado Pago: validar assinatura x-signature E confirmar o pagamento consultando a API do MP pelo payment id. Nunca confiar apenas no corpo da notificação.
+2. Chaves secretas (Supabase service role, API key do Asaas, token do Melhor Envio) só em variáveis de ambiente. Nunca em código do cliente, nunca commitadas.
+3. Webhook do Asaas: validar o token no header `asaas-access-token` E confirmar o pagamento consultando a API do Asaas pelo id do checkout. Nunca confiar apenas no corpo da notificação.
 4. Baixa de estoque atômica: função SQL única com `UPDATE ... SET stock = stock - qtd WHERE id = X AND stock >= qtd` para todos os itens na mesma transação. Webhook idempotente: se o pedido já está "pago", não baixar estoque de novo.
 5. RLS ativada em todas as tabelas: leitura pública só de products com active = true; orders e escrita só via servidor/admin autenticado.
 6. Pedidos via WhatsApp NÃO baixam estoque automaticamente (confirmação manual no painel).

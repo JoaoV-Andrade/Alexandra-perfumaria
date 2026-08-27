@@ -34,6 +34,7 @@ export type Order = {
   customer_name: string;
   customer_phone: string;
   customer_email: string | null;
+  customer_cpf: string | null;
   address: OrderAddress | null;
   items: OrderItemSnapshot[];
   subtotal: number;
@@ -41,8 +42,8 @@ export type Order = {
   shipping_service: string | null;
   total: number;
   status: OrderStatus;
-  mp_payment_id: string | null;
-  mp_preference_id: string | null;
+  payment_id: string | null;
+  checkout_id: string | null;
   tracking_code: string | null;
   created_at: string;
 };

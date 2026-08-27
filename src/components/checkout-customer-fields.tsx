@@ -5,6 +5,7 @@ export type CustomerInfo = {
   name: string;
   phone: string;
   email: string;
+  cpf: string;
 };
 
 type CheckoutCustomerFieldsProps = {
@@ -42,11 +43,23 @@ export function CheckoutCustomerFields({
           />
         </FormField>
 
-        <FormField label="E-mail" className="sm:col-span-2">
+        <FormField label="E-mail">
           <input
             type="email"
             value={value.email}
             onChange={(event) => onChange("email", event.target.value)}
+            required
+            className={FIELD_CLASS}
+          />
+        </FormField>
+
+        <FormField label="CPF">
+          <input
+            type="text"
+            inputMode="numeric"
+            value={value.cpf}
+            onChange={(event) => onChange("cpf", event.target.value)}
+            placeholder="000.000.000-00"
             required
             className={FIELD_CLASS}
           />

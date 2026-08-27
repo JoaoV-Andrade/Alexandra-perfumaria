@@ -70,9 +70,10 @@ export default function PoliticaDePrivacidadePage() {
         <Section title="Com quem compartilhamos">
           <p>
             Para viabilizar a compra, compartilhamos os dados necessários com:
-            Mercado Pago (processamento do pagamento), Melhor Envio e a
-            transportadora escolhida (cálculo e entrega do frete), e WhatsApp
-            (quando você opta por finalizar o pedido por lá).
+            Asaas (processamento do pagamento, incluindo CPF para emissão da
+            cobrança), Melhor Envio e a transportadora escolhida (cálculo e
+            entrega do frete), e WhatsApp (quando você opta por finalizar o
+            pedido por lá).
           </p>
           <p>
             Não vendemos nem compartilhamos seus dados com terceiros para fins
@@ -85,7 +86,7 @@ export default function PoliticaDePrivacidadePage() {
             Os dados dos pedidos ficam armazenados de forma segura no Supabase,
             com acesso restrito à administradora da loja. Nenhuma informação de
             pagamento (como número de cartão) é armazenada pela Alexandra
-            Perfumaria — isso é feito diretamente pelo Mercado Pago.
+            Perfumaria — isso é feito diretamente pelo Asaas.
           </p>
         </Section>
 

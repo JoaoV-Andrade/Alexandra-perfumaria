@@ -21,7 +21,7 @@ import {
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceInCents } from "@/lib/format";
 
-const EMPTY_CUSTOMER: CustomerInfo = { name: "", phone: "", email: "" };
+const EMPTY_CUSTOMER: CustomerInfo = { name: "", phone: "", email: "", cpf: "" };
 const EMPTY_ADDRESS: AddressFormValues = {
   street: "",
   number: "",
@@ -92,6 +92,7 @@ export function CheckoutForm() {
           customer_name: customer.name,
           customer_phone: customer.phone,
           customer_email: customer.email,
+          customer_cpf: customer.cpf,
           address: {
             postal_code: postalCode,
             ...address,
@@ -114,8 +115,8 @@ export function CheckoutForm() {
         return;
       }
 
-      // Redireciona para o Checkout Pro do Mercado Pago.
-      window.location.href = data.initPoint;
+      // Redireciona para o checkout hospedado do Asaas.
+      window.location.href = data.checkoutLink;
     } catch {
       setStatus("error");
       setErrorMessage(
@@ -169,7 +170,7 @@ export function CheckoutForm() {
         disabled={status === "loading" || !addressReady}
         className="inline-flex h-11 items-center justify-center rounded-full bg-[image:var(--gold-gradient)] px-6 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "loading" ? "Redirecionando..." : "Pagar com Mercado Pago"}
+        {status === "loading" ? "Redirecionando..." : "Ir para o pagamento"}
       </button>
     </form>
   );

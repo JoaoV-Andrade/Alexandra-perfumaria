@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
   const body = (await request.json().catch(() => null)) as {
     event?: string;
-    checkout?: { id?: string; externalReference?: string };
+    checkout?: { id?: string };
   } | null;
 
   const eventType = body?.event;
@@ -61,18 +61,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const orderId = payment.externalReference;
-    if (!orderId || !PAID_STATUSES.has(payment.status)) {
+    if (!PAID_STATUSES.has(payment.status)) {
       return NextResponse.json({ received: true });
     }
 
+    // A Asaas não propaga o externalReference do checkout pro pagamento
+    // gerado a partir dele (testado direto na API: vem sempre null) — por
+    // isso a ligação com o pedido é feita pelo checkout_id, que a gente
+    // mesmo salva no pedido no momento em que cria o checkout.
     const { data: order } = await supabase
       .from("orders")
       .select(
-        "customer_name, customer_phone, address, items, subtotal, shipping_cost, total",
+        "id, customer_name, customer_phone, address, items, subtotal, shipping_cost, total",
       )
-      .eq("id", orderId)
+      .eq("checkout_id", checkoutId)
       .maybeSingle<{
+        id: string;
         customer_name: string;
         customer_phone: string;
         address: OrderAddress | null;
@@ -83,9 +87,11 @@ export async function POST(request: Request) {
       }>();
 
     if (!order) {
-      console.error(`Webhook Asaas: pedido ${orderId} não encontrado`);
+      console.error(`Webhook Asaas: nenhum pedido com checkout_id ${checkoutId}`);
       return NextResponse.json({ received: true });
     }
+
+    const orderId = order.id;
 
     // Confere o valor recebido de verdade contra o total salvo antes de
     // confirmar. Nunca aprova um pedido cujo valor não bate — só loga para
@@ -112,21 +118,17 @@ export async function POST(request: Request) {
       );
     }
 
-    await sendNewOrderEmail({ id: orderId, ...order });
+    await sendNewOrderEmail(order);
   } else {
     const mappedStatus = CLOSED_STATUS_MAP[eventType];
-    // Cancelamento/expiração não move dinheiro nem baixa estoque — só fecha
-    // um pedido que nunca chegou a ser pago, então aqui dá pra confiar no
-    // externalReference que já vem no corpo da notificação.
-    const orderId = body?.checkout?.externalReference;
 
-    if (mappedStatus && orderId) {
+    if (mappedStatus) {
       // Só regride pedidos ainda "pendente": evita que uma notificação
       // atrasada derrube um pedido que já foi confirmado como pago.
       await supabase
         .from("orders")
-        .update({ status: mappedStatus, checkout_id: checkoutId })
-        .eq("id", orderId)
+        .update({ status: mappedStatus })
+        .eq("checkout_id", checkoutId)
         .eq("status", "pendente");
     }
   }

@@ -139,14 +139,16 @@ export type AsaasPayment = {
   id: string;
   status: string; // "PENDING" | "RECEIVED" | "CONFIRMED" | "OVERDUE" | ...
   value: number;
-  externalReference: string | null;
 };
 
 // A Asaas não tem um GET /checkouts/{id} (testado direto na API: devolve
 // 404). A forma documentada de confirmar o pagamento de um checkout é
 // consultar o pagamento real gerado a partir dele, filtrando por
 // checkoutSession — nunca confiar só no corpo da notificação do webhook
-// (mesmo princípio de segurança que já usávamos com o Mercado Pago).
+// (mesmo princípio de segurança que já usávamos com o Mercado Pago). O
+// pagamento não carrega o externalReference do checkout (testado: vem
+// sempre null), então a ligação com o pedido é feita à parte, pelo
+// checkout_id salvo no próprio pedido.
 export async function getPaymentByCheckoutId(
   checkoutId: string,
 ): Promise<AsaasPayment | null> {

@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 
 import { NextResponse } from "next/server";
 
-import { getPaymentByCheckoutId } from "@/lib/asaas";
+import { getPaymentsByCheckoutId } from "@/lib/asaas";
 import { sendNewOrderEmail } from "@/lib/notify-order-email";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { OrderAddress, OrderItemSnapshot } from "@/types/order";
@@ -51,17 +51,21 @@ export async function POST(request: Request) {
 
   if (eventType === "CHECKOUT_PAID") {
     // Nunca confia no corpo da notificação: a Asaas não tem um GET de
-    // checkout por id, então a confirmação de verdade é consultar o
-    // pagamento real gerado a partir desse checkout.
-    const payment = await getPaymentByCheckoutId(checkoutId);
-    if (!payment) {
+    // checkout por id, então a confirmação de verdade é consultar o(s)
+    // pagamento(s) real(is) gerado(s) a partir desse checkout. No cartão
+    // parcelado vem uma linha por parcela, cada uma só com o valor daquela
+    // parcela — todas confirmam juntas na hora da compra (o cartão aprova a
+    // compra inteira de uma vez, só o repasse do dinheiro que é escalonado).
+    const payments = await getPaymentsByCheckoutId(checkoutId);
+    if (payments.length === 0) {
       return NextResponse.json(
         { error: "Pagamento não encontrado para esse checkout." },
         { status: 404 },
       );
     }
 
-    if (!PAID_STATUSES.has(payment.status)) {
+    const allPaid = payments.every((p) => PAID_STATUSES.has(p.status));
+    if (!allPaid) {
       return NextResponse.json({ received: true });
     }
 
@@ -97,7 +101,9 @@ export async function POST(request: Request) {
     // confirmar. Nunca aprova um pedido cujo valor não bate — só loga para
     // investigação manual (mesmo princípio de segurança que tínhamos com o
     // Mercado Pago).
-    const receivedAmountCents = Math.round(payment.value * 100);
+    const receivedAmountCents = Math.round(
+      payments.reduce((sum, p) => sum + p.value, 0) * 100,
+    );
     if (receivedAmountCents !== order.total) {
       console.error(
         `Webhook Asaas: valor do pagamento (${receivedAmountCents}) difere do total do pedido ${orderId} (${order.total}). Pagamento não confirmado automaticamente.`,
@@ -107,7 +113,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabase.rpc("mark_order_paid", {
       p_order_id: orderId,
-      p_payment_id: payment.id,
+      p_payment_id: payments[0].id,
     });
 
     if (error) {

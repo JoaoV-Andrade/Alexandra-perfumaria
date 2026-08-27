@@ -68,7 +68,10 @@ export async function createCheckout({
 
   const body = {
     billingTypes: ["PIX", "CREDIT_CARD"],
-    chargeTypes: ["DETACHED"],
+    chargeTypes: ["DETACHED", "INSTALLMENT"],
+    // Permite parcelar no cartão em até 6x (o cliente também pode optar por
+    // pagar à vista, no Pix ou no cartão).
+    installment: { maxInstallmentCount: 6 },
     minutesToExpire: 60,
     externalReference: orderId,
     items: checkoutItems,
@@ -149,11 +152,15 @@ export type AsaasPayment = {
 // pagamento não carrega o externalReference do checkout (testado: vem
 // sempre null), então a ligação com o pedido é feita à parte, pelo
 // checkout_id salvo no próprio pedido.
-export async function getPaymentByCheckoutId(
+// No cartão parcelado a Asaas cria um pagamento por parcela (cada um só com
+// o valor daquela parcela, não o total) — por isso sempre devolve a lista
+// inteira, nunca só o primeiro. Quem chama soma os valores pra conferir o
+// total do pedido.
+export async function getPaymentsByCheckoutId(
   checkoutId: string,
-): Promise<AsaasPayment | null> {
+): Promise<AsaasPayment[]> {
   const apiKey = process.env.ASAAS_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) return [];
 
   try {
     const response = await fetch(
@@ -161,11 +168,11 @@ export async function getPaymentByCheckoutId(
       { headers: { access_token: apiKey }, cache: "no-store" },
     );
 
-    if (!response.ok) return null;
+    if (!response.ok) return [];
 
     const data = (await response.json()) as { data?: AsaasPayment[] } | null;
-    return data?.data?.[0] ?? null;
+    return data?.data ?? [];
   } catch {
-    return null;
+    return [];
   }
 }

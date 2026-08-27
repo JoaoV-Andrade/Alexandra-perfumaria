@@ -30,7 +30,7 @@ export async function FeaturedProductsSection({
   const baseQuery = supabase
     .from("products")
     .select(
-      "id, name, brand, price, price_original, images, stock, volume_ml, is_bottle_only",
+      "id, name, brand, price, price_original, images, stock, volume_ml, is_bottle_only, is_kit",
     )
     .eq("active", true)
     .order("created_at", { ascending: false })

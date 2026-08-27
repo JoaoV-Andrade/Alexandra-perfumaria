@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createCheckout, type CheckoutItem } from "@/lib/asaas";
 import { BRAZILIAN_STATES } from "@/lib/brazilian-states";
 import { isValidCpf } from "@/lib/cpf";
+import { formatVolumeLabel } from "@/lib/format";
 import { quoteShipping } from "@/lib/shipping/melhor-envio";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { OrderAddress } from "@/types/order";
@@ -112,7 +113,7 @@ export async function POST(request: Request) {
   // banco e da API do Melhor Envio; o navegador só envia ids e quantidades.
   const { data: products, error: productsError } = await supabase
     .from("products")
-    .select("id, name, brand, price, stock, volume_ml")
+    .select("id, name, brand, price, stock, volume_ml, is_kit")
     .in(
       "id",
       validItems.map((item) => item.productId),
@@ -144,6 +145,7 @@ export async function POST(request: Request) {
         brand: product.brand,
         price: product.price,
         volume_ml: product.volume_ml,
+        is_kit: product.is_kit,
         quantity: requested.quantity,
       };
     })
@@ -225,7 +227,7 @@ export async function POST(request: Request) {
 
   const checkoutItems: CheckoutItem[] = orderItems.map((item) => ({
     id: item.product_id,
-    title: `${item.name} - Decante ${item.volume_ml}ml (${item.brand})`,
+    title: `${item.name} - ${formatVolumeLabel(item.volume_ml, item.is_kit)} (${item.brand})`,
     quantity: item.quantity,
     unitPrice: item.price,
   }));

@@ -8,7 +8,14 @@ import type { ProductDetail } from "@/types/product";
 type AddToCartButtonProps = {
   product: Pick<
     ProductDetail,
-    "id" | "name" | "brand" | "price" | "images" | "stock" | "volume_ml"
+    | "id"
+    | "name"
+    | "brand"
+    | "price"
+    | "images"
+    | "stock"
+    | "volume_ml"
+    | "is_kit"
   >;
 };
 
@@ -31,6 +38,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       price: product.price,
       image: product.images[0] ?? null,
       volumeMl: product.volume_ml,
+      isKit: product.is_kit,
     });
     setJustAdded(true);
   }

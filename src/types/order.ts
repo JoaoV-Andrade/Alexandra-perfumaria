@@ -15,6 +15,7 @@ export type OrderItemSnapshot = {
   brand: string;
   price: number; // centavos
   volume_ml: number; // decante: geralmente 5ml, às vezes 10ml
+  is_kit: boolean; // kit: conjunto de decantes vendido como produto próprio
   quantity: number;
 };
 

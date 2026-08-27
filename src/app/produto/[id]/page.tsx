@@ -7,7 +7,7 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { ProductGallery } from "@/components/product-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents, formatVolumeLabel } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import type { ProductDetail } from "@/types/product";
 
@@ -20,7 +20,7 @@ const fetchProduct = cache(async (id: string) => {
   const { data } = await supabase
     .from("products")
     .select(
-      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes, is_bottle_only",
+      "id, name, brand, description, volume_ml, price, price_original, images, stock, notes, is_bottle_only, is_kit",
     )
     .eq("id", id)
     .maybeSingle<ProductDetail>();
@@ -42,7 +42,7 @@ export async function generateMetadata({
     product.description?.slice(0, 160) ||
     (product.is_bottle_only
       ? `Frasco completo de ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`
-      : `Decante de ${product.volume_ml}ml do perfume ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`);
+      : `${formatVolumeLabel(product.volume_ml, product.is_kit)} do perfume ${product.name}, da ${product.brand}, 100% original. Confira na Alexandra Perfumaria.`);
 
   return {
     title,
@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const restockWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(restockMessage)}`;
   const buyMessage = product.is_bottle_only
     ? `Olá! Tenho interesse no frasco completo de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - vi no site.`
-    : `Olá! Quero comprar o decante de ${product.volume_ml}ml de ${product.name} (${product.brand}) - ${formatPriceInCents(product.price)} - direto pelo WhatsApp, sem taxa.`;
+    : `Olá! Quero comprar ${product.name} (${product.brand}) - ${formatVolumeLabel(product.volume_ml, product.is_kit)} - ${formatPriceInCents(product.price)} - direto pelo WhatsApp, sem taxa.`;
   const buyWhatsAppUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buyMessage)}`;
 
   return (
@@ -141,8 +141,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   className="h-12 w-12 shrink-0 rounded-full object-cover"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Decante de {product.volume_ml}ml · fracionado de perfume 100%
-                  original
+                  {formatVolumeLabel(product.volume_ml, product.is_kit)} ·
+                  fracionado de perfume 100% original
                 </p>
               </div>
             )}

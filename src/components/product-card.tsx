@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ProductImage } from "@/components/product-image";
-import { formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents, formatVolumeLabel } from "@/lib/format";
 import type { Product } from "@/types/product";
 
 export function ProductCard({
@@ -55,7 +55,7 @@ export function ProductCard({
           <p className="mt-1 text-xs text-muted-foreground">
             {product.is_bottle_only
               ? "Frasco completo"
-              : `Decante ${product.volume_ml}ml`}
+              : formatVolumeLabel(product.volume_ml, product.is_kit)}
           </p>
           {isPromo ? (
             <p className="mt-2 flex items-baseline gap-2">

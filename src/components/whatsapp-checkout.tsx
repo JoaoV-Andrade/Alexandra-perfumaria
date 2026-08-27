@@ -5,7 +5,7 @@ import { useState, type FormEvent } from "react";
 import { FormMessage } from "@/components/form-message";
 import type { ShippingOption } from "@/components/shipping-calculator";
 import { useCart } from "@/lib/cart/cart-context";
-import { formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents, formatVolumeLabel } from "@/lib/format";
 import { FIELD_CLASS } from "@/lib/ui";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
@@ -15,6 +15,7 @@ type OrderItem = {
   brand: string;
   price: number;
   volume_ml: number;
+  is_kit: boolean;
   quantity: number;
 };
 
@@ -163,7 +164,7 @@ function buildWhatsAppMessage({
 }): string {
   const lines = items.map(
     (item) =>
-      `${item.quantity}x ${item.name} - decante ${item.volume_ml}ml (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
+      `${item.quantity}x ${item.name} - ${formatVolumeLabel(item.volume_ml, item.is_kit)} (${item.brand}) - ${formatPriceInCents(item.price * item.quantity)}`,
   );
 
   const totalsLines =

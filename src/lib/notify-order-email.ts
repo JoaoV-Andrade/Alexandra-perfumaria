@@ -1,4 +1,4 @@
-import { formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents, formatVolumeLabel } from "@/lib/format";
 import type { OrderAddress, OrderItemSnapshot } from "@/types/order";
 
 type OrderForEmail = {
@@ -44,7 +44,7 @@ export async function sendNewOrderEmail(order: OrderForEmail): Promise<void> {
   const itemsHtml = order.items
     .map((item) => {
       const itemTotal = formatPriceInCents(item.price * item.quantity);
-      return `<li>${item.quantity}x ${escapeHtml(item.name)} (${escapeHtml(item.brand)}, ${item.volume_ml}ml) — ${itemTotal}</li>`;
+      return `<li>${item.quantity}x ${escapeHtml(item.name)} (${escapeHtml(item.brand)}, ${formatVolumeLabel(item.volume_ml, item.is_kit)}) — ${itemTotal}</li>`;
     })
     .join("");
 

@@ -5,6 +5,7 @@ import {
   formatDateTime,
   formatPostalCode,
   formatPriceInCents,
+  formatVolumeLabel,
 } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import type { Order } from "@/types/order";
@@ -100,7 +101,10 @@ export default async function AdminPedidoDetailPage({
                 {item.quantity}x {item.name}{" "}
                 <span className="text-muted-foreground">
                   ({item.brand}
-                  {item.volume_ml ? `, decante ${item.volume_ml}ml` : ""})
+                  {item.volume_ml
+                    ? `, ${formatVolumeLabel(item.volume_ml, item.is_kit)}`
+                    : ""}
+                  )
                 </span>
               </span>
               <span className="whitespace-nowrap font-medium text-foreground">

@@ -11,7 +11,7 @@ import {
 } from "@/components/shipping-calculator";
 import { WhatsAppCheckout } from "@/components/whatsapp-checkout";
 import { useCart } from "@/lib/cart/cart-context";
-import { formatPriceInCents } from "@/lib/format";
+import { formatPriceInCents, formatVolumeLabel } from "@/lib/format";
 
 export function CartSummary() {
   const { items, totalPrice, removeItem, setQuantity } = useCart();
@@ -56,7 +56,7 @@ export function CartSummary() {
               </p>
               <p className="text-sm font-medium text-foreground">{item.name}</p>
               <p className="text-xs text-muted-foreground">
-                Decante {item.volumeMl}ml
+                {formatVolumeLabel(item.volumeMl, item.isKit)}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {formatPriceInCents(item.price)} / un.

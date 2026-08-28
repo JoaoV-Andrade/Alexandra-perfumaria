@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { createCheckout, type CheckoutItem } from "@/lib/asaas";
 import { BRAZILIAN_STATES } from "@/lib/brazilian-states";
-import { isValidCpf } from "@/lib/cpf";
 import { formatVolumeLabel } from "@/lib/format";
+import {
+  createCheckoutPreference,
+  type PreferenceItem,
+} from "@/lib/mercado-pago";
 import { quoteShipping } from "@/lib/shipping/melhor-envio";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { OrderAddress } from "@/types/order";
@@ -17,7 +19,6 @@ type RequestBody = {
   customer_name?: string;
   customer_phone?: string;
   customer_email?: string;
-  customer_cpf?: string;
   address?: Partial<OrderAddress>;
   items?: RequestItem[];
   shipping_option_id?: string;
@@ -46,14 +47,6 @@ export async function POST(request: Request) {
   if (!customerEmail || !EMAIL_REGEX.test(customerEmail)) {
     return NextResponse.json(
       { error: "Digite um e-mail válido." },
-      { status: 400 },
-    );
-  }
-
-  const customerCpf = (body?.customer_cpf ?? "").toString().replace(/\D/g, "");
-  if (!isValidCpf(customerCpf)) {
-    return NextResponse.json(
-      { error: "Digite um CPF válido." },
       { status: 400 },
     );
   }
@@ -206,7 +199,6 @@ export async function POST(request: Request) {
       customer_name: customerName,
       customer_phone: customerPhone,
       customer_email: customerEmail,
-      customer_cpf: customerCpf,
       address,
       items: orderItems,
       subtotal,
@@ -225,32 +217,30 @@ export async function POST(request: Request) {
     );
   }
 
-  const checkoutItems: CheckoutItem[] = orderItems.map((item) => ({
+  const preferenceItems: PreferenceItem[] = orderItems.map((item) => ({
     id: item.product_id,
     title: `${item.name} - ${formatVolumeLabel(item.volume_ml, item.is_kit)} (${item.brand})`,
     quantity: item.quantity,
     unitPrice: item.price,
   }));
 
-  const checkout = await createCheckout({
+  const preference = await createCheckoutPreference({
     orderId: order.id,
-    items: checkoutItems,
+    items: preferenceItems,
     payerName: customerName,
     payerEmail: customerEmail,
     payerPhone: customerPhone,
-    payerCpf: customerCpf,
-    payerAddress: address,
     shippingCost,
   });
 
-  if (!checkout.ok) {
-    return NextResponse.json({ error: checkout.error }, { status: 502 });
+  if (!preference.ok) {
+    return NextResponse.json({ error: preference.error }, { status: 502 });
   }
 
   await supabase
     .from("orders")
-    .update({ checkout_id: checkout.checkoutId })
+    .update({ mp_preference_id: preference.preferenceId })
     .eq("id", order.id);
 
-  return NextResponse.json({ checkoutLink: checkout.link });
+  return NextResponse.json({ initPoint: preference.initPoint });
 }

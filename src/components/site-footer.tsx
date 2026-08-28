@@ -92,7 +92,7 @@ export function SiteFooter() {
       <div className="border-t border-foreground/10 px-4 py-6 text-center text-xs text-muted-foreground">
         <p>
           © {new Date().getFullYear()} Alexandra Perfumaria. Todos os direitos
-          reservados. Pagamentos processados pelo Asaas.
+          reservados. Pagamentos processados pelo Mercado Pago.
         </p>
         <p className="mt-1">CNPJ: 63.736.403/0001-13</p>
       </div>

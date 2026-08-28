@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
 }
 
 // Cliente com a service role: ignora RLS. Só para rotinas de servidor
-// (webhook do Asaas, baixa de estoque). Nunca importar em Client Components.
+// (webhook do Mercado Pago, baixa de estoque). Nunca importar em Client Components.
 export function createAdminClient() {
   return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -5,8 +5,9 @@ import { PaymentPending } from "@/components/payment-pending";
 import { PaymentSuccess } from "@/components/payment-success";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getPayment } from "@/lib/mercado-pago";
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { OrderItemSnapshot, OrderStatus } from "@/types/order";
+import type { OrderItemSnapshot } from "@/types/order";
 
 export const metadata: Metadata = {
   title: "Status do pagamento",
@@ -14,21 +15,31 @@ export const metadata: Metadata = {
 };
 
 type CheckoutRetornoPageProps = {
-  searchParams: Promise<{ status?: string; pedido?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    pedido?: string;
+    payment_id?: string;
+    collection_id?: string;
+  }>;
 };
 
 type Outcome = "sucesso" | "pendente" | "erro";
 
-// O status do Asaas só é confirmado de verdade pelo webhook, que atualiza o
-// pedido no banco; a tela de retorno nunca decide sozinha, só reflete o que
-// já está salvo.
+// O status na URL é só uma dica de para onde o Mercado Pago quis nos mandar
+// no momento do redirecionamento; a verdade é sempre a consulta ao pagamento.
 function resolveOutcome(
-  orderStatus: OrderStatus | undefined,
+  paymentStatus: string | undefined,
   fallback: string | undefined,
 ): Outcome {
-  if (orderStatus === "pago") return "sucesso";
-  if (orderStatus === "pendente") return "pendente";
-  if (orderStatus === "recusado" || orderStatus === "cancelado") return "erro";
+  if (paymentStatus === "approved") return "sucesso";
+  if (
+    paymentStatus === "pending" ||
+    paymentStatus === "in_process" ||
+    paymentStatus === "authorized"
+  ) {
+    return "pendente";
+  }
+  if (paymentStatus) return "erro";
 
   if (fallback === "sucesso" || fallback === "pendente") return fallback;
   return "erro";
@@ -38,13 +49,9 @@ async function fetchOrderSummary(orderId: string) {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("orders")
-    .select("items, total, status")
+    .select("items, total")
     .eq("id", orderId)
-    .maybeSingle<{
-      items: OrderItemSnapshot[];
-      total: number;
-      status: OrderStatus;
-    }>();
+    .maybeSingle<{ items: OrderItemSnapshot[]; total: number }>();
   return data;
 }
 
@@ -52,9 +59,14 @@ export default async function CheckoutRetornoPage({
   searchParams,
 }: CheckoutRetornoPageProps) {
   const params = await searchParams;
-  const order = params.pedido ? await fetchOrderSummary(params.pedido) : null;
+  const paymentId = params.payment_id ?? params.collection_id;
 
-  const outcome = resolveOutcome(order?.status, params.status);
+  const [order, payment] = await Promise.all([
+    params.pedido ? fetchOrderSummary(params.pedido) : Promise.resolve(null),
+    paymentId ? getPayment(paymentId) : Promise.resolve(null),
+  ]);
+
+  const outcome = resolveOutcome(payment?.status, params.status);
   const items = order?.items ?? null;
   const total = order?.total ?? null;
 
@@ -67,7 +79,24 @@ export default async function CheckoutRetornoPage({
         )}
 
         {outcome === "pendente" && (
-          <PaymentPending items={items} total={total} />
+          <PaymentPending
+            items={items}
+            total={total}
+            paymentTypeId={payment?.payment_type_id ?? null}
+            qrCode={
+              payment?.point_of_interaction?.transaction_data?.qr_code ?? null
+            }
+            qrCodeBase64={
+              payment?.point_of_interaction?.transaction_data?.qr_code_base64 ??
+              null
+            }
+            ticketUrl={
+              payment?.point_of_interaction?.transaction_data?.ticket_url ??
+              payment?.transaction_details?.external_resource_url ??
+              null
+            }
+            expirationDate={payment?.date_of_expiration ?? null}
+          />
         )}
 
         {outcome === "erro" && <PaymentError />}

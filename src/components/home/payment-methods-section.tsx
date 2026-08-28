@@ -21,7 +21,7 @@ export function PaymentMethodsSection() {
           Formas de pagamento
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Pague com Pix ou cartão de crédito, com a segurança do Asaas.
+          Pague com cartão de crédito, com a segurança do Mercado Pago.
         </p>
 
         <ul className="mt-6 flex flex-wrap items-center justify-center gap-3">

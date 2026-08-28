@@ -62,7 +62,6 @@ create table if not exists public.orders (
   customer_name text not null,
   customer_phone text not null,
   customer_email text, -- pedidos via WhatsApp podem não ter e-mail ainda
-  customer_cpf text, -- exigido pelo Asaas para criar a cobrança; pedidos via WhatsApp podem não ter ainda
   address jsonb, -- idem: endereço combinado depois, na conversa do WhatsApp
   items jsonb not null, -- snapshot dos itens com preço no momento da compra
   subtotal integer not null check (subtotal >= 0),
@@ -79,14 +78,14 @@ create table if not exists public.orders (
       'cancelado'
     )
   ),
-  payment_id text, -- id do pagamento no gateway (Asaas)
-  checkout_id text, -- id do checkout no gateway (Asaas)
+  mp_payment_id text,
+  mp_preference_id text,
   tracking_code text,
   created_at timestamptz not null default now()
 );
 
 create index if not exists orders_status_idx on public.orders (status);
-create index if not exists orders_payment_id_idx on public.orders (payment_id);
+create index if not exists orders_mp_payment_id_idx on public.orders (mp_payment_id);
 
 alter table public.orders enable row level security;
 
